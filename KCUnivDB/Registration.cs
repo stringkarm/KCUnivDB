@@ -20,46 +20,91 @@ namespace KCUnivDB
         }
 
         string connectionString = @"Data Source = canasa\SQLEXPRESS;
-        Initial catalog = KCUnivDB; Integrated Security = true";
+                                Initial catalog = KCUnivDB; Integrated Security = true";
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtFirstname.Text) || string.IsNullOrWhiteSpace(txtLastname.Text) ||
-                string.IsNullOrWhiteSpace(txtEmail.Text))
+            // 1. Client-side Validation (More robust)
+            if (string.IsNullOrWhiteSpace(txtFirstname.Text) ||
+                string.IsNullOrWhiteSpace(txtLastname.Text) ||
+                string.IsNullOrWhiteSpace(txtEmail.Text) ||
+                string.IsNullOrWhiteSpace(txtAge.Text) ||
+                string.IsNullOrWhiteSpace(txtGender.Text) ||
+                string.IsNullOrWhiteSpace(txtPhone.Text) ||
+                string.IsNullOrWhiteSpace(txtAddress.Text))
             {
                 MessageBox.Show("Please fill in all required fields.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; 
+                return;
             }
-            int age;
-            if (!int.TryParse(txtAge.Text, out age)) 
+
+            // Validate age is a number
+            if (!int.TryParse(txtAge.Text, out int age))
             {
                 MessageBox.Show("Please enter a valid age.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            // 2. Call the Stored Procedure
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("Registration_SP", connection);
-                cmd.CommandType = CommandType.StoredProcedure;
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("Registration_SP", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.AddWithValue("@firstname", txtFirstname.Text);
-                cmd.Parameters.AddWithValue("@lastname", txtLastname.Text);
-                cmd.Parameters.AddWithValue("@age", int.Parse(txtAge.Text));
-                cmd.Parameters.AddWithValue("@gender", txtGender.Text);
-                cmd.Parameters.AddWithValue("@phone", txtPhone.Text);
-                cmd.Parameters.AddWithValue("@address", txtAddress.Text);
-                cmd.Parameters.AddWithValue("@email", txtEmail.Text);
+                    // Pass all parameters to the stored procedure.
+                    cmd.Parameters.AddWithValue("@FirstName", txtFirstname.Text);
+                    cmd.Parameters.AddWithValue("@LastName", txtLastname.Text);
+                    cmd.Parameters.AddWithValue("@Age", age);
+                    cmd.Parameters.AddWithValue("@Gender", txtGender.Text);
+                    cmd.Parameters.AddWithValue("@Phone", txtPhone.Text);
+                    cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
+                    cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
 
+                    // Add output parameters to retrieve the generated UserID and Password
+                    SqlParameter usernameParam = new SqlParameter("@Username", SqlDbType.NVarChar, 50);
+                    usernameParam.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(usernameParam);
 
+                    SqlParameter passwordParam = new SqlParameter("@Password", SqlDbType.NVarChar, 255);
+                    passwordParam.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(passwordParam);
 
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
 
-                connection.Open();
-                cmd.ExecuteNonQuery();
+                    // Retrieve the output values from the stored procedure
+                    string generatedUsername = usernameParam.Value.ToString();
+                    string generatedPassword = passwordParam.Value.ToString();
 
+                    MessageBox.Show("Registration successful!\n\n" +
+                                    "Your Student ID (Username) is: " + generatedUsername + "\n" +
+                                    "Your temporary password is: " + generatedPassword + "\n\n" +
+                                    "Your account status is currently PENDING. An administrator must activate your account before you can log in.",
+                                    "Registration Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Optional: Clear form fields after successful registration.
+                    txtFirstname.Clear();
+                    txtLastname.Clear();
+                    txtAge.Clear();
+                    txtGender.Clear();
+                    txtPhone.Clear();
+                    txtAddress.Clear();
+                    txtEmail.Clear();
+                }
+                catch (SqlException ex)
+                {
+                    // Catch and display any database-specific errors.
+                    MessageBox.Show("Database error: " + ex.Message, "SQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    // Catch any other unexpected errors.
+                    MessageBox.Show("An unexpected error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-     
-           
         }
+
 
         private string HashPassword(string plainPassword)
         {
