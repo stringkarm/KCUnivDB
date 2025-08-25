@@ -23,80 +23,76 @@ namespace KCUnivDB
         Initial catalog = KCUnivDB; Integrated Security = true";
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            string plainPassword = txtPassword.Text;
-            string hashedPassword = HashPassword(plainPassword);
+            // Validate that username and password fields are not empty.
+            if (string.IsNullOrWhiteSpace(txtUsername.Text) || string.IsNullOrWhiteSpace(txtPassword.Text))
+            {
+                MessageBox.Show("Please enter both a username and password.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand("Login_SP", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-               
-                cmd.Parameters.AddWithValue("@username", txtUsername.Text);
-                cmd.Parameters.AddWithValue("@password", hashedPassword);
+                // Pass the provided credentials to the stored procedure.
+                cmd.Parameters.AddWithValue("@Username", txtUsername.Text);
+                cmd.Parameters.AddWithValue("@Password", txtPassword.Text);
 
                 try
                 {
                     connection.Open();
+
+                    // The stored procedure will return user data only if the credentials
+                    // are correct and the account status is 'Active'.
                     SqlDataReader reader = cmd.ExecuteReader();
 
-                    if (reader.Read()) 
+                    if (reader.Read())
                     {
-                        
-                        string result = reader["Result"].ToString();
-                        int userId = Convert.ToInt32(reader["UserID"]);
-                        int profileId = Convert.ToInt32(reader["ProfileID"]);
-                        int roleId = Convert.ToInt32(reader["RoleID"]);
+                        // Login was successful.
+                        string roleName = reader["RoleName"].ToString();
 
-                        MessageBox.Show(result );
-
-                        
+                        MessageBox.Show("Welcome, " + reader["FirstName"].ToString() + "!", "Login Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         this.Hide();
 
-                        if (roleId == 1) 
+                        // Redirect the user to the appropriate dashboard based on their role.
+                        switch (roleName)
                         {
-                           
-                            AdminDashboard adminDash = new AdminDashboard(); 
-                            adminDash.Show();
-                        }
-                        else if (roleId == 2) 
-                        {
-                           
-                            InstructorDashboard teacherDash = new InstructorDashboard(); 
-                            teacherDash.Show();
-                        }
-                        else if (roleId == 3) 
-                        {
-                            
-                            StudentDashboard studentDash = new StudentDashboard(); 
-                            studentDash.Show();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Unknown user role. Please contact support.");
-                            this.Show(); 
+                            case "Admin":
+                                AdminDashboard adminDash = new AdminDashboard();
+                                adminDash.Show();
+                                break;
+                            case "Instructor":
+                                InstructorDashboard teacherDash = new InstructorDashboard();
+                                teacherDash.Show();
+                                break;
+                            case "Student":
+                                StudentDashboard studentDash = new StudentDashboard();
+                                studentDash.Show();
+                                break;
+                            default:
+                                MessageBox.Show("Unknown user role. Please contact support.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                this.Show();
+                                break;
                         }
                     }
                     else
                     {
-                        // This case should ideally not happen if Login_SP always returns a row
-                        // (either 'Login successful' or 'Registration successful').
-                        // It might indicate an issue if the SP didn't return anything.
-                        MessageBox.Show("Login failed or no response from server. Please try again.");
+                        // Login failed for any reason (incorrect credentials or pending status).
+                        MessageBox.Show("Login failed. Please check your username and password, or wait for an administrator to activate your account.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 catch (SqlException ex)
                 {
-                    MessageBox.Show("Database error: " + ex.Message + "\n" + ex.Number); 
+                    MessageBox.Show("Database error: " + ex.Message, "SQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An unexpected error occurred: " + ex.Message);
+                    MessageBox.Show("An unexpected error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
-          
+
         }
 
         private string HashPassword(string plainPassword)

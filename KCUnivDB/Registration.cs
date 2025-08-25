@@ -22,10 +22,25 @@ namespace KCUnivDB
         string connectionString = @"Data Source = canasa\SQLEXPRESS;
                                 Initial catalog = KCUnivDB; Integrated Security = true";
 
+
+        private string HashPassword(string plainPassword)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(plainPassword);
+                byte[] hash = sha256.ComputeHash(bytes);
+                StringBuilder builder = new StringBuilder();
+                foreach (byte b in hash)
+                    builder.Append(b.ToString("x2"));
+                return builder.ToString();
+            }
+        }
+
         private void btnRegister_Click(object sender, EventArgs e)
         {
             // 1. Client-side Validation (More robust)
-            if (string.IsNullOrWhiteSpace(txtFirstname.Text) ||
+            if (string.IsNullOrWhiteSpace(txtStudentID.Text) ||
+                string.IsNullOrWhiteSpace(txtFirstname.Text) ||
                 string.IsNullOrWhiteSpace(txtLastname.Text) ||
                 string.IsNullOrWhiteSpace(txtEmail.Text) ||
                 string.IsNullOrWhiteSpace(txtAge.Text) ||
@@ -53,6 +68,7 @@ namespace KCUnivDB
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // Pass all parameters to the stored procedure.
+                    cmd.Parameters.AddWithValue("@UserID", txtStudentID.Text);
                     cmd.Parameters.AddWithValue("@FirstName", txtFirstname.Text);
                     cmd.Parameters.AddWithValue("@LastName", txtLastname.Text);
                     cmd.Parameters.AddWithValue("@Age", age);
@@ -84,6 +100,7 @@ namespace KCUnivDB
                                     "Registration Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     // Optional: Clear form fields after successful registration.
+                    txtStudentID.Clear();
                     txtFirstname.Clear();
                     txtLastname.Clear();
                     txtAge.Clear();
@@ -104,21 +121,5 @@ namespace KCUnivDB
                 }
             }
         }
-
-
-        private string HashPassword(string plainPassword)
-        {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                byte[] bytes = Encoding.UTF8.GetBytes(plainPassword);
-                byte[] hash = sha256.ComputeHash(bytes);
-                StringBuilder builder = new StringBuilder();
-                foreach (byte b in hash)
-                    builder.Append(b.ToString("x2"));
-                return builder.ToString();
-            }
-        }
-
-        
     }
 }
