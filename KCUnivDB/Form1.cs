@@ -19,7 +19,7 @@ namespace KCUnivDB
             InitializeComponent();
         }
 
-        string connectionString = @"Data Source = canasa\SQLEXPRESS;
+        string connectionString = @"Data Source = LAB1-PC18\LAB1PC35;
         Initial catalog = KCUnivDB; Integrated Security = true";
         private void btnLogin_Click(object sender, EventArgs e)
         {
