@@ -32,11 +32,12 @@
             this.txtFirstname = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtLastname = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtAge = new Guna.UI2.WinForms.Guna2TextBox();
-            this.txtGender = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtPhone = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtAddress = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtEmail = new Guna.UI2.WinForms.Guna2TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblGender = new System.Windows.Forms.Label();
+            this.cmbGender = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnRegister
@@ -48,7 +49,7 @@
             this.btnRegister.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnRegister.ForeColor = System.Drawing.Color.White;
             this.btnRegister.Location = new System.Drawing.Point(254, 399);
-            this.btnRegister.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnRegister.Margin = new System.Windows.Forms.Padding(2);
             this.btnRegister.Name = "btnRegister";
             this.btnRegister.Size = new System.Drawing.Size(172, 37);
             this.btnRegister.TabIndex = 4;
@@ -115,26 +116,6 @@
             this.txtAge.Size = new System.Drawing.Size(172, 39);
             this.txtAge.TabIndex = 6;
             // 
-            // txtGender
-            // 
-            this.txtGender.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtGender.DefaultText = "";
-            this.txtGender.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
-            this.txtGender.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
-            this.txtGender.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtGender.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
-            this.txtGender.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtGender.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtGender.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtGender.Location = new System.Drawing.Point(270, 206);
-            this.txtGender.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.txtGender.Name = "txtGender";
-            this.txtGender.PlaceholderForeColor = System.Drawing.Color.Gray;
-            this.txtGender.PlaceholderText = "Gender";
-            this.txtGender.SelectedText = "";
-            this.txtGender.Size = new System.Drawing.Size(172, 39);
-            this.txtGender.TabIndex = 7;
-            // 
             // txtPhone
             // 
             this.txtPhone.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -195,31 +176,61 @@
             this.txtEmail.Size = new System.Drawing.Size(172, 39);
             this.txtEmail.TabIndex = 11;
             // 
-            // label1
+            // lblGender
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(315, 38);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(63, 13);
-            this.label1.TabIndex = 16;
-            this.label1.Text = "Registration";
+            this.lblGender.AutoSize = true;
+            this.lblGender.Location = new System.Drawing.Point(267, 193);
+            this.lblGender.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblGender.Name = "lblGender";
+            this.lblGender.Size = new System.Drawing.Size(42, 13);
+            this.lblGender.TabIndex = 16;
+            this.lblGender.Text = "Gender";
+            // 
+            // cmbGender
+            // 
+            this.cmbGender.BackColor = System.Drawing.Color.Transparent;
+            this.cmbGender.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbGender.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbGender.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cmbGender.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cmbGender.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbGender.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
+            this.cmbGender.ItemHeight = 30;
+            this.cmbGender.Items.AddRange(new object[] {
+            "Male",
+            "Female",
+            "Preferred not to say"});
+            this.cmbGender.Location = new System.Drawing.Point(270, 209);
+            this.cmbGender.Name = "cmbGender";
+            this.cmbGender.Size = new System.Drawing.Size(172, 36);
+            this.cmbGender.TabIndex = 17;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(301, 59);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(63, 13);
+            this.label2.TabIndex = 18;
+            this.label2.Text = "Registration";
             // 
             // Registration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(673, 476);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.cmbGender);
+            this.Controls.Add(this.lblGender);
             this.Controls.Add(this.txtEmail);
             this.Controls.Add(this.txtAddress);
             this.Controls.Add(this.txtPhone);
-            this.Controls.Add(this.txtGender);
             this.Controls.Add(this.txtAge);
             this.Controls.Add(this.txtLastname);
             this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.txtFirstname);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Registration";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Registration";
@@ -234,10 +245,11 @@
         private Guna.UI2.WinForms.Guna2TextBox txtFirstname;
         private Guna.UI2.WinForms.Guna2TextBox txtLastname;
         private Guna.UI2.WinForms.Guna2TextBox txtAge;
-        private Guna.UI2.WinForms.Guna2TextBox txtGender;
         private Guna.UI2.WinForms.Guna2TextBox txtPhone;
         private Guna.UI2.WinForms.Guna2TextBox txtAddress;
         private Guna.UI2.WinForms.Guna2TextBox txtEmail;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblGender;
+        private Guna.UI2.WinForms.Guna2ComboBox cmbGender;
+        private System.Windows.Forms.Label label2;
     }
 }

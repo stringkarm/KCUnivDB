@@ -63,7 +63,7 @@ namespace KCUnivDB
                 cmd.Parameters.AddWithValue("@firstname", txtFirstname.Text);
                 cmd.Parameters.AddWithValue("@lastname", txtLastname.Text);
                 cmd.Parameters.AddWithValue("@age", age);
-                cmd.Parameters.AddWithValue("@gender", txtGender.Text);
+                cmd.Parameters.AddWithValue("@gender",cmbGender.Text);
                 cmd.Parameters.AddWithValue("@phone", txtPhone.Text);
                 cmd.Parameters.AddWithValue("@address", txtAddress.Text);
                 cmd.Parameters.AddWithValue("@email", txtEmail.Text);
