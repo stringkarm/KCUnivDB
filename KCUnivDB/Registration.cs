@@ -58,34 +58,35 @@ namespace KCUnivDB
                         return;
                     }
 
+                    Random rnd = new Random();
+                    string generatedUserID = "ST" + rnd.Next(100000, 999999).ToString();
+                    string generatedPassword = generatedUserID;
+
+                    // Step 3: Hash the generated password using the HashPassword function
+                    string hashedPassword = HashPassword(generatedPassword);
+
+                    // Step 4: Call the stored procedure with the generated data
                     SqlCommand cmd = new SqlCommand("Registration_SP", connection);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@firstname", txtFirstname.Text);
-                    cmd.Parameters.AddWithValue("@lastname", txtLastname.Text);
-                    cmd.Parameters.AddWithValue("@age", age);
-                    cmd.Parameters.AddWithValue("@gender", cmbGender.Text);
-                    cmd.Parameters.AddWithValue("@phone", txtPhone.Text);
-                    cmd.Parameters.AddWithValue("@address", txtAddress.Text);
-                    cmd.Parameters.AddWithValue("@email", txtEmail.Text);
+                    // Pass the user's personal details
+                    cmd.Parameters.AddWithValue("@FirstName", txtFirstname.Text);
+                    cmd.Parameters.AddWithValue("@LastName", txtLastname.Text);
+                    cmd.Parameters.AddWithValue("@Age", age);
+                    cmd.Parameters.AddWithValue("@Gender", cmbGender.Text);
+                    cmd.Parameters.AddWithValue("@Phone", txtPhone.Text);
+                    cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
+                    cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
 
-                    // Add output parameters
-                    SqlParameter usernameParam = new SqlParameter("@Username", SqlDbType.NVarChar, 50);
-                    usernameParam.Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add(usernameParam);
+                    // Pass the generated username and the HASHED password
+                    cmd.Parameters.AddWithValue("@Username", generatedUserID);
+                    cmd.Parameters.AddWithValue("@HashedPassword", hashedPassword);
 
-                    SqlParameter passwordParam = new SqlParameter("@Password", SqlDbType.NVarChar, 255);
-                    passwordParam.Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add(passwordParam);
 
-                    // Execute the command
+                    // Since we are not getting any output parameters back, we can just execute the command
                     cmd.ExecuteNonQuery();
 
-                    // Retrieve the output values
-                    string username = usernameParam.Value.ToString();
-                    string password = passwordParam.Value.ToString();
-
-                    MessageBox.Show("Registation Successful!" + "\n Username: " + username+ "\n Username: " + password + "\n Paghuwat usa kay pending paka.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Registration Successful!" + "\n Username: " + generatedUserID+ "\n Password: " + generatedPassword + "\n Paghuwat, i-approved pakas admin.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
             }
@@ -110,11 +111,13 @@ namespace KCUnivDB
                 byte[] hash = sha256.ComputeHash(bytes);
                 StringBuilder builder = new StringBuilder();
                 foreach (byte b in hash)
+                {
                     builder.Append(b.ToString("x2"));
+                }
                 return builder.ToString();
             }
         }
 
-        
+
     }
 }
