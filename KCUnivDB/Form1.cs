@@ -122,18 +122,19 @@ namespace KCUnivDB
         }
 
 
-        private void lblRegister_Click(object sender, EventArgs e)
-        {
-            Registration regForm = new Registration();
-            regForm.Show();
-            this.Hide();
-        }
-
+      
         private void lblForgotPassword_Click(object sender, EventArgs e)
         {
             ForgotPassword forgotPassForm = new ForgotPassword();
             forgotPassForm.Show();
             this.Hide();
+        }
+
+        private void guna2Button2_Click(object sender, EventArgs e)
+        {
+            Registration register = new Registration();
+            this.Hide();
+            register.Show();
         }
     }
 }

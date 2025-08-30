@@ -124,5 +124,12 @@ namespace KCUnivDB
             form1.Show();
             this.Hide();
         }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            Form1 form1 = new Form1();
+            form1.Show();
+            this.Hide();
+        }
     }
 }
