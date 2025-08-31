@@ -136,5 +136,25 @@ namespace KCUnivDB
             this.Hide();
             register.Show();
         }
+
+        
+
+        private void btnEyesOn_Click(object sender, EventArgs e)
+        {
+            if (txtPassword.PasswordChar == '•')
+            {
+                btnEyesOff.BringToFront();
+                txtPassword.PasswordChar = '\0';
+            }
+        }
+
+        private void btnEyesOff_Click_1(object sender, EventArgs e)
+        {
+            if (txtPassword.PasswordChar == '\0')
+            {
+                btnEyesOn.BringToFront();
+                txtPassword.PasswordChar = '•';
+            }
+        }
     }
 }
