@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.txtUsername = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtPassword = new Guna.UI2.WinForms.Guna2TextBox();
@@ -42,6 +43,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.btnEyesOff = new System.Windows.Forms.PictureBox();
             this.btnEyesOn = new System.Windows.Forms.PictureBox();
+            this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
+            this.btnClose = new System.Windows.Forms.Label();
+            this.btnMinimize = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnEyesOff)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnEyesOn)).BeginInit();
@@ -244,12 +248,43 @@
             this.btnEyesOn.TabStop = false;
             this.btnEyesOn.Click += new System.EventHandler(this.btnEyesOn_Click);
             // 
+            // guna2Elipse1
+            // 
+            this.guna2Elipse1.BorderRadius = 10;
+            this.guna2Elipse1.TargetControl = this;
+            // 
+            // btnClose
+            // 
+            this.btnClose.AutoSize = true;
+            this.btnClose.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.ForeColor = System.Drawing.Color.White;
+            this.btnClose.Location = new System.Drawing.Point(1056, 6);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(28, 29);
+            this.btnClose.TabIndex = 37;
+            this.btnClose.Text = "×";
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnMinimize
+            // 
+            this.btnMinimize.AutoSize = true;
+            this.btnMinimize.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMinimize.ForeColor = System.Drawing.Color.White;
+            this.btnMinimize.Location = new System.Drawing.Point(1018, -2);
+            this.btnMinimize.Name = "btnMinimize";
+            this.btnMinimize.Size = new System.Drawing.Size(33, 29);
+            this.btnMinimize.TabIndex = 38;
+            this.btnMinimize.Text = "🗕";
+            this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Maroon;
             this.ClientSize = new System.Drawing.Size(1102, 729);
+            this.Controls.Add(this.btnMinimize);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnEyesOn);
             this.Controls.Add(this.btnEyesOff);
             this.Controls.Add(this.label4);
@@ -290,6 +325,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.PictureBox btnEyesOff;
         private System.Windows.Forms.PictureBox btnEyesOn;
+        private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
+        private System.Windows.Forms.Label btnMinimize;
+        private System.Windows.Forms.Label btnClose;
     }
 }
 

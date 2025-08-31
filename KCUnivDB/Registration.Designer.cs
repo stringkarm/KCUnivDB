@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Registration));
             this.btnRegister = new Guna.UI2.WinForms.Guna2Button();
             this.txtFirstname = new Guna.UI2.WinForms.Guna2TextBox();
@@ -47,6 +48,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.btnLogin = new Guna.UI2.WinForms.Guna2Button();
+            this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
+            this.btnMinimize = new System.Windows.Forms.Label();
+            this.btnClose = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -204,7 +208,7 @@
             // lblGender
             // 
             this.lblGender.AutoSize = true;
-            this.lblGender.BackColor = System.Drawing.Color.White;
+            this.lblGender.BackColor = System.Drawing.Color.Transparent;
             this.lblGender.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblGender.Location = new System.Drawing.Point(816, 252);
             this.lblGender.Name = "lblGender";
@@ -240,7 +244,7 @@
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1102, 729);
+            this.pictureBox1.Size = new System.Drawing.Size(500, 729);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 20;
             this.pictureBox1.TabStop = false;
@@ -248,7 +252,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.White;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(534, 164);
             this.label2.Name = "label2";
@@ -259,7 +263,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.White;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(814, 164);
             this.label3.Name = "label3";
@@ -270,7 +274,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.White;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(536, 252);
             this.label4.Name = "label4";
@@ -281,18 +285,18 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.White;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(620, 79);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(353, 40);
+            this.label5.Size = new System.Drawing.Size(344, 39);
             this.label5.TabIndex = 24;
             this.label5.Text = "Personal Information";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.White;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(536, 342);
             this.label6.Name = "label6";
@@ -303,7 +307,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.White;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(816, 342);
             this.label1.Name = "label1";
@@ -314,7 +318,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.BackColor = System.Drawing.Color.White;
+            this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(534, 436);
             this.label7.Name = "label7";
@@ -339,13 +343,42 @@
             this.btnLogin.ForeColor = System.Drawing.Color.White;
             this.btnLogin.HoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.btnLogin.Image = ((System.Drawing.Image)(resources.GetObject("btnLogin.Image")));
-            this.btnLogin.Location = new System.Drawing.Point(132, 496);
+            this.btnLogin.Location = new System.Drawing.Point(147, 497);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(205, 52);
+            this.btnLogin.Size = new System.Drawing.Size(203, 50);
             this.btnLogin.TabIndex = 28;
             this.btnLogin.Text = "   Go to Login ";
             this.btnLogin.UseTransparentBackground = true;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            // 
+            // guna2Elipse1
+            // 
+            this.guna2Elipse1.BorderRadius = 10;
+            this.guna2Elipse1.TargetControl = this;
+            // 
+            // btnMinimize
+            // 
+            this.btnMinimize.AutoSize = true;
+            this.btnMinimize.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMinimize.ForeColor = System.Drawing.Color.Maroon;
+            this.btnMinimize.Location = new System.Drawing.Point(1024, 1);
+            this.btnMinimize.Name = "btnMinimize";
+            this.btnMinimize.Size = new System.Drawing.Size(33, 29);
+            this.btnMinimize.TabIndex = 40;
+            this.btnMinimize.Text = "🗕";
+            this.btnMinimize.Click += new System.EventHandler(this.btnMinimize_Click);
+            // 
+            // btnClose
+            // 
+            this.btnClose.AutoSize = true;
+            this.btnClose.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.ForeColor = System.Drawing.Color.Maroon;
+            this.btnClose.Location = new System.Drawing.Point(1062, 9);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(28, 29);
+            this.btnClose.TabIndex = 39;
+            this.btnClose.Text = "×";
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // Registration
             // 
@@ -353,6 +386,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1102, 729);
+            this.Controls.Add(this.btnMinimize);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label1);
@@ -403,5 +438,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label7;
         private Guna.UI2.WinForms.Guna2Button btnLogin;
+        private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
+        private System.Windows.Forms.Label btnMinimize;
+        private System.Windows.Forms.Label btnClose;
     }
 }
