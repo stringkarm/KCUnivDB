@@ -21,8 +21,7 @@ namespace KCUnivDB
 
         string connectionString = @"Data Source = canasa\SQLEXPRESS;
         Initial catalog = KCUnivDB; Integrated Security = true";
-        private string 
-            HashPassword(string plainPassword)
+        private static string HashPassword(string plainPassword)
         {
             using (SHA256 sha256 = SHA256.Create())
             {
@@ -38,7 +37,7 @@ namespace KCUnivDB
         }
 
 
-      
+
         private void lblForgotPassword_Click(object sender, EventArgs e)
         {
             ForgotPassword forgotPassForm = new ForgotPassword();
@@ -76,33 +75,29 @@ namespace KCUnivDB
 
         private void btnLogins_Click(object sender, EventArgs e)
         {
-            // 1. Get the plain text password from the textbox.
-            string plainPassword = txtPassword.Text;
+            // Trim any leading or trailing spaces from the textboxes.
+            string username = txtUsername.Text.Trim();
+            string plainPassword = txtPassword.Text.Trim();
 
-            // 2. Hash the plain text password.
-            // This is the CRUCIAL step. The database must contain this hashed value.
+            // Hash the plain text password.
             string hashedPassword = HashPassword(plainPassword);
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // 3. Set up the SQL command to execute the stored procedure.
                 SqlCommand cmd = new SqlCommand("Login_SP", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                // 4. Add the username and the *hashed* password as parameters.
-                cmd.Parameters.AddWithValue("@username", txtUsername.Text);
+                // Pass the trimmed username and hashed password to the stored procedure.
+                cmd.Parameters.AddWithValue("@username", username);
                 cmd.Parameters.AddWithValue("@password", hashedPassword);
 
                 try
                 {
-                    // 5. Open the connection and execute the command.
                     connection.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
 
-                    // 6. Check if the reader found a matching user.
                     if (reader.Read())
                     {
-                        // The user was found. Now check their status and role.
                         string status = reader["Status"].ToString();
 
                         if (status != "Active")
@@ -112,10 +107,8 @@ namespace KCUnivDB
                             return;
                         }
 
-                        // Get the user's role ID.
                         int roleId = Convert.ToInt32(reader["RoleID"]);
 
-                        // Redirect the user based on their role.
                         if (roleId == 1) // Admin
                         {
                             MessageBox.Show("Login Successful! Welcome, Admin.");
@@ -137,6 +130,7 @@ namespace KCUnivDB
                             StudentDashboard studentDash = new StudentDashboard();
                             studentDash.Show();
                         }
+                        
                         else
                         {
                             MessageBox.Show("Unknown user role. Please contact support.");
@@ -145,7 +139,6 @@ namespace KCUnivDB
                     }
                     else
                     {
-                        // The reader returned no rows, which means no matching username/password pair was found.
                         MessageBox.Show("Login failed. Invalid username or password.");
                     }
                 }
@@ -158,7 +151,6 @@ namespace KCUnivDB
                     MessageBox.Show("An unexpected error occurred: " + ex.Message);
                 }
             }
-
 
         }
 

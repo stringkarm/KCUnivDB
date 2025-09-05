@@ -34,7 +34,7 @@
             this.txtPassword = new Guna.UI2.WinForms.Guna2TextBox();
             this.btnLogin = new Guna.UI2.WinForms.Guna2Button();
             this.lblForgotPassword = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblForgotPass = new System.Windows.Forms.Label();
             this.btnLogins = new Guna.UI2.WinForms.Guna2Button();
             this.btnRegister = new Guna.UI2.WinForms.Guna2Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -116,7 +116,6 @@
             this.btnLogin.TabIndex = 2;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseTransparentBackground = true;
-           
             // 
             // lblForgotPassword
             // 
@@ -129,17 +128,17 @@
             this.lblForgotPassword.Text = "Forgot Password";
             this.lblForgotPassword.Click += new System.EventHandler(this.lblForgotPassword_Click);
             // 
-            // label1
+            // lblForgotPass
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(853, 401);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(146, 21);
-            this.label1.TabIndex = 26;
-            this.label1.Text = "Forgot Password";
+            this.lblForgotPass.AutoSize = true;
+            this.lblForgotPass.BackColor = System.Drawing.Color.Transparent;
+            this.lblForgotPass.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblForgotPass.ForeColor = System.Drawing.Color.White;
+            this.lblForgotPass.Location = new System.Drawing.Point(853, 401);
+            this.lblForgotPass.Name = "lblForgotPass";
+            this.lblForgotPass.Size = new System.Drawing.Size(146, 21);
+            this.lblForgotPass.TabIndex = 26;
+            this.lblForgotPass.Text = "Forgot Password";
             // 
             // btnLogins
             // 
@@ -295,7 +294,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnRegister);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblForgotPass);
             this.Controls.Add(this.btnLogins);
             this.Controls.Add(this.lblForgotPassword);
             this.Controls.Add(this.btnLogin);
@@ -319,7 +318,7 @@
         private Guna.UI2.WinForms.Guna2TextBox txtPassword;
         private Guna.UI2.WinForms.Guna2Button btnLogin;
         private System.Windows.Forms.Label lblForgotPassword;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblForgotPass;
         private Guna.UI2.WinForms.Guna2Button btnLogins;
         private Guna.UI2.WinForms.Guna2Button btnRegister;
         private System.Windows.Forms.Label label2;
