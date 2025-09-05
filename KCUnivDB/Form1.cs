@@ -21,92 +21,8 @@ namespace KCUnivDB
 
         string connectionString = @"Data Source = canasa\SQLEXPRESS;
         Initial catalog = KCUnivDB; Integrated Security = true";
-        private void btnLogin_Click(object sender, EventArgs e)
-        {
-
-            string plainPassword = txtPassword.Text;
-            // Hash the plain text password before sending it to the database
-            string hashedPassword = HashPassword(plainPassword);
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand("Login_SP", connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-
-                cmd.Parameters.AddWithValue("@username", txtUsername.Text);
-                cmd.Parameters.AddWithValue("@password", hashedPassword);
-
-                try
-                {
-                    connection.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    if (reader.Read())
-                    {
-
-                        string result = reader["Result"].ToString();
-                        int userId = Convert.ToInt32(reader["UserID"]);
-                        int profileId = Convert.ToInt32(reader["ProfileID"]);
-                        int roleId = Convert.ToInt32(reader["RoleID"]);
-                        string status = reader["Status"].ToString();
-
-                        // Check if the user's status is "Active"
-                        if (status != "Active")
-                        {
-                            // Updated message as requested
-                            MessageBox.Show("Your account is pending approval. Please wait for the admin to approve your account.");
-                            this.Show();
-                            return;
-                        }
-
-                        MessageBox.Show(result);    
-                        this.Hide();
-
-                        if (roleId == 1)
-                        {
-
-                            AdminDashboard adminDash = new AdminDashboard();
-                            adminDash.Show();
-                        }
-                        else if (roleId == 2)
-                        {
-
-                            InstructorDashboard teacherDash = new InstructorDashboard();
-                            teacherDash.Show();
-                        }
-                        else if (roleId == 3)
-                        {
-
-                            StudentDashboard studentDash = new StudentDashboard();
-                            studentDash.Show();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Unknown user role. Please contact support.");
-                            this.Show();
-                        }
-                    }
-                    else
-                    {
-                        // The login failed because the reader returned no rows.
-                        MessageBox.Show("Login failed or no response from server. Please try again.");
-                    }
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("Database error: " + ex.Message + "\n" + ex.Number);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("An unexpected error occurred: " + ex.Message);
-                }
-            }
-        
-
-        }
-
-        private string HashPassword(string plainPassword)
+        private string 
+            HashPassword(string plainPassword)
         {
             using (SHA256 sha256 = SHA256.Create())
             {
@@ -129,15 +45,6 @@ namespace KCUnivDB
             forgotPassForm.Show();
             this.Hide();
         }
-
-        private void guna2Button2_Click(object sender, EventArgs e)
-        {
-            Registration register = new Registration();
-            this.Hide();
-            register.Show();
-        }
-
-        
 
         private void btnEyesOn_Click(object sender, EventArgs e)
         {
@@ -165,6 +72,101 @@ namespace KCUnivDB
         private void btnClose_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void btnLogins_Click(object sender, EventArgs e)
+        {
+            // 1. Get the plain text password from the textbox.
+            string plainPassword = txtPassword.Text;
+
+            // 2. Hash the plain text password.
+            // This is the CRUCIAL step. The database must contain this hashed value.
+            string hashedPassword = HashPassword(plainPassword);
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // 3. Set up the SQL command to execute the stored procedure.
+                SqlCommand cmd = new SqlCommand("Login_SP", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // 4. Add the username and the *hashed* password as parameters.
+                cmd.Parameters.AddWithValue("@username", txtUsername.Text);
+                cmd.Parameters.AddWithValue("@password", hashedPassword);
+
+                try
+                {
+                    // 5. Open the connection and execute the command.
+                    connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    // 6. Check if the reader found a matching user.
+                    if (reader.Read())
+                    {
+                        // The user was found. Now check their status and role.
+                        string status = reader["Status"].ToString();
+
+                        if (status != "Active")
+                        {
+                            MessageBox.Show("Your account is pending approval. Please wait for the admin to approve your account.");
+                            this.Show();
+                            return;
+                        }
+
+                        // Get the user's role ID.
+                        int roleId = Convert.ToInt32(reader["RoleID"]);
+
+                        // Redirect the user based on their role.
+                        if (roleId == 1) // Admin
+                        {
+                            MessageBox.Show("Login Successful! Welcome, Admin.");
+                            this.Hide();
+                            AdminDashboard adminDash = new AdminDashboard();
+                            adminDash.Show();
+                        }
+                        else if (roleId == 2) // Instructor
+                        {
+                            MessageBox.Show("Login Successful! Welcome, Instructor.");
+                            this.Hide();
+                            InstructorDashboard teacherDash = new InstructorDashboard();
+                            teacherDash.Show();
+                        }
+                        else if (roleId == 3) // Student
+                        {
+                            MessageBox.Show("Login Successful! Welcome, Student.");
+                            this.Hide();
+                            StudentDashboard studentDash = new StudentDashboard();
+                            studentDash.Show();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Unknown user role. Please contact support.");
+                            this.Show();
+                        }
+                    }
+                    else
+                    {
+                        // The reader returned no rows, which means no matching username/password pair was found.
+                        MessageBox.Show("Login failed. Invalid username or password.");
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("Database error: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An unexpected error occurred: " + ex.Message);
+                }
+            }
+
+
+        }
+
+        private void btnRegister_Click(object sender, EventArgs e)
+        {
+            Registration register = new Registration();
+            register.Show();
+            this.Hide();
         }
     }
 }
