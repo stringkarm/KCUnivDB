@@ -1,6 +1,6 @@
 ﻿namespace KCUnivDB
 {
-    partial class AdminDashboard
+    partial class AdminSubjects
     {
         /// <summary>
         /// Required designer variable.
@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminDashboard));
-            this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
-            this.sidebarTimer = new System.Windows.Forms.Timer(this.components);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminSubjects));
+            this.btnClose = new System.Windows.Forms.Label();
+            this.btnMinimize = new System.Windows.Forms.Label();
+            this.guna2Shapes1 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.label2 = new System.Windows.Forms.Label();
             this.sidebar = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,27 +44,60 @@
             this.btnSubjects = new Guna.UI2.WinForms.Guna2Button();
             this.btnReports = new Guna.UI2.WinForms.Guna2Button();
             this.btnLogs = new Guna.UI2.WinForms.Guna2Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.guna2Shapes1 = new Guna.UI2.WinForms.Guna2Shapes();
-            this.btnClose = new System.Windows.Forms.Label();
-            this.btnMinimize = new System.Windows.Forms.Label();
-            this.guna2CirclePictureBox1 = new Guna.UI2.WinForms.Guna2CirclePictureBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.guna2CirclePictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // guna2Elipse1
+            // btnClose
             // 
-            this.guna2Elipse1.BorderRadius = 10;
-            this.guna2Elipse1.TargetControl = this;
+            this.btnClose.AutoSize = true;
+            this.btnClose.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.ForeColor = System.Drawing.Color.Maroon;
+            this.btnClose.Location = new System.Drawing.Point(1056, 9);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(28, 29);
+            this.btnClose.TabIndex = 55;
+            this.btnClose.Text = "×";
             // 
-            // sidebarTimer
+            // btnMinimize
             // 
-            this.sidebarTimer.Interval = 10;
+            this.btnMinimize.AutoSize = true;
+            this.btnMinimize.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMinimize.ForeColor = System.Drawing.Color.Maroon;
+            this.btnMinimize.Location = new System.Drawing.Point(1019, 1);
+            this.btnMinimize.Name = "btnMinimize";
+            this.btnMinimize.Size = new System.Drawing.Size(33, 29);
+            this.btnMinimize.TabIndex = 56;
+            this.btnMinimize.Text = "🗕";
+            // 
+            // guna2Shapes1
+            // 
+            this.guna2Shapes1.BorderThickness = 1;
+            this.guna2Shapes1.FillColor = System.Drawing.Color.Silver;
+            this.guna2Shapes1.LineThickness = 2;
+            this.guna2Shapes1.Location = new System.Drawing.Point(269, 63);
+            this.guna2Shapes1.Name = "guna2Shapes1";
+            this.guna2Shapes1.PolygonSkip = 1;
+            this.guna2Shapes1.Rotate = 0F;
+            this.guna2Shapes1.RoundedRadius = 10;
+            this.guna2Shapes1.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
+            this.guna2Shapes1.Size = new System.Drawing.Size(815, 17);
+            this.guna2Shapes1.TabIndex = 54;
+            this.guna2Shapes1.Text = "guna2Shapes1";
+            this.guna2Shapes1.Zoom = 100;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Maroon;
+            this.label2.Location = new System.Drawing.Point(262, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(161, 39);
+            this.label2.TabIndex = 53;
+            this.label2.Text = "Subjects ";
             // 
             // sidebar
             // 
@@ -81,7 +115,7 @@
             this.sidebar.MinimumSize = new System.Drawing.Size(109, 729);
             this.sidebar.Name = "sidebar";
             this.sidebar.Size = new System.Drawing.Size(247, 729);
-            this.sidebar.TabIndex = 3;
+            this.sidebar.TabIndex = 52;
             // 
             // panel2
             // 
@@ -125,7 +159,7 @@
             // 
             // btnDashboard
             // 
-            this.btnDashboard.BackColor = System.Drawing.Color.Brown;
+            this.btnDashboard.BackColor = System.Drawing.Color.Maroon;
             this.btnDashboard.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnDashboard.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnDashboard.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -165,7 +199,6 @@
             this.btnApproval.TabIndex = 3;
             this.btnApproval.Text = "       Approval";
             this.btnApproval.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnApproval.Click += new System.EventHandler(this.btnApproval_Click);
             // 
             // btnTeachers
             // 
@@ -190,6 +223,7 @@
             // 
             // btnSubjects
             // 
+            this.btnSubjects.BackColor = System.Drawing.Color.Brown;
             this.btnSubjects.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnSubjects.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnSubjects.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -251,109 +285,35 @@
             this.btnLogs.Text = "       Logs";
             this.btnLogs.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Maroon;
-            this.label2.Location = new System.Drawing.Point(262, 14);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(309, 39);
-            this.label2.TabIndex = 46;
-            this.label2.Text = "Admin Dashboard";
-            // 
-            // guna2Shapes1
-            // 
-            this.guna2Shapes1.BorderThickness = 1;
-            this.guna2Shapes1.FillColor = System.Drawing.Color.Silver;
-            this.guna2Shapes1.LineThickness = 2;
-            this.guna2Shapes1.Location = new System.Drawing.Point(269, 63);
-            this.guna2Shapes1.Name = "guna2Shapes1";
-            this.guna2Shapes1.PolygonSkip = 1;
-            this.guna2Shapes1.Rotate = 0F;
-            this.guna2Shapes1.RoundedRadius = 10;
-            this.guna2Shapes1.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
-            this.guna2Shapes1.Size = new System.Drawing.Size(815, 17);
-            this.guna2Shapes1.TabIndex = 47;
-            this.guna2Shapes1.Text = "guna2Shapes1";
-            this.guna2Shapes1.Zoom = 100;
-            // 
-            // btnClose
-            // 
-            this.btnClose.AutoSize = true;
-            this.btnClose.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.ForeColor = System.Drawing.Color.Maroon;
-            this.btnClose.Location = new System.Drawing.Point(1056, 9);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(28, 29);
-            this.btnClose.TabIndex = 48;
-            this.btnClose.Text = "×";
-            // 
-            // btnMinimize
-            // 
-            this.btnMinimize.AutoSize = true;
-            this.btnMinimize.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMinimize.ForeColor = System.Drawing.Color.Maroon;
-            this.btnMinimize.Location = new System.Drawing.Point(1019, 1);
-            this.btnMinimize.Name = "btnMinimize";
-            this.btnMinimize.Size = new System.Drawing.Size(33, 29);
-            this.btnMinimize.TabIndex = 49;
-            this.btnMinimize.Text = "🗕";
-            // 
-            // guna2CirclePictureBox1
-            // 
-            this.guna2CirclePictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("guna2CirclePictureBox1.Image")));
-            this.guna2CirclePictureBox1.ImageRotate = 0F;
-            this.guna2CirclePictureBox1.Location = new System.Drawing.Point(1020, 86);
-            this.guna2CirclePictureBox1.Name = "guna2CirclePictureBox1";
-            this.guna2CirclePictureBox1.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            this.guna2CirclePictureBox1.Size = new System.Drawing.Size(64, 65);
-            this.guna2CirclePictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.guna2CirclePictureBox1.TabIndex = 50;
-            this.guna2CirclePictureBox1.TabStop = false;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Century Gothic", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.Maroon;
-            this.label3.Location = new System.Drawing.Point(779, 99);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(235, 31);
-            this.label3.TabIndex = 51;
-            this.label3.Text = "Welcome, Admin!";
-            // 
-            // AdminDashboard
+            // AdminSubjects
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.guna2CirclePictureBox1);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnMinimize);
             this.Controls.Add(this.guna2Shapes1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.sidebar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "AdminDashboard";
+            this.Name = "AdminSubjects";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "AdminDashboard";
+            this.Text = "AdminSubjects";
             this.sidebar.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).EndInit();
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.guna2CirclePictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
-        private System.Windows.Forms.Timer sidebarTimer;
+        private System.Windows.Forms.Label btnClose;
+        private System.Windows.Forms.Label btnMinimize;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes1;
+        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.FlowLayoutPanel sidebar;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
@@ -365,11 +325,5 @@
         private Guna.UI2.WinForms.Guna2Button btnSubjects;
         private Guna.UI2.WinForms.Guna2Button btnReports;
         private Guna.UI2.WinForms.Guna2Button btnLogs;
-        private System.Windows.Forms.Label label2;
-        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes1;
-        private System.Windows.Forms.Label btnClose;
-        private System.Windows.Forms.Label btnMinimize;
-        private System.Windows.Forms.Label label3;
-        private Guna.UI2.WinForms.Guna2CirclePictureBox guna2CirclePictureBox1;
     }
 }

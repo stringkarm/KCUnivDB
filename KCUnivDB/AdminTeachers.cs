@@ -10,20 +10,11 @@ using System.Windows.Forms;
 
 namespace KCUnivDB
 {
-    public partial class AdminDashboard : Form
+    public partial class AdminTeachers : Form
     {
-        
-
-        public AdminDashboard()
+        public AdminTeachers()
         {
             InitializeComponent();
-        }
-
-        private void btnApproval_Click(object sender, EventArgs e)
-        {
-            AdminApproval approve = new AdminApproval();
-            approve.Show();
-            this.Hide();
         }
     }
 }
