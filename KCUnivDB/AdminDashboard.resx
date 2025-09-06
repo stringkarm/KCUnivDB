@@ -231,6 +231,9 @@
         VbJkSq3pJJAc50m/dv8A9rvReRtzSSWjTf6c7WCSSSW055//2Q==
 </value>
   </data>
+  <metadata name="sidebarTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>161, 17</value>
+  </metadata>
   <data name="menubutton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABGdBTUEAALGPC/xhBQAAAExJREFUSEvt
@@ -291,7 +294,4 @@
         ANZPfz0UUKus4y2KQmpbpH4416TjQy5D8nV4yC2cek1baf7QfsEbx2gm+k3gWjkAAAAASUVORK5CYII=
 </value>
   </data>
-  <metadata name="sidebarTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>161, 17</value>
-  </metadata>
 </root>

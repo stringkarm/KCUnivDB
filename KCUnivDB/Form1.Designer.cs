@@ -126,7 +126,6 @@
             this.lblForgotPassword.Size = new System.Drawing.Size(109, 16);
             this.lblForgotPassword.TabIndex = 5;
             this.lblForgotPassword.Text = "Forgot Password";
-            this.lblForgotPassword.Click += new System.EventHandler(this.lblForgotPassword_Click);
             // 
             // lblForgotPass
             // 
@@ -139,6 +138,7 @@
             this.lblForgotPass.Size = new System.Drawing.Size(146, 21);
             this.lblForgotPass.TabIndex = 26;
             this.lblForgotPass.Text = "Forgot Password";
+            this.lblForgotPass.Click += new System.EventHandler(this.lblForgotPass_Click);
             // 
             // btnLogins
             // 

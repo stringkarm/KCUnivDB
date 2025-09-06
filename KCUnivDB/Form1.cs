@@ -37,14 +37,6 @@ namespace KCUnivDB
         }
 
 
-
-        private void lblForgotPassword_Click(object sender, EventArgs e)
-        {
-            ForgotPassword forgotPassForm = new ForgotPassword();
-            forgotPassForm.Show();
-            this.Hide();
-        }
-
         private void btnEyesOn_Click(object sender, EventArgs e)
         {
             if (txtPassword.PasswordChar == '•')
@@ -158,6 +150,13 @@ namespace KCUnivDB
         {
             Registration register = new Registration();
             register.Show();
+            this.Hide();
+        }
+
+        private void lblForgotPass_Click(object sender, EventArgs e)
+        {
+            ForgotEmail forgotPassForm = new ForgotEmail();
+            forgotPassForm.Show();
             this.Hide();
         }
     }
