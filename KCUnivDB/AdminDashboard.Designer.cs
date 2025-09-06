@@ -29,8 +29,33 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminDashboard));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
-            this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
+            this.sidebarTimer = new System.Windows.Forms.Timer(this.components);
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.sidebar = new System.Windows.Forms.FlowLayoutPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.menubutton = new System.Windows.Forms.PictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnDashboard = new Guna.UI2.WinForms.Guna2Button();
+            this.btnApproval = new Guna.UI2.WinForms.Guna2Button();
+            this.btnTeachers = new Guna.UI2.WinForms.Guna2Button();
+            this.btnSubjects = new Guna.UI2.WinForms.Guna2Button();
+            this.btnReports = new Guna.UI2.WinForms.Guna2Button();
+            this.btnLogs = new Guna.UI2.WinForms.Guna2Button();
+            this.btnClose = new System.Windows.Forms.Label();
+            this.btnMinimize = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.guna2Shapes1 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.guna2CirclePictureBox1 = new Guna.UI2.WinForms.Guna2CirclePictureBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.sidebar.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2CirclePictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // guna2Elipse1
@@ -38,24 +63,307 @@
             this.guna2Elipse1.BorderRadius = 10;
             this.guna2Elipse1.TargetControl = this;
             // 
-            // guna2Panel1
+            // sidebarTimer
             // 
-            this.guna2Panel1.BackColor = System.Drawing.Color.Maroon;
-            this.guna2Panel1.Location = new System.Drawing.Point(0, -2);
-            this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(252, 730);
-            this.guna2Panel1.TabIndex = 0;
+            this.sidebarTimer.Interval = 10;
+            this.sidebarTimer.Tick += new System.EventHandler(this.sidebarTimer_Tick);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.label3, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.guna2CirclePictureBox1, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.guna2Shapes1, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.btnClose, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.btnMinimize, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.sidebar, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 1, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 4;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1102, 729);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // sidebar
+            // 
+            this.sidebar.BackColor = System.Drawing.Color.Maroon;
+            this.sidebar.Controls.Add(this.panel2);
+            this.sidebar.Controls.Add(this.panel1);
+            this.sidebar.Controls.Add(this.btnApproval);
+            this.sidebar.Controls.Add(this.btnTeachers);
+            this.sidebar.Controls.Add(this.btnSubjects);
+            this.sidebar.Controls.Add(this.btnReports);
+            this.sidebar.Controls.Add(this.btnLogs);
+            this.sidebar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.sidebar.Location = new System.Drawing.Point(3, 3);
+            this.sidebar.MaximumSize = new System.Drawing.Size(269, 729);
+            this.sidebar.MinimumSize = new System.Drawing.Size(109, 729);
+            this.sidebar.Name = "sidebar";
+            this.sidebar.Size = new System.Drawing.Size(109, 729);
+            this.sidebar.TabIndex = 3;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.label1);
+            this.panel2.Controls.Add(this.menubutton);
+            this.panel2.Location = new System.Drawing.Point(3, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(266, 122);
+            this.panel2.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(111, 51);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 23);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Menu";
+            // 
+            // menubutton
+            // 
+            this.menubutton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.menubutton.Image = ((System.Drawing.Image)(resources.GetObject("menubutton.Image")));
+            this.menubutton.Location = new System.Drawing.Point(37, 46);
+            this.menubutton.Name = "menubutton";
+            this.menubutton.Size = new System.Drawing.Size(34, 31);
+            this.menubutton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.menubutton.TabIndex = 2;
+            this.menubutton.TabStop = false;
+            this.menubutton.Click += new System.EventHandler(this.menubutton_Click_1);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.btnDashboard);
+            this.panel1.Location = new System.Drawing.Point(3, 131);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(266, 63);
+            this.panel1.TabIndex = 0;
+            // 
+            // btnDashboard
+            // 
+            this.btnDashboard.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnDashboard.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnDashboard.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnDashboard.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnDashboard.FillColor = System.Drawing.Color.Transparent;
+            this.btnDashboard.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.btnDashboard.ForeColor = System.Drawing.Color.White;
+            this.btnDashboard.Image = ((System.Drawing.Image)(resources.GetObject("btnDashboard.Image")));
+            this.btnDashboard.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDashboard.ImageOffset = new System.Drawing.Point(20, 0);
+            this.btnDashboard.ImageSize = new System.Drawing.Size(25, 25);
+            this.btnDashboard.Location = new System.Drawing.Point(0, 0);
+            this.btnDashboard.Name = "btnDashboard";
+            this.btnDashboard.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnDashboard.Size = new System.Drawing.Size(266, 63);
+            this.btnDashboard.TabIndex = 2;
+            this.btnDashboard.Text = "       Dashboard";
+            this.btnDashboard.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnApproval
+            // 
+            this.btnApproval.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnApproval.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnApproval.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnApproval.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnApproval.FillColor = System.Drawing.Color.Transparent;
+            this.btnApproval.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.btnApproval.ForeColor = System.Drawing.Color.White;
+            this.btnApproval.Image = ((System.Drawing.Image)(resources.GetObject("btnApproval.Image")));
+            this.btnApproval.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnApproval.ImageOffset = new System.Drawing.Point(20, 0);
+            this.btnApproval.ImageSize = new System.Drawing.Size(25, 25);
+            this.btnApproval.Location = new System.Drawing.Point(3, 200);
+            this.btnApproval.Name = "btnApproval";
+            this.btnApproval.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnApproval.Size = new System.Drawing.Size(266, 63);
+            this.btnApproval.TabIndex = 3;
+            this.btnApproval.Text = "       Approval";
+            this.btnApproval.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnTeachers
+            // 
+            this.btnTeachers.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnTeachers.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnTeachers.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnTeachers.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnTeachers.FillColor = System.Drawing.Color.Transparent;
+            this.btnTeachers.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.btnTeachers.ForeColor = System.Drawing.Color.White;
+            this.btnTeachers.Image = ((System.Drawing.Image)(resources.GetObject("btnTeachers.Image")));
+            this.btnTeachers.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnTeachers.ImageOffset = new System.Drawing.Point(20, 0);
+            this.btnTeachers.ImageSize = new System.Drawing.Size(25, 25);
+            this.btnTeachers.Location = new System.Drawing.Point(3, 269);
+            this.btnTeachers.Name = "btnTeachers";
+            this.btnTeachers.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnTeachers.Size = new System.Drawing.Size(266, 63);
+            this.btnTeachers.TabIndex = 4;
+            this.btnTeachers.Text = "       Teacher";
+            this.btnTeachers.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnSubjects
+            // 
+            this.btnSubjects.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSubjects.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnSubjects.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnSubjects.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSubjects.FillColor = System.Drawing.Color.Transparent;
+            this.btnSubjects.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.btnSubjects.ForeColor = System.Drawing.Color.White;
+            this.btnSubjects.Image = ((System.Drawing.Image)(resources.GetObject("btnSubjects.Image")));
+            this.btnSubjects.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnSubjects.ImageOffset = new System.Drawing.Point(20, 0);
+            this.btnSubjects.ImageSize = new System.Drawing.Size(25, 25);
+            this.btnSubjects.Location = new System.Drawing.Point(3, 338);
+            this.btnSubjects.Name = "btnSubjects";
+            this.btnSubjects.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnSubjects.Size = new System.Drawing.Size(266, 63);
+            this.btnSubjects.TabIndex = 5;
+            this.btnSubjects.Text = "       Subjects";
+            this.btnSubjects.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnReports
+            // 
+            this.btnReports.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnReports.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnReports.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnReports.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnReports.FillColor = System.Drawing.Color.Transparent;
+            this.btnReports.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.btnReports.ForeColor = System.Drawing.Color.White;
+            this.btnReports.Image = ((System.Drawing.Image)(resources.GetObject("btnReports.Image")));
+            this.btnReports.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnReports.ImageOffset = new System.Drawing.Point(20, 0);
+            this.btnReports.ImageSize = new System.Drawing.Size(25, 25);
+            this.btnReports.Location = new System.Drawing.Point(3, 407);
+            this.btnReports.Name = "btnReports";
+            this.btnReports.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnReports.Size = new System.Drawing.Size(266, 63);
+            this.btnReports.TabIndex = 6;
+            this.btnReports.Text = "       Reports";
+            this.btnReports.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnLogs
+            // 
+            this.btnLogs.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogs.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnLogs.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnLogs.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnLogs.FillColor = System.Drawing.Color.Transparent;
+            this.btnLogs.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.btnLogs.ForeColor = System.Drawing.Color.White;
+            this.btnLogs.Image = ((System.Drawing.Image)(resources.GetObject("btnLogs.Image")));
+            this.btnLogs.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLogs.ImageOffset = new System.Drawing.Point(20, 0);
+            this.btnLogs.ImageSize = new System.Drawing.Size(25, 25);
+            this.btnLogs.Location = new System.Drawing.Point(3, 476);
+            this.btnLogs.Name = "btnLogs";
+            this.btnLogs.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
+            this.btnLogs.Size = new System.Drawing.Size(266, 63);
+            this.btnLogs.TabIndex = 7;
+            this.btnLogs.Text = "       Logs";
+            this.btnLogs.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            // 
+            // btnClose
+            // 
+            this.btnClose.AutoSize = true;
+            this.btnClose.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.ForeColor = System.Drawing.Color.Maroon;
+            this.btnClose.Location = new System.Drawing.Point(1059, 9);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(28, 29);
+            this.btnClose.TabIndex = 47;
+            this.btnClose.Text = "×";
+            // 
+            // btnMinimize
+            // 
+            this.btnMinimize.AutoSize = true;
+            this.btnMinimize.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMinimize.ForeColor = System.Drawing.Color.Maroon;
+            this.btnMinimize.Location = new System.Drawing.Point(1022, 1);
+            this.btnMinimize.Name = "btnMinimize";
+            this.btnMinimize.Size = new System.Drawing.Size(33, 29);
+            this.btnMinimize.TabIndex = 48;
+            this.btnMinimize.Text = "🗕";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Maroon;
+            this.label2.Location = new System.Drawing.Point(120, 21);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(314, 40);
+            this.label2.TabIndex = 46;
+            this.label2.Text = "Admin Dashboard";
+            // 
+            // guna2Shapes1
+            // 
+            this.guna2Shapes1.BorderThickness = 1;
+            this.guna2Shapes1.FillColor = System.Drawing.Color.Silver;
+            this.guna2Shapes1.LineThickness = 2;
+            this.guna2Shapes1.Location = new System.Drawing.Point(127, 69);
+            this.guna2Shapes1.Name = "guna2Shapes1";
+            this.guna2Shapes1.PolygonSkip = 1;
+            this.guna2Shapes1.Rotate = 0F;
+            this.guna2Shapes1.RoundedRadius = 10;
+            this.guna2Shapes1.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
+            this.guna2Shapes1.Size = new System.Drawing.Size(954, 24);
+            this.guna2Shapes1.TabIndex = 49;
+            this.guna2Shapes1.Text = "guna2Shapes1";
+            this.guna2Shapes1.Zoom = 100;
+            // 
+            // guna2CirclePictureBox1
+            // 
+            this.guna2CirclePictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("guna2CirclePictureBox1.Image")));
+            this.guna2CirclePictureBox1.ImageRotate = 0F;
+            this.guna2CirclePictureBox1.Location = new System.Drawing.Point(1017, 95);
+            this.guna2CirclePictureBox1.Name = "guna2CirclePictureBox1";
+            this.guna2CirclePictureBox1.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            this.guna2CirclePictureBox1.Size = new System.Drawing.Size(64, 65);
+            this.guna2CirclePictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.guna2CirclePictureBox1.TabIndex = 50;
+            this.guna2CirclePictureBox1.TabStop = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Font = new System.Drawing.Font("Century Gothic", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.Maroon;
+            this.label3.Location = new System.Drawing.Point(784, 105);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(314, 40);
+            this.label3.TabIndex = 51;
+            this.label3.Text = "Welcome, Admin!";
             // 
             // AdminDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
-            this.Controls.Add(this.guna2Panel1);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AdminDashboard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AdminDashboard";
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.sidebar.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.menubutton)).EndInit();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.guna2CirclePictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -63,6 +371,24 @@
         #endregion
 
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
-        private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
+        private System.Windows.Forms.Timer sidebarTimer;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel sidebar;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox menubutton;
+        private System.Windows.Forms.Panel panel1;
+        private Guna.UI2.WinForms.Guna2Button btnDashboard;
+        private Guna.UI2.WinForms.Guna2Button btnApproval;
+        private Guna.UI2.WinForms.Guna2Button btnTeachers;
+        private Guna.UI2.WinForms.Guna2Button btnSubjects;
+        private Guna.UI2.WinForms.Guna2Button btnReports;
+        private Guna.UI2.WinForms.Guna2Button btnLogs;
+        private System.Windows.Forms.Label btnClose;
+        private System.Windows.Forms.Label btnMinimize;
+        private System.Windows.Forms.Label label2;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes1;
+        private System.Windows.Forms.Label label3;
+        private Guna.UI2.WinForms.Guna2CirclePictureBox guna2CirclePictureBox1;
     }
 }
