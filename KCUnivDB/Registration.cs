@@ -86,7 +86,7 @@ namespace KCUnivDB
                     // Since we are not getting any output parameters back, we can just execute the command
                     cmd.ExecuteNonQuery();
 
-                    MessageBox.Show("Registration Successful!" + "\n Username: " + generatedUserID+ "\n Password: " + generatedPassword + "\n Paghuwat, i-approved pakas admin.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Registration Successful!" + "\n Username: " + generatedUserID + "\n Password: " + generatedPassword + "\n Paghuwat, i-approved pakas admin.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
             }

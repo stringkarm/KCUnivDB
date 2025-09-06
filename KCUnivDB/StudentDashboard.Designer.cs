@@ -37,8 +37,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnDashboard = new Guna.UI2.WinForms.Guna2Button();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.menubutton = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.menubutton = new System.Windows.Forms.PictureBox();
             this.sidebar = new System.Windows.Forms.FlowLayoutPanel();
             this.btnMinimize = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Label();
@@ -195,17 +195,6 @@
             this.panel2.Size = new System.Drawing.Size(266, 122);
             this.panel2.TabIndex = 1;
             // 
-            // menubutton
-            // 
-            this.menubutton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.menubutton.Image = ((System.Drawing.Image)(resources.GetObject("menubutton.Image")));
-            this.menubutton.Location = new System.Drawing.Point(37, 46);
-            this.menubutton.Name = "menubutton";
-            this.menubutton.Size = new System.Drawing.Size(34, 31);
-            this.menubutton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.menubutton.TabIndex = 2;
-            this.menubutton.TabStop = false;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -217,6 +206,17 @@
             this.label1.Size = new System.Drawing.Size(65, 23);
             this.label1.TabIndex = 2;
             this.label1.Text = "Menu";
+            // 
+            // menubutton
+            // 
+            this.menubutton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.menubutton.Image = ((System.Drawing.Image)(resources.GetObject("menubutton.Image")));
+            this.menubutton.Location = new System.Drawing.Point(37, 46);
+            this.menubutton.Name = "menubutton";
+            this.menubutton.Size = new System.Drawing.Size(34, 31);
+            this.menubutton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.menubutton.TabIndex = 2;
+            this.menubutton.TabStop = false;
             // 
             // sidebar
             // 
@@ -233,7 +233,7 @@
             this.sidebar.MaximumSize = new System.Drawing.Size(269, 729);
             this.sidebar.MinimumSize = new System.Drawing.Size(109, 729);
             this.sidebar.Name = "sidebar";
-            this.sidebar.Size = new System.Drawing.Size(109, 729);
+            this.sidebar.Size = new System.Drawing.Size(269, 729);
             this.sidebar.TabIndex = 2;
             // 
             // btnMinimize
@@ -241,7 +241,7 @@
             this.btnMinimize.AutoSize = true;
             this.btnMinimize.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMinimize.ForeColor = System.Drawing.Color.Maroon;
-            this.btnMinimize.Location = new System.Drawing.Point(515, 489);
+            this.btnMinimize.Location = new System.Drawing.Point(1025, 1);
             this.btnMinimize.Name = "btnMinimize";
             this.btnMinimize.Size = new System.Drawing.Size(33, 29);
             this.btnMinimize.TabIndex = 44;
@@ -252,7 +252,7 @@
             this.btnClose.AutoSize = true;
             this.btnClose.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.ForeColor = System.Drawing.Color.Maroon;
-            this.btnClose.Location = new System.Drawing.Point(554, 489);
+            this.btnClose.Location = new System.Drawing.Point(1062, 9);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(28, 29);
             this.btnClose.TabIndex = 43;
@@ -263,9 +263,9 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Maroon;
-            this.label2.Location = new System.Drawing.Point(268, 292);
+            this.label2.Location = new System.Drawing.Point(275, 7);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(314, 40);
+            this.label2.Size = new System.Drawing.Size(309, 39);
             this.label2.TabIndex = 45;
             this.label2.Text = "Admin Dashboard";
             // 
@@ -274,13 +274,13 @@
             this.guna2Shapes1.BorderThickness = 1;
             this.guna2Shapes1.FillColor = System.Drawing.Color.Gray;
             this.guna2Shapes1.LineThickness = 2;
-            this.guna2Shapes1.Location = new System.Drawing.Point(118, 165);
+            this.guna2Shapes1.Location = new System.Drawing.Point(275, 54);
             this.guna2Shapes1.Name = "guna2Shapes1";
             this.guna2Shapes1.PolygonSkip = 1;
             this.guna2Shapes1.Rotate = 0F;
             this.guna2Shapes1.RoundedRadius = 10;
             this.guna2Shapes1.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
-            this.guna2Shapes1.Size = new System.Drawing.Size(972, 64);
+            this.guna2Shapes1.Size = new System.Drawing.Size(815, 17);
             this.guna2Shapes1.TabIndex = 46;
             this.guna2Shapes1.Text = "guna2Shapes1";
             this.guna2Shapes1.Zoom = 100;
@@ -289,7 +289,7 @@
             // 
             this.guna2CirclePictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("guna2CirclePictureBox1.Image")));
             this.guna2CirclePictureBox1.ImageRotate = 0F;
-            this.guna2CirclePictureBox1.Location = new System.Drawing.Point(874, 344);
+            this.guna2CirclePictureBox1.Location = new System.Drawing.Point(1026, 68);
             this.guna2CirclePictureBox1.Name = "guna2CirclePictureBox1";
             this.guna2CirclePictureBox1.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
             this.guna2CirclePictureBox1.Size = new System.Drawing.Size(64, 65);
