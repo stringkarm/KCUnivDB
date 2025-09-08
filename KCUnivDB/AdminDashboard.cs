@@ -19,7 +19,7 @@ namespace KCUnivDB
         {
             InitializeComponent();
 
-            
+            adminLogout1.Hide();
         }
 
        
@@ -56,6 +56,11 @@ namespace KCUnivDB
             Logs logs = new Logs();
             logs.Show();
             this.Hide();
+        }
+
+        private void guna2CirclePictureBox1_Click(object sender, EventArgs e)
+        {
+            adminLogout1.Show();
         }
     }
 }

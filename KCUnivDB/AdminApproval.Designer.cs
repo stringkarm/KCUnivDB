@@ -29,10 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminApproval));
-            this.btnClose = new System.Windows.Forms.Label();
-            this.btnMinimize = new System.Windows.Forms.Label();
-            this.guna2Shapes1 = new Guna.UI2.WinForms.Guna2Shapes();
-            this.label2 = new System.Windows.Forms.Label();
             this.sidebar = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
@@ -44,18 +40,23 @@
             this.btnSubjects = new Guna.UI2.WinForms.Guna2Button();
             this.btnReports = new Guna.UI2.WinForms.Guna2Button();
             this.btnLogs = new Guna.UI2.WinForms.Guna2Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.guna2Shapes1 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.btnMinimize = new System.Windows.Forms.Label();
+            this.btnClose = new System.Windows.Forms.Label();
             this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.btnSearch = new System.Windows.Forms.PictureBox();
-            this.btnAddStudent = new Guna.UI2.WinForms.Guna2Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.lblTotalActive = new System.Windows.Forms.Label();
             this.lblTotalInactive = new System.Windows.Forms.Label();
-            this.lblTotalPending = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.lblTotalPending = new System.Windows.Forms.Label();
             this.dtgApproval = new System.Windows.Forms.DataGridView();
             this.btnDelete = new Guna.UI2.WinForms.Guna2Button();
             this.btnUpdate = new Guna.UI2.WinForms.Guna2Button();
+            this.btnAddstudent = new Guna.UI2.WinForms.Guna2Button();
+            this.adminRegister1 = new KCUnivDB.AdminRegister();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
@@ -63,55 +64,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgApproval)).BeginInit();
             this.SuspendLayout();
-            // 
-            // btnClose
-            // 
-            this.btnClose.AutoSize = true;
-            this.btnClose.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.ForeColor = System.Drawing.Color.Maroon;
-            this.btnClose.Location = new System.Drawing.Point(1056, 9);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(28, 29);
-            this.btnClose.TabIndex = 55;
-            this.btnClose.Text = "×";
-            // 
-            // btnMinimize
-            // 
-            this.btnMinimize.AutoSize = true;
-            this.btnMinimize.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMinimize.ForeColor = System.Drawing.Color.Maroon;
-            this.btnMinimize.Location = new System.Drawing.Point(1019, 1);
-            this.btnMinimize.Name = "btnMinimize";
-            this.btnMinimize.Size = new System.Drawing.Size(33, 29);
-            this.btnMinimize.TabIndex = 56;
-            this.btnMinimize.Text = "🗕";
-            // 
-            // guna2Shapes1
-            // 
-            this.guna2Shapes1.BorderThickness = 1;
-            this.guna2Shapes1.FillColor = System.Drawing.Color.Silver;
-            this.guna2Shapes1.LineThickness = 2;
-            this.guna2Shapes1.Location = new System.Drawing.Point(269, 63);
-            this.guna2Shapes1.Name = "guna2Shapes1";
-            this.guna2Shapes1.PolygonSkip = 1;
-            this.guna2Shapes1.Rotate = 0F;
-            this.guna2Shapes1.RoundedRadius = 10;
-            this.guna2Shapes1.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
-            this.guna2Shapes1.Size = new System.Drawing.Size(815, 17);
-            this.guna2Shapes1.TabIndex = 54;
-            this.guna2Shapes1.Text = "guna2Shapes1";
-            this.guna2Shapes1.Zoom = 100;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Maroon;
-            this.label2.Location = new System.Drawing.Point(262, 14);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(309, 39);
-            this.label2.TabIndex = 53;
-            this.label2.Text = "Students Approval";
             // 
             // sidebar
             // 
@@ -304,6 +256,55 @@
             this.btnLogs.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnLogs.Click += new System.EventHandler(this.btnLogs_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.Maroon;
+            this.label2.Location = new System.Drawing.Point(262, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(309, 39);
+            this.label2.TabIndex = 53;
+            this.label2.Text = "Students Approval";
+            // 
+            // guna2Shapes1
+            // 
+            this.guna2Shapes1.BorderThickness = 1;
+            this.guna2Shapes1.FillColor = System.Drawing.Color.Silver;
+            this.guna2Shapes1.LineThickness = 2;
+            this.guna2Shapes1.Location = new System.Drawing.Point(269, 63);
+            this.guna2Shapes1.Name = "guna2Shapes1";
+            this.guna2Shapes1.PolygonSkip = 1;
+            this.guna2Shapes1.Rotate = 0F;
+            this.guna2Shapes1.RoundedRadius = 10;
+            this.guna2Shapes1.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
+            this.guna2Shapes1.Size = new System.Drawing.Size(815, 17);
+            this.guna2Shapes1.TabIndex = 54;
+            this.guna2Shapes1.Text = "guna2Shapes1";
+            this.guna2Shapes1.Zoom = 100;
+            // 
+            // btnMinimize
+            // 
+            this.btnMinimize.AutoSize = true;
+            this.btnMinimize.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnMinimize.ForeColor = System.Drawing.Color.Maroon;
+            this.btnMinimize.Location = new System.Drawing.Point(1019, 1);
+            this.btnMinimize.Name = "btnMinimize";
+            this.btnMinimize.Size = new System.Drawing.Size(33, 29);
+            this.btnMinimize.TabIndex = 56;
+            this.btnMinimize.Text = "🗕";
+            // 
+            // btnClose
+            // 
+            this.btnClose.AutoSize = true;
+            this.btnClose.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.ForeColor = System.Drawing.Color.Maroon;
+            this.btnClose.Location = new System.Drawing.Point(1056, 9);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(28, 29);
+            this.btnClose.TabIndex = 55;
+            this.btnClose.Text = "×";
+            // 
             // txtSearch
             // 
             this.txtSearch.Animated = true;
@@ -339,29 +340,6 @@
             this.btnSearch.TabIndex = 3;
             this.btnSearch.TabStop = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // btnAddStudent
-            // 
-            this.btnAddStudent.Animated = true;
-            this.btnAddStudent.BackColor = System.Drawing.Color.Maroon;
-            this.btnAddStudent.BorderRadius = 10;
-            this.btnAddStudent.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddStudent.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnAddStudent.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnAddStudent.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnAddStudent.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnAddStudent.FillColor = System.Drawing.Color.Maroon;
-            this.btnAddStudent.Font = new System.Drawing.Font("Century Gothic", 10.2F);
-            this.btnAddStudent.ForeColor = System.Drawing.Color.White;
-            this.btnAddStudent.Image = ((System.Drawing.Image)(resources.GetObject("btnAddStudent.Image")));
-            this.btnAddStudent.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnAddStudent.Location = new System.Drawing.Point(269, 88);
-            this.btnAddStudent.Name = "btnAddStudent";
-            this.btnAddStudent.Size = new System.Drawing.Size(168, 47);
-            this.btnAddStudent.TabIndex = 59;
-            this.btnAddStudent.Text = "Add Student";
-            this.btnAddStudent.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.btnAddStudent.Click += new System.EventHandler(this.btnAddStudent_Click);
             // 
             // label3
             // 
@@ -407,17 +385,6 @@
             this.lblTotalInactive.TabIndex = 63;
             this.lblTotalInactive.Text = "00";
             // 
-            // lblTotalPending
-            // 
-            this.lblTotalPending.AutoSize = true;
-            this.lblTotalPending.Font = new System.Drawing.Font("Century Gothic", 10F);
-            this.lblTotalPending.ForeColor = System.Drawing.Color.Maroon;
-            this.lblTotalPending.Location = new System.Drawing.Point(482, 231);
-            this.lblTotalPending.Name = "lblTotalPending";
-            this.lblTotalPending.Size = new System.Drawing.Size(28, 21);
-            this.lblTotalPending.TabIndex = 65;
-            this.lblTotalPending.Text = "00";
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -428,6 +395,17 @@
             this.label6.Size = new System.Drawing.Size(205, 21);
             this.label6.TabIndex = 64;
             this.label6.Text = "Total Pending Students:";
+            // 
+            // lblTotalPending
+            // 
+            this.lblTotalPending.AutoSize = true;
+            this.lblTotalPending.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.lblTotalPending.ForeColor = System.Drawing.Color.Maroon;
+            this.lblTotalPending.Location = new System.Drawing.Point(482, 231);
+            this.lblTotalPending.Name = "lblTotalPending";
+            this.lblTotalPending.Size = new System.Drawing.Size(28, 21);
+            this.lblTotalPending.TabIndex = 65;
+            this.lblTotalPending.Text = "00";
             // 
             // dtgApproval
             // 
@@ -481,11 +459,43 @@
             this.btnUpdate.TabIndex = 68;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click_1);
             // 
+            // btnAddstudent
+            // 
+            this.btnAddstudent.Animated = true;
+            this.btnAddstudent.BorderRadius = 10;
+            this.btnAddstudent.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAddstudent.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnAddstudent.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnAddstudent.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnAddstudent.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnAddstudent.FillColor = System.Drawing.Color.Maroon;
+            this.btnAddstudent.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnAddstudent.ForeColor = System.Drawing.Color.White;
+            this.btnAddstudent.Image = ((System.Drawing.Image)(resources.GetObject("btnAddstudent.Image")));
+            this.btnAddstudent.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnAddstudent.ImageSize = new System.Drawing.Size(30, 30);
+            this.btnAddstudent.Location = new System.Drawing.Point(275, 88);
+            this.btnAddstudent.Name = "btnAddstudent";
+            this.btnAddstudent.Size = new System.Drawing.Size(162, 47);
+            this.btnAddstudent.TabIndex = 69;
+            this.btnAddstudent.Text = "Add Student";
+            this.btnAddstudent.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.btnAddstudent.Click += new System.EventHandler(this.btnAddstudent_Click_1);
+            // 
+            // adminRegister1
+            // 
+            this.adminRegister1.Location = new System.Drawing.Point(247, 0);
+            this.adminRegister1.Name = "adminRegister1";
+            this.adminRegister1.Size = new System.Drawing.Size(852, 727);
+            this.adminRegister1.TabIndex = 70;
+            // 
             // AdminApproval
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
+            this.Controls.Add(this.adminRegister1);
+            this.Controls.Add(this.btnAddstudent);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.dtgApproval);
@@ -495,7 +505,6 @@
             this.Controls.Add(this.lblTotalActive);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.btnAddStudent);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.btnClose);
@@ -520,10 +529,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label btnClose;
-        private System.Windows.Forms.Label btnMinimize;
-        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.FlowLayoutPanel sidebar;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label1;
@@ -535,17 +540,22 @@
         private Guna.UI2.WinForms.Guna2Button btnSubjects;
         private Guna.UI2.WinForms.Guna2Button btnReports;
         private Guna.UI2.WinForms.Guna2Button btnLogs;
+        private System.Windows.Forms.Label label2;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes1;
+        private System.Windows.Forms.Label btnMinimize;
+        private System.Windows.Forms.Label btnClose;
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
         private System.Windows.Forms.PictureBox btnSearch;
-        private Guna.UI2.WinForms.Guna2Button btnAddStudent;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblTotalActive;
         private System.Windows.Forms.Label lblTotalInactive;
-        private System.Windows.Forms.Label lblTotalPending;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lblTotalPending;
         private System.Windows.Forms.DataGridView dtgApproval;
         private Guna.UI2.WinForms.Guna2Button btnDelete;
         private Guna.UI2.WinForms.Guna2Button btnUpdate;
+        private Guna.UI2.WinForms.Guna2Button btnAddstudent;
+        private AdminRegister adminRegister1;
     }
 }

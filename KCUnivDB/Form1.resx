@@ -4224,7 +4224,7 @@
   <data name="btnEyesOff.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vQAADr0BR/uQrQAABC5JREFUWEftlluI1lUUxb1rJQaZJXa/WS9FL13oAvVQSDIVQUUUXYkoJSIqqaSo
+        vAAADrwBlbxySQAABC5JREFUWEftlluI1lUUxb1rJQaZJXa/WS9FL13oAvVQSDIVQUUUXYkoJSIqqaSo
         XnoLosIeeogopMBIhHqKXqLoQmjZg12l1CLoMlOTM99Zvx3rc/+n/3e++RzFUAgXyIzzP2efddbea589
         bdpBHMT/CcAC4NiImFl/268AFkp6F/gbWG1i1fdDIuJE4IKIuBa4C7gfeBC4D7gDWD42NnZWRCyOiFnt
         /XsF4ChgY0QE8AfweBMwImaUUu6R9IWkX4ARYExSkSSg40tExO/Aj8CHkp4DzvHe+qwpERHTgSslbQdM
@@ -4248,7 +4248,7 @@
   <data name="btnEyesOn.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAYAAAAe2bNZAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vQAADr0BR/uQrQAABF1JREFUWEftV1uIVWUYHSczU8suIkWBSVZEgWlFShcKH4Iiiqhg6CEKNEhBpB4D
+        vAAADrwBlbxySQAABF1JREFUWEftV1uIVWUYHSczU8suIkWBSVZEgWlFShcKH4Iiiqhg6CEKNEhBpB4D
         NZIg1AIfm3mRoujyZPhQCtFLRBSoWRSWJkGX6T7Vmdl7rfXFGr99Ou7OPmdiMHqYBZs5nPn3/69/re92
         BgZmMIP/CBExq9tTX3dKEBGDkuZLWlIUxU0RcX9ErAOwUdJGAI8CGJK0RtJVkhZHxJz6PtOCpLMi4hpJ
         j0jaSXIPyfckHST5maQvSH5J8nOSHwP4AMA+ki+S3CLptohYNC3VIuL0iYmJlQA2kXxF0keSviE5Lok6
@@ -4272,5 +4272,11 @@
   </data>
   <metadata name="guna2Elipse1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
+  </metadata>
+  <metadata name="errorProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>161, 17</value>
+  </metadata>
+  <metadata name="errorProvider2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>316, 17</value>
   </metadata>
 </root>

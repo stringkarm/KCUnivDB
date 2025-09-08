@@ -49,6 +49,7 @@
             this.btnMinimize = new System.Windows.Forms.Label();
             this.guna2CirclePictureBox1 = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.adminLogout1 = new KCUnivDB.AdminLogout();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
@@ -315,6 +316,7 @@
             this.guna2CirclePictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.guna2CirclePictureBox1.TabIndex = 50;
             this.guna2CirclePictureBox1.TabStop = false;
+            this.guna2CirclePictureBox1.Click += new System.EventHandler(this.guna2CirclePictureBox1_Click);
             // 
             // label3
             // 
@@ -327,11 +329,20 @@
             this.label3.TabIndex = 51;
             this.label3.Text = "Welcome, Admin!";
             // 
+            // adminLogout1
+            // 
+            this.adminLogout1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.adminLogout1.Location = new System.Drawing.Point(797, 157);
+            this.adminLogout1.Name = "adminLogout1";
+            this.adminLogout1.Size = new System.Drawing.Size(287, 307);
+            this.adminLogout1.TabIndex = 52;
+            // 
             // AdminDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
+            this.Controls.Add(this.adminLogout1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.guna2CirclePictureBox1);
             this.Controls.Add(this.btnClose);
@@ -375,5 +386,6 @@
         private System.Windows.Forms.Label btnMinimize;
         private System.Windows.Forms.Label label3;
         private Guna.UI2.WinForms.Guna2CirclePictureBox guna2CirclePictureBox1;
+        private AdminLogout adminLogout1;
     }
 }

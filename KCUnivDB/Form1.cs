@@ -14,9 +14,11 @@ namespace KCUnivDB
 {
     public partial class Form1 : Form
     {
+
         public Form1()
         {
             InitializeComponent();
+            
         }
 
         string connectionString = @"Data Source = canasa\SQLEXPRESS;
@@ -67,82 +69,97 @@ namespace KCUnivDB
 
         private void btnLogins_Click(object sender, EventArgs e)
         {
+            // Clear any previous errors.
+            errorProvider1.Clear();
+            bool isValid = true;
+
             // Trim any leading or trailing spaces from the textboxes.
             string username = txtUsername.Text.Trim();
             string plainPassword = txtPassword.Text.Trim();
 
-            // Hash the plain text password.
-            string hashedPassword = HashPassword(plainPassword);
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            // Check if username field is not empty.
+            if (string.IsNullOrWhiteSpace(username))
             {
-                SqlCommand cmd = new SqlCommand("Login_SP", connection);
-                cmd.CommandType = CommandType.StoredProcedure;
+                errorProvider1.SetError(txtUsername, "Username is required.");
+                isValid = false;
+            }
 
-                // Pass the trimmed username and hashed password to the stored procedure.
-                cmd.Parameters.AddWithValue("@username", username);
-                cmd.Parameters.AddWithValue("@password", hashedPassword);
+            // Check if password field is not empty.
+            if (string.IsNullOrWhiteSpace(plainPassword))
+            {
+                errorProvider1.SetError(txtPassword, "Password is required.");
+                isValid = false;
+            }
 
-                try
+            if (isValid) 
+            {
+                // Hash the plain text password.
+                string hashedPassword = HashPassword(plainPassword);
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    connection.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
+                    SqlCommand cmd = new SqlCommand("Login_SP", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                    if (reader.Read())
-                    {
-                        string status = reader["Status"].ToString();
+                    // Pass the trimmed username and hashed password to the stored procedure.
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@password", hashedPassword);
 
-                        if (status != "Active")
-                        {
-                            MessageBox.Show("Your account is pending approval. Please wait for the admin to approve your account.");
-                            this.Show();
-                            return;
-                        }
 
-                        int roleId = Convert.ToInt32(reader["RoleID"]);
+                        connection.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
 
-                        if (roleId == 1) // Admin
+                        if (reader.Read())
                         {
-                            MessageBox.Show("Login Successful! Welcome, Admin.");
-                            this.Hide();
-                            AdminDashboard adminDash = new AdminDashboard();
-                            adminDash.Show();
+                            string status = reader["Status"].ToString();
+
+                            if (status != "Active")
+                            {
+                                MessageBox.Show("Your account is pending approval. Please wait for the admin to approve your account.");
+                                this.Show();
+                                return;
+                            }
+
+                            int roleId = Convert.ToInt32(reader["RoleID"]);
+
+                            if (roleId == 1) // Admin
+                            {
+                                MessageBox.Show("Login Successful! Welcome, Admin.");
+                                this.Hide();
+                                AdminDashboard adminDash = new AdminDashboard();
+                                adminDash.Show();
+                            }
+                            else if (roleId == 2) // Instructor
+                            {
+                                MessageBox.Show("Login Successful! Welcome, Instructor.");
+                                this.Hide();
+                                InstructorDashboard teacherDash = new InstructorDashboard();
+                                teacherDash.Show();
+                            }
+                            else if (roleId == 3) // Student
+                            {
+                                MessageBox.Show("Login Successful! Welcome, Student.");
+                                this.Hide();
+                                StudentDashboard studentDash = new StudentDashboard();
+                                studentDash.Show();
+                            }
+
+                            else
+                            {
+                                MessageBox.Show("Unknown user role. Please contact support.");
+                                this.Show();
+                            }
                         }
-                        else if (roleId == 2) // Instructor
-                        {
-                            MessageBox.Show("Login Successful! Welcome, Instructor.");
-                            this.Hide();
-                            InstructorDashboard teacherDash = new InstructorDashboard();
-                            teacherDash.Show();
-                        }
-                        else if (roleId == 3) // Student
-                        {
-                            MessageBox.Show("Login Successful! Welcome, Student.");
-                            this.Hide();
-                            StudentDashboard studentDash = new StudentDashboard();
-                            studentDash.Show();
-                        }
-                        
                         else
                         {
-                            MessageBox.Show("Unknown user role. Please contact support.");
-                            this.Show();
+                            MessageBox.Show("Login failed. Invalid username or password.");
                         }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Login failed. Invalid username or password.");
-                    }
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("Database error: " + ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("An unexpected error occurred: " + ex.Message);
+                    
+                  
                 }
             }
+            
+            
 
         }
 

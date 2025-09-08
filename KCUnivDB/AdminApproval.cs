@@ -17,6 +17,7 @@ namespace KCUnivDB
         public AdminApproval()
         {
             InitializeComponent();
+            adminRegister1.Hide();
 
             LoadApprovalData();
             LoadStudentCounts();
@@ -164,13 +165,13 @@ namespace KCUnivDB
 
         private void btnAddStudent_Click(object sender, EventArgs e)
         {
-            //// Create a new instance of the registration form for admins.
-            //RegistrationForAdmin registrationForm = new RegistrationForAdmin();
-            //registrationForm.ShowDialog(); // Use ShowDialog() to block the parent form
+            // Create a new instance of the registration form for admins.
+            AdminRegister registrationForm = new AdminRegister();
+            registrationForm.Show(); // Use ShowDialog() to block the parent form
 
-            //// Reload the data after the new student is potentially added.
-            //LoadApprovalData();
-            //LoadStudentCounts();
+            // Reload the data after the new student is potentially added.
+            LoadApprovalData();
+            LoadStudentCounts();
         }
 
         private void dtgApproval_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -349,6 +350,12 @@ namespace KCUnivDB
                     }
                 }
             }
+        }
+
+
+        private void btnAddstudent_Click_1(object sender, EventArgs e)
+        {
+            adminRegister1.Show();
         }
     }
 }

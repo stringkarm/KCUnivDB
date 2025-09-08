@@ -52,12 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddUpdate.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="AddUpdate.Designer.cs">
-      <DependentUpon>AddUpdate.cs</DependentUpon>
-    </Compile>
     <Compile Include="AdminApproval.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,6 +63,18 @@
     </Compile>
     <Compile Include="AdminDashboard.Designer.cs">
       <DependentUpon>AdminDashboard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AdminLogout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AdminLogout.Designer.cs">
+      <DependentUpon>AdminLogout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AdminRegister.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AdminRegister.Designer.cs">
+      <DependentUpon>AdminRegister.cs</DependentUpon>
     </Compile>
     <Compile Include="AdminReports.cs">
       <SubType>Form</SubType>
@@ -144,6 +150,12 @@
     <EmbeddedResource Include="AdminDashboard.resx">
       <DependentUpon>AdminDashboard.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AdminLogout.resx">
+      <DependentUpon>AdminLogout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdminRegister.resx">
+      <DependentUpon>AdminRegister.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AdminReports.resx">
       <DependentUpon>AdminReports.cs</DependentUpon>
     </EmbeddedResource>
@@ -186,6 +198,10 @@
     <EmbeddedResource Include="StudentDashboard.resx">
       <DependentUpon>StudentDashboard.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Admin.Designer.Registration" />
+    <None Include="Admin.Registration">
+      <SubType>Form</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

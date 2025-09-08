@@ -178,6 +178,7 @@
             this.btnDashboard.TabIndex = 2;
             this.btnDashboard.Text = "       Dashboard";
             this.btnDashboard.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDashboard.Click += new System.EventHandler(this.btnDashboard_Click);
             // 
             // btnApproval
             // 
@@ -199,6 +200,7 @@
             this.btnApproval.TabIndex = 3;
             this.btnApproval.Text = "       Approval";
             this.btnApproval.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnApproval.Click += new System.EventHandler(this.btnApproval_Click);
             // 
             // btnTeachers
             // 
@@ -220,6 +222,7 @@
             this.btnTeachers.TabIndex = 4;
             this.btnTeachers.Text = "       Teacher";
             this.btnTeachers.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnTeachers.Click += new System.EventHandler(this.btnTeachers_Click);
             // 
             // btnSubjects
             // 
@@ -241,6 +244,7 @@
             this.btnSubjects.TabIndex = 5;
             this.btnSubjects.Text = "       Subjects";
             this.btnSubjects.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnSubjects.Click += new System.EventHandler(this.btnSubjects_Click);
             // 
             // btnReports
             // 
@@ -284,6 +288,7 @@
             this.btnLogs.TabIndex = 7;
             this.btnLogs.Text = "       Logs";
             this.btnLogs.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLogs.Click += new System.EventHandler(this.btnLogs_Click);
             // 
             // AdminReports
             // 
