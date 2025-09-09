@@ -21,6 +21,10 @@ namespace KCUnivDB
             
         }
 
+        private int loginAttempts = 0;
+        private const int MAX_ATTEMPTS = 3;
+
+
         string connectionString = @"Data Source = canasa\SQLEXPRESS;
         Initial catalog = KCUnivDB; Integrated Security = true";
         private static string HashPassword(string plainPassword)
@@ -111,7 +115,9 @@ namespace KCUnivDB
 
                         if (reader.Read())
                         {
-                            string status = reader["Status"].ToString();
+                            loginAttempts = 0;
+
+                             string status = reader["Status"].ToString();
 
                             if (status != "Active")
                             {
@@ -152,10 +158,21 @@ namespace KCUnivDB
                         }
                         else
                         {
-                            MessageBox.Show("Login failed. Invalid username or password.");
+                            // Login failed, increment the attempt counter
+                            loginAttempts++;
+
+                            if (loginAttempts >= MAX_ATTEMPTS)
+                            {
+                                MessageBox.Show("Maximum login attempts exceeded. The application will now close.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                Application.Exit(); // Or you could just disable the login button
+                            }
+                            else
+                            {
+                                MessageBox.Show($"Login failed. Invalid username or password. You have {MAX_ATTEMPTS - loginAttempts} attempts remaining.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
                         }
-                    
-                  
+
+
                 }
             }
             

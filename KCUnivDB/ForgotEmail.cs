@@ -26,7 +26,7 @@ namespace KCUnivDB
 
             if (string.IsNullOrEmpty(email))
             {
-                MessageBox.Show("Please enter your email address.", "Required Field", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                errorProvider1.SetError(txtEmail, "Please enter your email address.");               
                 return;
             }
 
@@ -54,18 +54,31 @@ namespace KCUnivDB
                     return;
                 }
             }
-
+            
             if (profileId != -1)
             {
                 // If email exists, open the password confirmation form
-                ForgotConfirmation forgotConfirmForm = new ForgotConfirmation(profileId);
+                ForgotConfirmation forgotConfirmForm = new ForgotConfirmation(email);
                 this.Hide(); // Hide the current form
                 forgotConfirmForm.Show(); // Show the new form
             }
             else
             {
-                MessageBox.Show("Email not found. Please check your email and try again.", "Validation Failed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                errorProvider1.SetError(txtEmail, "Email not found. Please check your email and try again.");
+                
             }
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            Form1 form1 = new Form1();
+            form1.Show();
+            this.Hide();
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
