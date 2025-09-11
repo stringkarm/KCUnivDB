@@ -245,7 +245,7 @@
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(161, 47);
             this.btnDelete.TabIndex = 67;
-            this.btnDelete.Text = "    Delete Student";
+            this.btnDelete.Text = "     Delete Student";
             this.btnDelete.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 

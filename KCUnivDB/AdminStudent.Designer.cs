@@ -50,15 +50,16 @@
             this.btnDelete = new Guna.UI2.WinForms.Guna2Button();
             this.btnSearch = new System.Windows.Forms.PictureBox();
             this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
-            this.dtgApproval = new System.Windows.Forms.DataGridView();
+            this.dtgStudentsList = new System.Windows.Forms.DataGridView();
             this.lblTotalActive = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.adminRegister1 = new KCUnivDB.AdminRegister();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgApproval)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgStudentsList)).BeginInit();
             this.SuspendLayout();
             // 
             // btnClose
@@ -211,6 +212,7 @@
             this.btnApproval.TabIndex = 3;
             this.btnApproval.Text = "       Approval";
             this.btnApproval.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnApproval.Click += new System.EventHandler(this.btnApproval_Click);
             // 
             // btnStudents
             // 
@@ -233,7 +235,6 @@
             this.btnStudents.TabIndex = 8;
             this.btnStudents.Text = "       Students";
             this.btnStudents.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnStudents.Click += new System.EventHandler(this.btnStudents_Click);
             // 
             // btnTeachers
             // 
@@ -360,6 +361,7 @@
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(55, 47);
             this.btnUpdate.TabIndex = 71;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnDelete
             // 
@@ -379,6 +381,7 @@
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(55, 47);
             this.btnDelete.TabIndex = 70;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnSearch
             // 
@@ -416,15 +419,16 @@
             this.txtSearch.Size = new System.Drawing.Size(261, 48);
             this.txtSearch.TabIndex = 74;
             // 
-            // dtgApproval
+            // dtgStudentsList
             // 
-            this.dtgApproval.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgApproval.Location = new System.Drawing.Point(271, 267);
-            this.dtgApproval.Name = "dtgApproval";
-            this.dtgApproval.RowHeadersWidth = 51;
-            this.dtgApproval.RowTemplate.Height = 24;
-            this.dtgApproval.Size = new System.Drawing.Size(811, 436);
-            this.dtgApproval.TabIndex = 75;
+            this.dtgStudentsList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgStudentsList.Location = new System.Drawing.Point(271, 267);
+            this.dtgStudentsList.Name = "dtgStudentsList";
+            this.dtgStudentsList.RowHeadersWidth = 51;
+            this.dtgStudentsList.RowTemplate.Height = 24;
+            this.dtgStudentsList.Size = new System.Drawing.Size(811, 436);
+            this.dtgStudentsList.TabIndex = 75;
+            this.dtgStudentsList.SelectionChanged += new System.EventHandler(this.dtgStudentsList_SelectionChanged);
             // 
             // lblTotalActive
             // 
@@ -448,14 +452,23 @@
             this.label3.TabIndex = 76;
             this.label3.Text = "Total Active Students :";
             // 
+            // adminRegister1
+            // 
+            this.adminRegister1.Location = new System.Drawing.Point(243, 0);
+            this.adminRegister1.Name = "adminRegister1";
+            this.adminRegister1.Size = new System.Drawing.Size(860, 729);
+            this.adminRegister1.TabIndex = 78;
+            this.adminRegister1.Load += new System.EventHandler(this.adminRegister1_Load);
+            // 
             // AdminStudent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
+            this.Controls.Add(this.adminRegister1);
             this.Controls.Add(this.lblTotalActive);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.dtgApproval);
+            this.Controls.Add(this.dtgStudentsList);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.btnAddstudent);
@@ -476,7 +489,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgApproval)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgStudentsList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -505,8 +518,9 @@
         private Guna.UI2.WinForms.Guna2Button btnDelete;
         private System.Windows.Forms.PictureBox btnSearch;
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
-        private System.Windows.Forms.DataGridView dtgApproval;
+        private System.Windows.Forms.DataGridView dtgStudentsList;
         private System.Windows.Forms.Label lblTotalActive;
         private System.Windows.Forms.Label label3;
+        private AdminRegister adminRegister1;
     }
 }

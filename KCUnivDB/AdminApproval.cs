@@ -152,7 +152,9 @@ namespace KCUnivDB
 
             private void btnSearch_Click(object sender, EventArgs e)
             {
-                (dtgApproval.DataSource as DataTable).DefaultView.RowFilter = string.Format("FirstName LIKE '%{0}%' OR LastName LIKE '%{0}%'", txtSearch.Text);
+            string searchText = txtSearch.Text;
+            (dtgApproval.DataSource as DataTable).DefaultView.RowFilter =
+                string.Format("FirstName LIKE '%{0}%' OR LastName LIKE '%{0}%' OR Gender LIKE '%{0}%'", searchText);
             }
 
            
