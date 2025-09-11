@@ -51,5 +51,12 @@ namespace KCUnivDB
             logs.Show();
             this.Hide();
         }
+
+        private void btnApproval_Click_1(object sender, EventArgs e)
+        {
+            AdminStudent stud = new AdminStudent();
+            stud.Show();
+            this.Hide();
+        }
     }
 }

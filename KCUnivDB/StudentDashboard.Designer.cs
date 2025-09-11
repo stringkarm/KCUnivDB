@@ -165,6 +165,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(266, 63);
             this.panel1.TabIndex = 0;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // btnDashboard
             // 
@@ -179,7 +180,7 @@
             this.btnDashboard.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDashboard.ImageOffset = new System.Drawing.Point(20, 0);
             this.btnDashboard.ImageSize = new System.Drawing.Size(25, 25);
-            this.btnDashboard.Location = new System.Drawing.Point(0, 0);
+            this.btnDashboard.Location = new System.Drawing.Point(3, 545);
             this.btnDashboard.Name = "btnDashboard";
             this.btnDashboard.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.btnDashboard.Size = new System.Drawing.Size(266, 63);

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace KCUnivDB
 {
@@ -61,6 +62,13 @@ namespace KCUnivDB
         private void guna2CirclePictureBox1_Click(object sender, EventArgs e)
         {
             adminLogout1.Show();
+        }
+
+        private void btnStudents_Click(object sender, EventArgs e)
+        {
+            AdminStudent stud = new AdminStudent();
+            stud.Show();
+            this.Hide();
         }
     }
 }

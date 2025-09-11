@@ -149,7 +149,7 @@
             this.txtAge.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtAge.Location = new System.Drawing.Point(539, 273);
             this.txtAge.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtAge.MaxLength = 11;
+            this.txtAge.MaxLength = 2;
             this.txtAge.Name = "txtAge";
             this.txtAge.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.txtAge.PlaceholderText = "Please enter your age";

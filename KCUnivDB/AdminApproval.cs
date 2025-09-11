@@ -17,7 +17,6 @@ namespace KCUnivDB
         public AdminApproval()
         {
             InitializeComponent();
-            adminRegister1.Hide();
 
             LoadApprovalData();
             LoadStudentCounts();
@@ -31,7 +30,7 @@ namespace KCUnivDB
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // Replaced the stored procedure with a direct SQL query and added the Address column.
+ 
                 string query = @"
                     SELECT 
                         U.UserID,
@@ -56,27 +55,23 @@ namespace KCUnivDB
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
-                    // Clear existing columns to prevent duplicates.
+                    
                     dtgApproval.Columns.Clear();
 
-                    // Add a new column to the DataGridView for the dropdown list.
                     var statusColumn = new DataGridViewComboBoxColumn();
                     statusColumn.HeaderText = "Status";
                     statusColumn.Name = "Status_Dropdown";
-                    // Add the options for the dropdown.
+
                     statusColumn.DataSource = new string[] { "Active", "Pending", "Inactive" };
                     dtgApproval.Columns.Add(statusColumn);
 
-                    // Bind the fetched data to the DataGridView.
+ 
                     dtgApproval.DataSource = dt;
 
-                    // Set the DataPropertyName for the ComboBox column to the 'Status' column from the database.
                     dtgApproval.Columns["Status_Dropdown"].DataPropertyName = "Status";
 
-                    // Adjust column widths automatically.
                     dtgApproval.AutoResizeColumns();
 
-                    // Hide columns you don't need to show to the admin.
                     dtgApproval.Columns["UserID"].Visible = false;
                     dtgApproval.Columns["ProfileID"].Visible = false;
 
@@ -91,15 +86,15 @@ namespace KCUnivDB
                 }
             }
         }
+
         private void LoadStudentCounts()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // Direct query for active student count
+              
                 SqlCommand cmdActive = new SqlCommand("SELECT COUNT(*) FROM Profiles WHERE Status = 'Active' AND ProfileID IN (SELECT ProfileID FROM Users WHERE RoleID = 3)", connection);
-                // Direct query for inactive student count
+
                 SqlCommand cmdInactive = new SqlCommand("SELECT COUNT(*) FROM Profiles WHERE Status = 'Inactive' AND ProfileID IN (SELECT ProfileID FROM Users WHERE RoleID = 3)", connection);
-                // New direct query for pending student count
                 SqlCommand cmdPending = new SqlCommand("SELECT COUNT(*) FROM Profiles WHERE Status = 'Pending' AND ProfileID IN (SELECT ProfileID FROM Users WHERE RoleID = 3)", connection);
 
                 try
@@ -109,7 +104,6 @@ namespace KCUnivDB
                     int inactiveCount = (int)cmdInactive.ExecuteScalar();
                     int pendingCount = (int)cmdPending.ExecuteScalar();
 
-                    // Update the labels on your form.
                     lblTotalActive.Text = activeCount.ToString();
                     lblTotalInactive.Text = inactiveCount.ToString();
                     lblTotalPending.Text = pendingCount.ToString();
@@ -165,31 +159,28 @@ namespace KCUnivDB
 
         private void btnAddStudent_Click(object sender, EventArgs e)
         {
-            // Create a new instance of the registration form for admins.
             AdminRegister registrationForm = new AdminRegister();
-            registrationForm.Show(); // Use ShowDialog() to block the parent form
+            registrationForm.Show();
 
-            // Reload the data after the new student is potentially added.
             LoadApprovalData();
             LoadStudentCounts();
         }
 
         private void dtgApproval_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            // Make sure the change happened in the "Status" column.
+ 
             if (e.ColumnIndex == dtgApproval.Columns["Status_Dropdown"].Index && e.RowIndex >= 0)
             {
-                // Get the new status and the student's ProfileID.
+   
                 string newStatus = dtgApproval.Rows[e.RowIndex].Cells["Status_Dropdown"].Value.ToString();
                 int profileId = Convert.ToInt32(dtgApproval.Rows[e.RowIndex].Cells["ProfileID"].Value);
 
-                // Ask for confirmation before updating the database.
                 DialogResult dialogResult = MessageBox.Show($"Are you sure you want to change the status to '{newStatus}' for this student?",
                                                             "Confirm Status Change", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (dialogResult == DialogResult.Yes)
                 {
-                    // Replaced the stored procedure with a direct SQL query.
+ 
                     string updateQuery = "UPDATE Profiles SET Status = @NewStatus WHERE ProfileID = @ProfileID";
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
@@ -202,7 +193,7 @@ namespace KCUnivDB
                             connection.Open();
                             cmd.ExecuteNonQuery();
                             MessageBox.Show("Student status updated successfully.");
-                            LoadStudentCounts(); // Refresh the counts.
+                            LoadStudentCounts(); 
                         }
                         catch (SqlException ex)
                         {
@@ -212,65 +203,62 @@ namespace KCUnivDB
                 }
                 else
                 {
-                    // If the admin cancels, reload the data to revert the change in the UI.
+                    
                     LoadApprovalData();
                 }
             }
         }
 
        
+        //private void UpdateStudentInfo(int profileId, string firstName, string lastName, int age, string gender, string email, string address)
+        //{
+        //    string updateQuery = @"
+        //        UPDATE Profiles 
+        //        SET FirstName = @FirstName, 
+        //            LastName = @LastName, 
+        //            Age = @Age, 
+        //            Gender = @Gender, 
+        //            Email = @Email, 
+        //            Address = @Address 
+        //        WHERE ProfileID = @ProfileID";
 
-        // New method to handle the database update.
-        private void UpdateStudentInfo(int profileId, string firstName, string lastName, int age, string gender, string email, string address)
-        {
-            string updateQuery = @"
-                UPDATE Profiles 
-                SET FirstName = @FirstName, 
-                    LastName = @LastName, 
-                    Age = @Age, 
-                    Gender = @Gender, 
-                    Email = @Email, 
-                    Address = @Address 
-                WHERE ProfileID = @ProfileID";
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        SqlCommand cmd = new SqlCommand(updateQuery, connection);
+        //        cmd.Parameters.AddWithValue("@FirstName", firstName);
+        //        cmd.Parameters.AddWithValue("@LastName", lastName);
+        //        cmd.Parameters.AddWithValue("@Age", age);
+        //        cmd.Parameters.AddWithValue("@Gender", gender);
+        //        cmd.Parameters.AddWithValue("@Email", email);
+        //        cmd.Parameters.AddWithValue("@Address", address);
+        //        cmd.Parameters.AddWithValue("@ProfileID", profileId);
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand(updateQuery, connection);
-                cmd.Parameters.AddWithValue("@FirstName", firstName);
-                cmd.Parameters.AddWithValue("@LastName", lastName);
-                cmd.Parameters.AddWithValue("@Age", age);
-                cmd.Parameters.AddWithValue("@Gender", gender);
-                cmd.Parameters.AddWithValue("@Email", email);
-                cmd.Parameters.AddWithValue("@Address", address);
-                cmd.Parameters.AddWithValue("@ProfileID", profileId);
+        //        try
+        //        {
+        //            connection.Open();
+        //            int rowsAffected = cmd.ExecuteNonQuery();
+        //            if (rowsAffected > 0)
+        //            {
+        //                MessageBox.Show("Student information updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show("No changes were made.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //            }
+        //        }
+        //        catch (SqlException ex)
+        //        {
+        //            MessageBox.Show("Failed to update student information: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        }
+        //    }
+        //}
 
-                try
-                {
-                    connection.Open();
-                    int rowsAffected = cmd.ExecuteNonQuery();
-                    if (rowsAffected > 0)
-                    {
-                        MessageBox.Show("Student information updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("No changes were made.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("Failed to update student information: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        // This method enables/disables the Delete/Update buttons based on row selection.
         private void SetButtonStates()
         {
             bool rowSelected = dtgApproval.SelectedRows.Count > 0;
             
             btnDelete.Enabled = rowSelected;
-            btnUpdate.Enabled = rowSelected;
+            //btnUpdate.Enabled = rowSelected;
         }
 
         private void dtgApproval_SelectionChanged(object sender, EventArgs e)
@@ -278,74 +266,72 @@ namespace KCUnivDB
             SetButtonStates();
         }
 
-        private void btnUpdate_Click_1(object sender, EventArgs e)
-        {
-            if (dtgApproval.SelectedRows.Count > 0)
-            {
-                DialogResult dialogResult = MessageBox.Show("Are you sure you want to save the changes for this student?", "Confirm Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        //private void btnUpdate_Click_1(object sender, EventArgs e)
+        //{
+        //    if (dtgApproval.SelectedRows.Count > 0)
+        //    {
+        //        DialogResult dialogResult = MessageBox.Show("Are you sure you want to save the changes for this student?", "Confirm Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                if (dialogResult == DialogResult.Yes)
-                {
-                    // Get the data from the selected row.
-                    int profileId = Convert.ToInt32(dtgApproval.SelectedRows[0].Cells["ProfileID"].Value);
-                    string firstName = dtgApproval.SelectedRows[0].Cells["FirstName"].Value.ToString();
-                    string lastName = dtgApproval.SelectedRows[0].Cells["LastName"].Value.ToString();
-                    int age = Convert.ToInt32(dtgApproval.SelectedRows[0].Cells["Age"].Value);
-                    string gender = dtgApproval.SelectedRows[0].Cells["Gender"].Value.ToString();
-                    string email = dtgApproval.SelectedRows[0].Cells["Email"].Value.ToString();
-                    string address = dtgApproval.SelectedRows[0].Cells["Address"].Value.ToString();
+        //        if (dialogResult == DialogResult.Yes)
+        //        {
+        //            // Get the data from the selected row.
+        //            int profileId = Convert.ToInt32(dtgApproval.SelectedRows[0].Cells["ProfileID"].Value);
+        //            string firstName = dtgApproval.SelectedRows[0].Cells["FirstName"].Value.ToString();
+        //            string lastName = dtgApproval.SelectedRows[0].Cells["LastName"].Value.ToString();
+        //            int age = Convert.ToInt32(dtgApproval.SelectedRows[0].Cells["Age"].Value);
+        //            string gender = dtgApproval.SelectedRows[0].Cells["Gender"].Value.ToString();
+        //            string email = dtgApproval.SelectedRows[0].Cells["Email"].Value.ToString();
+        //            string address = dtgApproval.SelectedRows[0].Cells["Address"].Value.ToString();
 
-                    // Now, call the new method to update the database.
-                    UpdateStudentInfo(profileId, firstName, lastName, age, gender, email, address);
+        //            // Now, call the new method to update the database.
+        //            UpdateStudentInfo(profileId, firstName, lastName, age, gender, email, address);
 
-                    // Refresh the data to show the changes.
-                    LoadApprovalData();
-                    LoadStudentCounts();
-                }
-            }
-        }
+        //            // Refresh the data to show the changes.
+        //            LoadApprovalData();
+        //            LoadStudentCounts();
+        //        }
+        //    }
+        //}
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (dtgApproval.SelectedRows.Count > 0)
             {
-                DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete this student?", "Confirm Deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                DialogResult dialogResult = MessageBox.Show(
+                    "Are you sure you want to change delete this student?", "Confirm Status Change",MessageBoxButtons.YesNo,MessageBoxIcon.Warning
+                );
 
                 if (dialogResult == DialogResult.Yes)
                 {
+                   
                     int profileId = Convert.ToInt32(dtgApproval.SelectedRows[0].Cells["ProfileID"].Value);
+                    string updateQuery = "UPDATE Profiles SET Status = 'Inactive' WHERE ProfileID = @ProfileID";
 
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
-                        SqlTransaction transaction = null;
+                        SqlCommand cmd = new SqlCommand(updateQuery, connection);
+
+                        cmd.Parameters.AddWithValue("@ProfileID", profileId);
+
                         try
                         {
                             connection.Open();
-                            transaction = connection.BeginTransaction();
+                            int rowsAffected = cmd.ExecuteNonQuery();
 
-                            // Delete from Users table first due to foreign key constraints.
-                            string deleteUserQuery = "DELETE FROM Users WHERE ProfileID = @ProfileID";
-                            SqlCommand userCmd = new SqlCommand(deleteUserQuery, connection, transaction);
-                            userCmd.Parameters.AddWithValue("@ProfileID", profileId);
-                            userCmd.ExecuteNonQuery();
-
-                            // Then, delete from Profiles table.
-                            string deleteProfileQuery = "DELETE FROM Profiles WHERE ProfileID = @ProfileID";
-                            SqlCommand profileCmd = new SqlCommand(deleteProfileQuery, connection, transaction);
-                            profileCmd.Parameters.AddWithValue("@ProfileID", profileId);
-                            profileCmd.ExecuteNonQuery();
-
-                            transaction.Commit();
-                            MessageBox.Show("Student deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                            // Refresh the data to show the changes.
+                            if (rowsAffected > 0)
+                            {
+                                MessageBox.Show("Students data successfully removed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("No changes were made. Student not found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
                             LoadApprovalData();
                             LoadStudentCounts();
                         }
                         catch (SqlException ex)
                         {
-                            transaction?.Rollback();
-                            MessageBox.Show("Failed to delete student: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Failed to update student status: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }
@@ -355,7 +341,24 @@ namespace KCUnivDB
 
         private void btnAddstudent_Click_1(object sender, EventArgs e)
         {
-            adminRegister1.Show();
+           
+        }
+
+        private void btnApproval_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void btnStudents_Click(object sender, EventArgs e)
+        {
+            AdminStudent stud = new AdminStudent();
+            stud.Show();
+            this.Hide();
+        }
+
+        private void AdminApproval_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

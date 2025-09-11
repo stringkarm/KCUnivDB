@@ -54,7 +54,6 @@ namespace KCUnivDB
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            // Clear all previous errors
             errorProvider1.Clear();
             bool isValid = true;
             string email = txtEmail.Text.Trim();
@@ -124,7 +123,6 @@ namespace KCUnivDB
                 isValid = false;
             }
 
-            // If any validation fails, stop here
             if (!isValid)
             {
                 return;
@@ -146,14 +144,12 @@ namespace KCUnivDB
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // 1. Open the connection
+              
                 connection.Open();
 
-                // 2. Add the check for existing email
                 SqlCommand checkCmd = new SqlCommand("SELECT COUNT(*) FROM Profiles WHERE Email = @email", connection);
                 checkCmd.Parameters.AddWithValue("@email", txtEmail.Text);
 
-                // 3. Execute the command while the connection is open
                 int userCount = (int)checkCmd.ExecuteScalar();
 
                 if (userCount > 0)
@@ -166,14 +162,11 @@ namespace KCUnivDB
                 string generatedUserID = "ST" + rnd.Next(100000, 999999).ToString();
                 string generatedPassword = generatedUserID;
 
-                // Step 3: Hash the generated password using the HashPassword function
                 string hashedPassword = HashPassword(generatedPassword);
 
-                // Step 4: Call the stored procedure with the generated data
                 SqlCommand cmd = new SqlCommand("Registration_SP", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                // Pass the user's personal details
                 cmd.Parameters.AddWithValue("@FirstName", txtFirstname.Text);
                 cmd.Parameters.AddWithValue("@LastName", txtLastname.Text);
                 cmd.Parameters.AddWithValue("@Age", age);
@@ -182,12 +175,9 @@ namespace KCUnivDB
                 cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
                 cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
 
-                // Pass the generated username and the HASHED password
                 cmd.Parameters.AddWithValue("@Username", generatedUserID);
                 cmd.Parameters.AddWithValue("@HashedPassword", hashedPassword);
 
-
-                // Since we are not getting any output parameters back, we can just execute the command
                 cmd.ExecuteNonQuery();
 
                 MessageBox.Show("Registration Successful!" + "\n Username: " + generatedUserID + "\n Password: " + generatedPassword + "\n Wait for the admin to approve your account patiently.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -198,7 +188,7 @@ namespace KCUnivDB
 
         private bool IsEmailExist(string email)
         {
-            // You can use a stored procedure here for better security and performance.
+
             string query = "SELECT COUNT(*) FROM Users WHERE Email = @Email";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -214,7 +204,7 @@ namespace KCUnivDB
                 }
                 catch (SqlException ex)
                 {
-                    // Log the error but don't return true.
+
                     Console.WriteLine("Database error in IsEmailExist: " + ex.Message);
                     return false;
                 }

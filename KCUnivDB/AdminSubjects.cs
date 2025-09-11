@@ -16,5 +16,12 @@ namespace KCUnivDB
         {
             InitializeComponent();
         }
+
+        private void btnStudents_Click(object sender, EventArgs e)
+        {
+            AdminStudent stud = new AdminStudent();
+            stud.Show();
+            this.Hide();
+        }
     }
 }

@@ -128,23 +128,26 @@ namespace KCUnivDB
 
                             int roleId = Convert.ToInt32(reader["RoleID"]);
 
-                            if (roleId == 1) // Admin
+                        // Admin
+                            if (roleId == 1) 
                             {
-                                MessageBox.Show("Login Successful! Welcome, Admin.");
+                                MessageBox.Show("Login Successful! Welcome, Admin.", "KCUnivDB",MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 this.Hide();
                                 AdminDashboard adminDash = new AdminDashboard();
                                 adminDash.Show();
                             }
-                            else if (roleId == 2) // Instructor
+                        // Instructor
+                            else if (roleId == 2) 
                             {
-                                MessageBox.Show("Login Successful! Welcome, Instructor.");
+                                MessageBox.Show("Login Successful! Welcome, Instructor.", "KCUnivDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 this.Hide();
                                 InstructorDashboard teacherDash = new InstructorDashboard();
                                 teacherDash.Show();
                             }
-                            else if (roleId == 3) // Student
+                        // Student
+                            else if (roleId == 3)
                             {
-                                MessageBox.Show("Login Successful! Welcome, Student.");
+                                MessageBox.Show("Login Successful!", "KCUnivDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 this.Hide();
                                 StudentDashboard studentDash = new StudentDashboard();
                                 studentDash.Show();
@@ -152,7 +155,7 @@ namespace KCUnivDB
 
                             else
                             {
-                                MessageBox.Show("Unknown user role. Please contact support.");
+                                MessageBox.Show("Unknown user role. Please contact support.", "KCUnivDB", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                                 this.Show();
                             }
                         }

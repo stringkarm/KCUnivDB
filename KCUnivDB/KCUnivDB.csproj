@@ -41,6 +41,7 @@
     <Reference Include="System.Design" />
     <Reference Include="System.Management" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -81,6 +82,12 @@
     </Compile>
     <Compile Include="AdminReports.Designer.cs">
       <DependentUpon>AdminReports.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AdminStudent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminStudent.Designer.cs">
+      <DependentUpon>AdminStudent.cs</DependentUpon>
     </Compile>
     <Compile Include="AdminSubjects.cs">
       <SubType>Form</SubType>
@@ -158,6 +165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AdminReports.resx">
       <DependentUpon>AdminReports.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdminStudent.resx">
+      <DependentUpon>AdminStudent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AdminSubjects.resx">
       <DependentUpon>AdminSubjects.cs</DependentUpon>
