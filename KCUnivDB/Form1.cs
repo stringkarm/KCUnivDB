@@ -18,11 +18,12 @@ namespace KCUnivDB
         public Form1()
         {
             InitializeComponent();
-            
+            lockoutTime = DateTime.Now;
         }
 
         private int loginAttempts = 0;
         private const int MAX_ATTEMPTS = 3;
+        private DateTime lockoutTime;
 
 
         string connectionString = @"Data Source = canasa\SQLEXPRESS;
@@ -73,22 +74,25 @@ namespace KCUnivDB
 
         private void btnLogins_Click(object sender, EventArgs e)
         {
-            // Clear any previous errors.
+            if (DateTime.Now < lockoutTime)
+            {
+                TimeSpan remainingTime = lockoutTime - DateTime.Now;
+                MessageBox.Show($"Maximum login attempts exceeded. Please try again after {remainingTime.Minutes} minutes and {remainingTime.Seconds} seconds.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             errorProvider1.Clear();
             bool isValid = true;
 
-            // Trim any leading or trailing spaces from the textboxes.
             string username = txtUsername.Text.Trim();
             string plainPassword = txtPassword.Text.Trim();
 
-            // Check if username field is not empty.
             if (string.IsNullOrWhiteSpace(username))
             {
                 errorProvider1.SetError(txtUsername, "Username is required.");
                 isValid = false;
             }
 
-            // Check if password field is not empty.
             if (string.IsNullOrWhiteSpace(plainPassword))
             {
                 errorProvider1.SetError(txtPassword, "Password is required.");
@@ -97,15 +101,12 @@ namespace KCUnivDB
 
             if (isValid) 
             {
-                // Hash the plain text password.
                 string hashedPassword = HashPassword(plainPassword);
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     SqlCommand cmd = new SqlCommand("Login_SP", connection);
                     cmd.CommandType = CommandType.StoredProcedure;
-
-                    // Pass the trimmed username and hashed password to the stored procedure.
                     cmd.Parameters.AddWithValue("@username", username);
                     cmd.Parameters.AddWithValue("@password", hashedPassword);
 
@@ -116,8 +117,9 @@ namespace KCUnivDB
                         if (reader.Read())
                         {
                             loginAttempts = 0;
+                            lockoutTime = DateTime.Now;
 
-                             string status = reader["Status"].ToString();
+                           string status = reader["Status"].ToString();
 
                             if (status != "Active")
                             {
@@ -161,13 +163,12 @@ namespace KCUnivDB
                         }
                         else
                         {
-                            // Login failed, increment the attempt counter
                             loginAttempts++;
 
                             if (loginAttempts >= MAX_ATTEMPTS)
                             {
-                                MessageBox.Show("Maximum login attempts exceeded. The application will now close.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                Application.Exit(); // Or you could just disable the login button
+                                lockoutTime = DateTime.Now.AddMinutes(3);
+                                MessageBox.Show($"Maximum login attempts exceeded. You are locked out for 3 minutes.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                             else
                             {

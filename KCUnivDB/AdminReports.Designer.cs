@@ -180,6 +180,7 @@
             this.btnDashboard.TabIndex = 2;
             this.btnDashboard.Text = "       Dashboard";
             this.btnDashboard.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDashboard.Click += new System.EventHandler(this.btnDashboard_Click_1);
             // 
             // btnApproval
             // 

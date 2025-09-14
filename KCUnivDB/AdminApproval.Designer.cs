@@ -243,7 +243,7 @@
             this.btnDelete.ImageSize = new System.Drawing.Size(30, 30);
             this.btnDelete.Location = new System.Drawing.Point(271, 88);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(161, 47);
+            this.btnDelete.Size = new System.Drawing.Size(173, 47);
             this.btnDelete.TabIndex = 67;
             this.btnDelete.Text = "     Delete Student";
             this.btnDelete.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -329,6 +329,7 @@
             this.btnDashboard.TabIndex = 2;
             this.btnDashboard.Text = "       Dashboard";
             this.btnDashboard.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnDashboard.Click += new System.EventHandler(this.btnDashboard_Click_1);
             // 
             // btnApproval
             // 

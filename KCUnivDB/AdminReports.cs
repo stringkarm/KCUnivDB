@@ -58,5 +58,12 @@ namespace KCUnivDB
             stud.Show();
             this.Hide();
         }
+
+        private void btnDashboard_Click_1(object sender, EventArgs e)
+        {
+            AdminDashboard dash = new AdminDashboard();
+            dash.Show();
+            this.Hide();
+        }
     }
 }
