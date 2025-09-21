@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,11 @@ namespace KCUnivDB
         public AdminTeachers()
         {
             InitializeComponent();
+            addTeacher1.Hide();
+            LoadTeachersData();
         }
+
+        string connectionString = @"Data Source = canasa\SQLEXPRESS; Initial catalog = KCUnivDB; Integrated Security = true";
 
         private void btnDashboard_Click(object sender, EventArgs e)
         {
@@ -51,5 +56,44 @@ namespace KCUnivDB
             logs.Show();
             this.Hide();
         }
+
+        private void btnAddstudent_Click(object sender, EventArgs e)
+        {
+            addTeacher1.Show();
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            string searchText = txtSearch.Text;
+            (dtgTeacherList.DataSource as DataTable).DefaultView.RowFilter =
+                string.Format("FirstName LIKE '%{0}%' OR LastName LIKE '%{0}%' OR Gender LIKE '%{0}%'", searchText);
+        }
+
+        public void LoadTeachersData()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT TeacherID, FirstName, LastName, Gender, Status FROM Teachers", connection);
+                    DataTable dataTable = new DataTable();
+                    dataAdapter.Fill(dataTable);
+
+                    dtgTeacherList.DataSource = dataTable;
+
+                    // Count active teachers
+                    int activeTeachers = dataTable.AsEnumerable().Count(row => row.Field<string>("Status") == "Active");
+
+                    // Assuming you have a Label control named lblActiveTeachersCount on your form.
+                    lblTotalActive.Text = "Active Teachers: " + activeTeachers.ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred while loading teacher data: " + ex.Message);
+                }
+            }
+        }
     }
 }
+

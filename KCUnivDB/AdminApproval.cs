@@ -369,5 +369,17 @@ namespace KCUnivDB
             dash.Show();
             this.Hide();
         }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnTeachers_Click_1(object sender, EventArgs e)
+        {
+            AdminTeachers teachers= new AdminTeachers();
+            this.Hide();
+            teachers.Show();
+        }
     }
 }

@@ -33,8 +33,8 @@ namespace KCUnivDB
 
         private void btnTeachers_Click(object sender, EventArgs e)
         {
-            AdminTeachers approve = new AdminTeachers();
-            approve.Show();
+            AdminTeachers teachers = new AdminTeachers();
+            teachers.Show();
             this.Hide();
         }
 

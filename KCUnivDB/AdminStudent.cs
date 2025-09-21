@@ -286,6 +286,18 @@ namespace KCUnivDB
             dash.Show();
             this.Hide();
         }
+
+        private void guna2Shapes4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnTeachers_Click(object sender, EventArgs e)
+        {
+            AdminTeachers teachers = new AdminTeachers();
+            this.Hide();
+            teachers.Show();
+        }
     }
     
 }

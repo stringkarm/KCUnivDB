@@ -55,6 +55,13 @@
             this.btnSubjects = new Guna.UI2.WinForms.Guna2Button();
             this.btnReports = new Guna.UI2.WinForms.Guna2Button();
             this.btnLogs = new Guna.UI2.WinForms.Guna2Button();
+            this.guna2Shapes2 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.guna2Shapes3 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.guna2Shapes4 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.guna2Shapes5 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.guna2Shapes6 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.guna2Shapes7 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.guna2Shapes8 = new Guna.UI2.WinForms.Guna2Shapes();
             ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgApproval)).BeginInit();
             this.sidebar.SuspendLayout();
@@ -66,20 +73,20 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Maroon;
-            this.label2.Location = new System.Drawing.Point(262, 14);
+            this.label2.Location = new System.Drawing.Point(262, 13);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(309, 39);
+            this.label2.Size = new System.Drawing.Size(302, 29);
             this.label2.TabIndex = 53;
-            this.label2.Text = "Students Approval";
+            this.label2.Text = "Manage Students Status";
             // 
             // guna2Shapes1
             // 
             this.guna2Shapes1.BorderThickness = 1;
             this.guna2Shapes1.FillColor = System.Drawing.Color.Silver;
             this.guna2Shapes1.LineThickness = 2;
-            this.guna2Shapes1.Location = new System.Drawing.Point(269, 63);
+            this.guna2Shapes1.Location = new System.Drawing.Point(269, 50);
             this.guna2Shapes1.Name = "guna2Shapes1";
             this.guna2Shapes1.PolygonSkip = 1;
             this.guna2Shapes1.Rotate = 0F;
@@ -127,20 +134,21 @@
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtSearch.ForeColor = System.Drawing.Color.Black;
             this.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtSearch.Location = new System.Drawing.Point(767, 87);
+            this.txtSearch.Location = new System.Drawing.Point(813, 64);
             this.txtSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.txtSearch.PlaceholderText = "Type to search";
             this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(261, 48);
+            this.txtSearch.Size = new System.Drawing.Size(215, 48);
             this.txtSearch.TabIndex = 58;
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // btnSearch
             // 
             this.btnSearch.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSearch.Image = ((System.Drawing.Image)(resources.GetObject("btnSearch.Image")));
-            this.btnSearch.Location = new System.Drawing.Point(1034, 88);
+            this.btnSearch.Location = new System.Drawing.Point(1036, 67);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(48, 43);
             this.btnSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -151,44 +159,46 @@
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Century Gothic", 10F);
             this.label3.ForeColor = System.Drawing.Color.Maroon;
-            this.label3.Location = new System.Drawing.Point(265, 173);
+            this.label3.Location = new System.Drawing.Point(290, 77);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(199, 21);
+            this.label3.Size = new System.Drawing.Size(71, 21);
             this.label3.TabIndex = 60;
-            this.label3.Text = "Total Active Students :";
+            this.label3.Text = "Active ";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Century Gothic", 10F);
             this.label4.ForeColor = System.Drawing.Color.Maroon;
-            this.label4.Location = new System.Drawing.Point(265, 203);
+            this.label4.Location = new System.Drawing.Point(408, 78);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(208, 21);
+            this.label4.Size = new System.Drawing.Size(80, 21);
             this.label4.TabIndex = 61;
-            this.label4.Text = "Total Inactive Students:";
+            this.label4.Text = "Inactive";
             // 
             // lblTotalActive
             // 
             this.lblTotalActive.AutoSize = true;
-            this.lblTotalActive.Font = new System.Drawing.Font("Century Gothic", 10F);
-            this.lblTotalActive.ForeColor = System.Drawing.Color.Maroon;
-            this.lblTotalActive.Location = new System.Drawing.Point(482, 173);
+            this.lblTotalActive.BackColor = System.Drawing.Color.Transparent;
+            this.lblTotalActive.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalActive.ForeColor = System.Drawing.Color.DarkRed;
+            this.lblTotalActive.Location = new System.Drawing.Point(356, 81);
             this.lblTotalActive.Name = "lblTotalActive";
-            this.lblTotalActive.Size = new System.Drawing.Size(28, 21);
+            this.lblTotalActive.Size = new System.Drawing.Size(22, 17);
             this.lblTotalActive.TabIndex = 62;
             this.lblTotalActive.Text = "00";
             // 
             // lblTotalInactive
             // 
             this.lblTotalInactive.AutoSize = true;
-            this.lblTotalInactive.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.lblTotalInactive.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalInactive.ForeColor = System.Drawing.Color.Maroon;
-            this.lblTotalInactive.Location = new System.Drawing.Point(482, 203);
+            this.lblTotalInactive.Location = new System.Drawing.Point(488, 81);
             this.lblTotalInactive.Name = "lblTotalInactive";
-            this.lblTotalInactive.Size = new System.Drawing.Size(28, 21);
+            this.lblTotalInactive.Size = new System.Drawing.Size(22, 17);
             this.lblTotalInactive.TabIndex = 63;
             this.lblTotalInactive.Text = "00";
             // 
@@ -197,31 +207,33 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Century Gothic", 10F);
             this.label6.ForeColor = System.Drawing.Color.Maroon;
-            this.label6.Location = new System.Drawing.Point(267, 231);
+            this.label6.Location = new System.Drawing.Point(540, 77);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(205, 21);
+            this.label6.Size = new System.Drawing.Size(82, 21);
             this.label6.TabIndex = 64;
-            this.label6.Text = "Total Pending Students:";
+            this.label6.Text = "Pending ";
             // 
             // lblTotalPending
             // 
             this.lblTotalPending.AutoSize = true;
-            this.lblTotalPending.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.lblTotalPending.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalPending.ForeColor = System.Drawing.Color.Maroon;
-            this.lblTotalPending.Location = new System.Drawing.Point(482, 231);
+            this.lblTotalPending.Location = new System.Drawing.Point(619, 81);
             this.lblTotalPending.Name = "lblTotalPending";
-            this.lblTotalPending.Size = new System.Drawing.Size(28, 21);
+            this.lblTotalPending.Size = new System.Drawing.Size(22, 17);
             this.lblTotalPending.TabIndex = 65;
             this.lblTotalPending.Text = "00";
             // 
             // dtgApproval
             // 
+            this.dtgApproval.BackgroundColor = System.Drawing.Color.RosyBrown;
             this.dtgApproval.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgApproval.Location = new System.Drawing.Point(271, 267);
+            this.dtgApproval.GridColor = System.Drawing.Color.IndianRed;
+            this.dtgApproval.Location = new System.Drawing.Point(286, 200);
             this.dtgApproval.Name = "dtgApproval";
             this.dtgApproval.RowHeadersWidth = 51;
             this.dtgApproval.RowTemplate.Height = 24;
-            this.dtgApproval.Size = new System.Drawing.Size(811, 436);
+            this.dtgApproval.Size = new System.Drawing.Size(786, 486);
             this.dtgApproval.TabIndex = 66;
             this.dtgApproval.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgApproval_CellValueChanged);
             this.dtgApproval.SelectionChanged += new System.EventHandler(this.dtgApproval_SelectionChanged);
@@ -229,24 +241,23 @@
             // btnDelete
             // 
             this.btnDelete.Animated = true;
+            this.btnDelete.BorderColor = System.Drawing.Color.Transparent;
             this.btnDelete.BorderRadius = 10;
             this.btnDelete.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDelete.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnDelete.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.btnDelete.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.btnDelete.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnDelete.FillColor = System.Drawing.Color.Maroon;
+            this.btnDelete.FillColor = System.Drawing.Color.Transparent;
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
+            this.btnDelete.ForeColor = System.Drawing.Color.Maroon;
             this.btnDelete.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDelete.ImageSize = new System.Drawing.Size(30, 30);
-            this.btnDelete.Location = new System.Drawing.Point(271, 88);
+            this.btnDelete.Location = new System.Drawing.Point(669, 67);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(173, 47);
+            this.btnDelete.Size = new System.Drawing.Size(117, 47);
             this.btnDelete.TabIndex = 67;
-            this.btnDelete.Text = "     Delete Student";
-            this.btnDelete.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.btnDelete.Text = "Delete Student";
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // sidebar
@@ -396,6 +407,7 @@
             this.btnTeachers.TabIndex = 4;
             this.btnTeachers.Text = "       Teacher";
             this.btnTeachers.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnTeachers.Click += new System.EventHandler(this.btnTeachers_Click_1);
             // 
             // btnSubjects
             // 
@@ -460,11 +472,137 @@
             this.btnLogs.Text = "       Logs";
             this.btnLogs.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             // 
+            // guna2Shapes2
+            // 
+            this.guna2Shapes2.BorderThickness = 1;
+            this.guna2Shapes2.FillColor = System.Drawing.Color.Silver;
+            this.guna2Shapes2.LineOrientation = System.Windows.Forms.Orientation.Vertical;
+            this.guna2Shapes2.LineThickness = 2;
+            this.guna2Shapes2.Location = new System.Drawing.Point(647, 69);
+            this.guna2Shapes2.Name = "guna2Shapes2";
+            this.guna2Shapes2.PolygonSkip = 1;
+            this.guna2Shapes2.Rotate = 0F;
+            this.guna2Shapes2.RoundedRadius = 10;
+            this.guna2Shapes2.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
+            this.guna2Shapes2.Size = new System.Drawing.Size(16, 42);
+            this.guna2Shapes2.TabIndex = 71;
+            this.guna2Shapes2.Text = "guna2Shapes2";
+            this.guna2Shapes2.Zoom = 100;
+            // 
+            // guna2Shapes3
+            // 
+            this.guna2Shapes3.BackColor = System.Drawing.Color.Transparent;
+            this.guna2Shapes3.BorderThickness = 0;
+            this.guna2Shapes3.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.guna2Shapes3.Location = new System.Drawing.Point(269, 131);
+            this.guna2Shapes3.Name = "guna2Shapes3";
+            this.guna2Shapes3.PolygonSkip = 1;
+            this.guna2Shapes3.Rotate = 0F;
+            this.guna2Shapes3.RoundedRadius = 10;
+            this.guna2Shapes3.Shape = Guna.UI2.WinForms.Enums.ShapeType.Rounded;
+            this.guna2Shapes3.Size = new System.Drawing.Size(815, 572);
+            this.guna2Shapes3.TabIndex = 72;
+            this.guna2Shapes3.Text = "guna2Shapes3";
+            this.guna2Shapes3.Zoom = 100;
+            // 
+            // guna2Shapes4
+            // 
+            this.guna2Shapes4.BorderThickness = 1;
+            this.guna2Shapes4.FillColor = System.Drawing.Color.Silver;
+            this.guna2Shapes4.LineThickness = 2;
+            this.guna2Shapes4.Location = new System.Drawing.Point(267, 112);
+            this.guna2Shapes4.Name = "guna2Shapes4";
+            this.guna2Shapes4.PolygonSkip = 1;
+            this.guna2Shapes4.Rotate = 0F;
+            this.guna2Shapes4.RoundedRadius = 10;
+            this.guna2Shapes4.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
+            this.guna2Shapes4.Size = new System.Drawing.Size(815, 17);
+            this.guna2Shapes4.TabIndex = 73;
+            this.guna2Shapes4.Text = "guna2Shapes4";
+            this.guna2Shapes4.Zoom = 100;
+            // 
+            // guna2Shapes5
+            // 
+            this.guna2Shapes5.BorderThickness = 1;
+            this.guna2Shapes5.FillColor = System.Drawing.Color.Silver;
+            this.guna2Shapes5.LineOrientation = System.Windows.Forms.Orientation.Vertical;
+            this.guna2Shapes5.LineThickness = 2;
+            this.guna2Shapes5.Location = new System.Drawing.Point(784, 67);
+            this.guna2Shapes5.Name = "guna2Shapes5";
+            this.guna2Shapes5.PolygonSkip = 1;
+            this.guna2Shapes5.Rotate = 0F;
+            this.guna2Shapes5.RoundedRadius = 10;
+            this.guna2Shapes5.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
+            this.guna2Shapes5.Size = new System.Drawing.Size(16, 42);
+            this.guna2Shapes5.TabIndex = 74;
+            this.guna2Shapes5.Text = "guna2Shapes5";
+            this.guna2Shapes5.Zoom = 100;
+            // 
+            // guna2Shapes6
+            // 
+            this.guna2Shapes6.BorderThickness = 1;
+            this.guna2Shapes6.FillColor = System.Drawing.Color.ForestGreen;
+            this.guna2Shapes6.LineEndCap = System.Drawing.Drawing2D.LineCap.Round;
+            this.guna2Shapes6.LineOrientation = System.Windows.Forms.Orientation.Vertical;
+            this.guna2Shapes6.LineThickness = 2;
+            this.guna2Shapes6.Location = new System.Drawing.Point(269, 80);
+            this.guna2Shapes6.Name = "guna2Shapes6";
+            this.guna2Shapes6.PolygonSkip = 1;
+            this.guna2Shapes6.Rotate = 0F;
+            this.guna2Shapes6.RoundedRadius = 10;
+            this.guna2Shapes6.Shape = Guna.UI2.WinForms.Enums.ShapeType.Ellipse;
+            this.guna2Shapes6.Size = new System.Drawing.Size(16, 16);
+            this.guna2Shapes6.TabIndex = 84;
+            this.guna2Shapes6.Text = "guna2Shapes6";
+            this.guna2Shapes6.Zoom = 100;
+            // 
+            // guna2Shapes7
+            // 
+            this.guna2Shapes7.BorderThickness = 1;
+            this.guna2Shapes7.FillColor = System.Drawing.Color.Red;
+            this.guna2Shapes7.LineEndCap = System.Drawing.Drawing2D.LineCap.Round;
+            this.guna2Shapes7.LineOrientation = System.Windows.Forms.Orientation.Vertical;
+            this.guna2Shapes7.LineThickness = 2;
+            this.guna2Shapes7.Location = new System.Drawing.Point(386, 81);
+            this.guna2Shapes7.Name = "guna2Shapes7";
+            this.guna2Shapes7.PolygonSkip = 1;
+            this.guna2Shapes7.Rotate = 0F;
+            this.guna2Shapes7.RoundedRadius = 10;
+            this.guna2Shapes7.Shape = Guna.UI2.WinForms.Enums.ShapeType.Ellipse;
+            this.guna2Shapes7.Size = new System.Drawing.Size(16, 16);
+            this.guna2Shapes7.TabIndex = 85;
+            this.guna2Shapes7.Text = "guna2Shapes7";
+            this.guna2Shapes7.Zoom = 100;
+            // 
+            // guna2Shapes8
+            // 
+            this.guna2Shapes8.BorderThickness = 1;
+            this.guna2Shapes8.FillColor = System.Drawing.Color.Orange;
+            this.guna2Shapes8.LineEndCap = System.Drawing.Drawing2D.LineCap.Round;
+            this.guna2Shapes8.LineOrientation = System.Windows.Forms.Orientation.Vertical;
+            this.guna2Shapes8.LineThickness = 2;
+            this.guna2Shapes8.Location = new System.Drawing.Point(522, 81);
+            this.guna2Shapes8.Name = "guna2Shapes8";
+            this.guna2Shapes8.PolygonSkip = 1;
+            this.guna2Shapes8.Rotate = 0F;
+            this.guna2Shapes8.RoundedRadius = 10;
+            this.guna2Shapes8.Shape = Guna.UI2.WinForms.Enums.ShapeType.Ellipse;
+            this.guna2Shapes8.Size = new System.Drawing.Size(16, 16);
+            this.guna2Shapes8.TabIndex = 86;
+            this.guna2Shapes8.Text = "guna2Shapes8";
+            this.guna2Shapes8.Zoom = 100;
+            // 
             // AdminApproval
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
+            this.Controls.Add(this.guna2Shapes8);
+            this.Controls.Add(this.guna2Shapes7);
+            this.Controls.Add(this.guna2Shapes6);
+            this.Controls.Add(this.guna2Shapes5);
+            this.Controls.Add(this.guna2Shapes4);
+            this.Controls.Add(this.guna2Shapes2);
             this.Controls.Add(this.sidebar);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.dtgApproval);
@@ -480,6 +618,7 @@
             this.Controls.Add(this.btnMinimize);
             this.Controls.Add(this.guna2Shapes1);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.guna2Shapes3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AdminApproval";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -524,5 +663,12 @@
         private Guna.UI2.WinForms.Guna2Button btnSubjects;
         private Guna.UI2.WinForms.Guna2Button btnReports;
         private Guna.UI2.WinForms.Guna2Button btnLogs;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes2;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes3;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes4;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes5;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes6;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes7;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes8;
     }
 }

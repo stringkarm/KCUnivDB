@@ -56,7 +56,6 @@ namespace KCUnivDB
                 return;
             }
 
-            // Hash the user-entered passwords for comparison and updating
             string hashedOldPassword = HashPassword(oldPassword);
             string hashedNewPassword = HashPassword(newPassword);
 
@@ -66,7 +65,6 @@ namespace KCUnivDB
                 {
                     connection.Open();
 
-                    // Step 1: Get the ProfileID from the Profiles table using the email
                     string getProfileIdQuery = "SELECT ProfileID FROM Profiles WHERE Email = @Email";
                     SqlCommand getProfileIdCmd = new SqlCommand(getProfileIdQuery, connection);
                     getProfileIdCmd.Parameters.AddWithValue("@Email", email);
@@ -79,7 +77,6 @@ namespace KCUnivDB
                     }
                     int profileId = (int)profileIdObj;
 
-                    // Step 2: Check if the old password matches using the ProfileID
                     string checkQuery = "SELECT COUNT(*) FROM Users WHERE Password = @OldPassword AND ProfileID = @ProfileID";
                     SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
                     checkCmd.Parameters.AddWithValue("@OldPassword", hashedOldPassword);
@@ -92,7 +89,6 @@ namespace KCUnivDB
                         return;
                     }
 
-                    // Step 3: Update the password using the ProfileID
                     string updateQuery = "UPDATE Users SET Password = @NewPassword WHERE ProfileID = @ProfileID";
                     SqlCommand updateCmd = new SqlCommand(updateQuery, connection);
                     updateCmd.Parameters.AddWithValue("@NewPassword", hashedNewPassword);

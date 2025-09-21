@@ -53,6 +53,11 @@
             this.dtgStudentsList = new System.Windows.Forms.DataGridView();
             this.lblTotalActive = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.guna2Shapes3 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.guna2Shapes2 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.guna2Shapes4 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.guna2Shapes5 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.guna2Shapes6 = new Guna.UI2.WinForms.Guna2Shapes();
             this.adminRegister1 = new KCUnivDB.AdminRegister();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -89,7 +94,7 @@
             this.guna2Shapes1.BorderThickness = 1;
             this.guna2Shapes1.FillColor = System.Drawing.Color.Silver;
             this.guna2Shapes1.LineThickness = 2;
-            this.guna2Shapes1.Location = new System.Drawing.Point(269, 63);
+            this.guna2Shapes1.Location = new System.Drawing.Point(269, 46);
             this.guna2Shapes1.Name = "guna2Shapes1";
             this.guna2Shapes1.PolygonSkip = 1;
             this.guna2Shapes1.Rotate = 0F;
@@ -103,13 +108,13 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Maroon;
             this.label2.Location = new System.Drawing.Point(262, 14);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(209, 39);
+            this.label2.Size = new System.Drawing.Size(369, 29);
             this.label2.TabIndex = 58;
-            this.label2.Text = "Students List";
+            this.label2.Text = "Manage Students Information";
             // 
             // sidebar
             // 
@@ -257,6 +262,7 @@
             this.btnTeachers.TabIndex = 4;
             this.btnTeachers.Text = "       Teacher";
             this.btnTeachers.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnTeachers.Click += new System.EventHandler(this.btnTeachers_Click);
             // 
             // btnSubjects
             // 
@@ -336,7 +342,7 @@
             this.btnAddstudent.Image = ((System.Drawing.Image)(resources.GetObject("btnAddstudent.Image")));
             this.btnAddstudent.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnAddstudent.ImageSize = new System.Drawing.Size(30, 30);
-            this.btnAddstudent.Location = new System.Drawing.Point(275, 88);
+            this.btnAddstudent.Location = new System.Drawing.Point(438, 62);
             this.btnAddstudent.Name = "btnAddstudent";
             this.btnAddstudent.Size = new System.Drawing.Size(162, 47);
             this.btnAddstudent.TabIndex = 72;
@@ -358,7 +364,7 @@
             this.btnUpdate.ForeColor = System.Drawing.Color.White;
             this.btnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("btnUpdate.Image")));
             this.btnUpdate.ImageSize = new System.Drawing.Size(30, 30);
-            this.btnUpdate.Location = new System.Drawing.Point(504, 88);
+            this.btnUpdate.Location = new System.Drawing.Point(667, 61);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(55, 47);
             this.btnUpdate.TabIndex = 71;
@@ -378,7 +384,7 @@
             this.btnDelete.ForeColor = System.Drawing.Color.White;
             this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
             this.btnDelete.ImageSize = new System.Drawing.Size(30, 30);
-            this.btnDelete.Location = new System.Drawing.Point(443, 88);
+            this.btnDelete.Location = new System.Drawing.Point(606, 62);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(55, 47);
             this.btnDelete.TabIndex = 70;
@@ -388,7 +394,7 @@
             // 
             this.btnSearch.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSearch.Image = ((System.Drawing.Image)(resources.GetObject("btnSearch.Image")));
-            this.btnSearch.Location = new System.Drawing.Point(1034, 88);
+            this.btnSearch.Location = new System.Drawing.Point(1034, 62);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(48, 43);
             this.btnSearch.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -411,7 +417,7 @@
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtSearch.ForeColor = System.Drawing.Color.Black;
             this.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtSearch.Location = new System.Drawing.Point(767, 87);
+            this.txtSearch.Location = new System.Drawing.Point(767, 60);
             this.txtSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.PlaceholderForeColor = System.Drawing.Color.Gray;
@@ -422,12 +428,14 @@
             // 
             // dtgStudentsList
             // 
+            this.dtgStudentsList.BackgroundColor = System.Drawing.Color.RosyBrown;
             this.dtgStudentsList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgStudentsList.Location = new System.Drawing.Point(271, 267);
+            this.dtgStudentsList.GridColor = System.Drawing.Color.IndianRed;
+            this.dtgStudentsList.Location = new System.Drawing.Point(286, 267);
             this.dtgStudentsList.Name = "dtgStudentsList";
             this.dtgStudentsList.RowHeadersWidth = 51;
             this.dtgStudentsList.RowTemplate.Height = 24;
-            this.dtgStudentsList.Size = new System.Drawing.Size(811, 436);
+            this.dtgStudentsList.Size = new System.Drawing.Size(783, 436);
             this.dtgStudentsList.TabIndex = 75;
             this.dtgStudentsList.SelectionChanged += new System.EventHandler(this.dtgStudentsList_SelectionChanged);
             // 
@@ -436,7 +444,7 @@
             this.lblTotalActive.AutoSize = true;
             this.lblTotalActive.Font = new System.Drawing.Font("Century Gothic", 10F);
             this.lblTotalActive.ForeColor = System.Drawing.Color.Maroon;
-            this.lblTotalActive.Location = new System.Drawing.Point(489, 227);
+            this.lblTotalActive.Location = new System.Drawing.Point(360, 74);
             this.lblTotalActive.Name = "lblTotalActive";
             this.lblTotalActive.Size = new System.Drawing.Size(28, 21);
             this.lblTotalActive.TabIndex = 77;
@@ -447,15 +455,100 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Century Gothic", 10F);
             this.label3.ForeColor = System.Drawing.Color.Maroon;
-            this.label3.Location = new System.Drawing.Point(272, 227);
+            this.label3.Location = new System.Drawing.Point(296, 74);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(199, 21);
+            this.label3.Size = new System.Drawing.Size(71, 21);
             this.label3.TabIndex = 76;
-            this.label3.Text = "Total Active Students :";
+            this.label3.Text = "Active ";
+            // 
+            // guna2Shapes3
+            // 
+            this.guna2Shapes3.BackColor = System.Drawing.Color.Transparent;
+            this.guna2Shapes3.BorderThickness = 0;
+            this.guna2Shapes3.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.guna2Shapes3.Location = new System.Drawing.Point(267, 157);
+            this.guna2Shapes3.Name = "guna2Shapes3";
+            this.guna2Shapes3.PolygonSkip = 1;
+            this.guna2Shapes3.Rotate = 0F;
+            this.guna2Shapes3.RoundedRadius = 10;
+            this.guna2Shapes3.Shape = Guna.UI2.WinForms.Enums.ShapeType.Rounded;
+            this.guna2Shapes3.Size = new System.Drawing.Size(815, 572);
+            this.guna2Shapes3.TabIndex = 79;
+            this.guna2Shapes3.Text = "guna2Shapes3";
+            this.guna2Shapes3.Zoom = 100;
+            // 
+            // guna2Shapes2
+            // 
+            this.guna2Shapes2.BorderThickness = 1;
+            this.guna2Shapes2.FillColor = System.Drawing.Color.Silver;
+            this.guna2Shapes2.LineThickness = 2;
+            this.guna2Shapes2.Location = new System.Drawing.Point(267, 108);
+            this.guna2Shapes2.Name = "guna2Shapes2";
+            this.guna2Shapes2.PolygonSkip = 1;
+            this.guna2Shapes2.Rotate = 0F;
+            this.guna2Shapes2.RoundedRadius = 10;
+            this.guna2Shapes2.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
+            this.guna2Shapes2.Size = new System.Drawing.Size(815, 17);
+            this.guna2Shapes2.TabIndex = 80;
+            this.guna2Shapes2.Text = "guna2Shapes2";
+            this.guna2Shapes2.Zoom = 100;
+            // 
+            // guna2Shapes4
+            // 
+            this.guna2Shapes4.BorderThickness = 1;
+            this.guna2Shapes4.FillColor = System.Drawing.Color.Silver;
+            this.guna2Shapes4.LineOrientation = System.Windows.Forms.Orientation.Vertical;
+            this.guna2Shapes4.LineThickness = 2;
+            this.guna2Shapes4.Location = new System.Drawing.Point(735, 64);
+            this.guna2Shapes4.Name = "guna2Shapes4";
+            this.guna2Shapes4.PolygonSkip = 1;
+            this.guna2Shapes4.Rotate = 0F;
+            this.guna2Shapes4.RoundedRadius = 10;
+            this.guna2Shapes4.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
+            this.guna2Shapes4.Size = new System.Drawing.Size(16, 42);
+            this.guna2Shapes4.TabIndex = 81;
+            this.guna2Shapes4.Text = "guna2Shapes4";
+            this.guna2Shapes4.Zoom = 100;
+            this.guna2Shapes4.Click += new System.EventHandler(this.guna2Shapes4_Click);
+            // 
+            // guna2Shapes5
+            // 
+            this.guna2Shapes5.BorderThickness = 1;
+            this.guna2Shapes5.FillColor = System.Drawing.Color.Silver;
+            this.guna2Shapes5.LineOrientation = System.Windows.Forms.Orientation.Vertical;
+            this.guna2Shapes5.LineThickness = 2;
+            this.guna2Shapes5.Location = new System.Drawing.Point(405, 64);
+            this.guna2Shapes5.Name = "guna2Shapes5";
+            this.guna2Shapes5.PolygonSkip = 1;
+            this.guna2Shapes5.Rotate = 0F;
+            this.guna2Shapes5.RoundedRadius = 10;
+            this.guna2Shapes5.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
+            this.guna2Shapes5.Size = new System.Drawing.Size(16, 42);
+            this.guna2Shapes5.TabIndex = 82;
+            this.guna2Shapes5.Text = "guna2Shapes5";
+            this.guna2Shapes5.Zoom = 100;
+            // 
+            // guna2Shapes6
+            // 
+            this.guna2Shapes6.BorderThickness = 1;
+            this.guna2Shapes6.FillColor = System.Drawing.Color.ForestGreen;
+            this.guna2Shapes6.LineEndCap = System.Drawing.Drawing2D.LineCap.Round;
+            this.guna2Shapes6.LineOrientation = System.Windows.Forms.Orientation.Vertical;
+            this.guna2Shapes6.LineThickness = 2;
+            this.guna2Shapes6.Location = new System.Drawing.Point(274, 77);
+            this.guna2Shapes6.Name = "guna2Shapes6";
+            this.guna2Shapes6.PolygonSkip = 1;
+            this.guna2Shapes6.Rotate = 0F;
+            this.guna2Shapes6.RoundedRadius = 10;
+            this.guna2Shapes6.Shape = Guna.UI2.WinForms.Enums.ShapeType.Ellipse;
+            this.guna2Shapes6.Size = new System.Drawing.Size(16, 16);
+            this.guna2Shapes6.TabIndex = 83;
+            this.guna2Shapes6.Text = "guna2Shapes6";
+            this.guna2Shapes6.Zoom = 100;
             // 
             // adminRegister1
             // 
-            this.adminRegister1.Location = new System.Drawing.Point(243, 0);
+            this.adminRegister1.Location = new System.Drawing.Point(244, 0);
             this.adminRegister1.Name = "adminRegister1";
             this.adminRegister1.Size = new System.Drawing.Size(860, 729);
             this.adminRegister1.TabIndex = 78;
@@ -467,6 +560,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
             this.Controls.Add(this.adminRegister1);
+            this.Controls.Add(this.guna2Shapes6);
+            this.Controls.Add(this.guna2Shapes5);
+            this.Controls.Add(this.guna2Shapes4);
+            this.Controls.Add(this.guna2Shapes2);
             this.Controls.Add(this.lblTotalActive);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dtgStudentsList);
@@ -480,6 +577,7 @@
             this.Controls.Add(this.btnMinimize);
             this.Controls.Add(this.guna2Shapes1);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.guna2Shapes3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AdminStudent";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -523,5 +621,10 @@
         private System.Windows.Forms.Label lblTotalActive;
         private System.Windows.Forms.Label label3;
         private AdminRegister adminRegister1;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes3;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes2;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes4;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes5;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes6;
     }
 }

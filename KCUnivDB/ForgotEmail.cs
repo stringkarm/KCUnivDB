@@ -30,7 +30,6 @@ namespace KCUnivDB
                 return;
             }
 
-            // Check if the email exists in the database
             string query = "SELECT ProfileID FROM Profiles WHERE Email = @Email";
             int profileId = -1;
 
@@ -57,10 +56,10 @@ namespace KCUnivDB
             
             if (profileId != -1)
             {
-                // If email exists, open the password confirmation form
+               
                 ForgotConfirmation forgotConfirmForm = new ForgotConfirmation(email);
-                this.Hide(); // Hide the current form
-                forgotConfirmForm.Show(); // Show the new form
+                this.Hide(); 
+                forgotConfirmForm.Show(); 
             }
             else
             {

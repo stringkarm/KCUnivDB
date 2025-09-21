@@ -13,30 +13,15 @@ using System.Windows.Forms;
 
 namespace KCUnivDB
 {
-    public partial class AdminRegister : UserControl
+    public partial class AddTeacher : UserControl
     {
-        public AdminRegister()
+        public AddTeacher()
         {
             InitializeComponent();
         }
 
-        string connectionString = @"Data Source = canasa\SQLEXPRESS;
-        Initial catalog = KCUnivDB; Integrated Security = true";
+        private string connectionString = @"Data Source=canasa\SQLEXPRESS; Initial catalog=KCUnivDB; Integrated Security=true";
 
-
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void btnMinimize_Click(object sender, EventArgs e)
-        {
-            Form parentForm = this.FindForm();
-            if (parentForm != null)
-            {
-                parentForm.WindowState = FormWindowState.Minimized;
-            }
-        }
         private string HashPassword(string plainPassword)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -141,52 +126,72 @@ namespace KCUnivDB
                 return;
             }
 
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-              
-                connection.Open();
-
-                SqlCommand checkCmd = new SqlCommand("SELECT COUNT(*) FROM Profiles WHERE Email = @email", connection);
-                checkCmd.Parameters.AddWithValue("@email", txtEmail.Text);
-
-                int userCount = (int)checkCmd.ExecuteScalar();
-
-                if (userCount > 0)
+            try
                 {
-                    MessageBox.Show("This email is already registered. Please use a different one.", "Registration Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        // Generate a new unique teacher username (e.g., TC000001, TC000002)
+                        string getNextIdQuery = "SELECT ISNULL(MAX(SUBSTRING(Username, 3, 6)), 0) FROM Users WHERE Username LIKE 'TC%'";
+                        SqlCommand getNextIdCmd = new SqlCommand(getNextIdQuery, connection);
+                        int nextId = Convert.ToInt32(getNextIdCmd.ExecuteScalar()) + 1;
+                        string generatedUsername = $"TC{nextId:D6}";
+                        string generatedPassword = generatedUsername; // Password is the same as the username
+                        string hashedPassword = HashPassword(generatedPassword);
+
+                        // 1. Insert into Profiles table
+                        string insertProfileQuery = "INSERT INTO Profiles (FirstName, LastName, Age, Gender, Phone, Email, Address, Status) VALUES (@FirstName, @LastName, @Age, @Gender, @Phone, @Email, @Address, 'Active'); SELECT SCOPE_IDENTITY();";
+                        SqlCommand insertProfileCmd = new SqlCommand(insertProfileQuery, connection);
+                        insertProfileCmd.Parameters.AddWithValue("@FirstName", txtFirstname.Text.Trim());
+                        insertProfileCmd.Parameters.AddWithValue("@LastName", txtLastname.Text.Trim());
+                        insertProfileCmd.Parameters.AddWithValue("@Age", int.Parse(txtAge.Text.Trim()));
+                        insertProfileCmd.Parameters.AddWithValue("@Gender", cmbGender.Text);
+                        insertProfileCmd.Parameters.AddWithValue("@Phone", txtPhone.Text.Trim());
+                        insertProfileCmd.Parameters.AddWithValue("@Email", txtEmail.Text.Trim());
+                        insertProfileCmd.Parameters.AddWithValue("@Address", txtAddress.Text.Trim());
+
+                        int profileId = Convert.ToInt32(insertProfileCmd.ExecuteScalar());
+
+                        // 2. Insert into Users table
+                        string insertUserQuery = "INSERT INTO Users (Username, Password, RoleID, ProfileID) VALUES (@Username, @Password, @RoleID, @ProfileID)";
+                        SqlCommand insertUserCmd = new SqlCommand(insertUserQuery, connection);
+                        insertUserCmd.Parameters.AddWithValue("@Username", generatedUsername);
+                        insertUserCmd.Parameters.AddWithValue("@Password", hashedPassword);
+                        insertUserCmd.Parameters.AddWithValue("@RoleID", 2); 
+                        insertUserCmd.Parameters.AddWithValue("@ProfileID", profileId);
+
+                        insertUserCmd.ExecuteNonQuery();
+
+                        MessageBox.Show($"Teacher registered successfully!\nUsername: {generatedUsername}\nPassword: {generatedPassword}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        ClearFields();
+                    }
                 }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("Database error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An unexpected error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            
+            
+        }
+        private void ClearFields()
+        {
+            txtFirstname.Clear();
+            txtLastname.Clear();
+            txtAge.Clear();
+            cmbGender.SelectedIndex = -1;
+            txtPhone.Clear();
+            txtEmail.Clear();
+            txtAddress.Clear();
+        }
 
-                Random rnd = new Random();
-                string generatedUserID = "ST" + rnd.Next(100000, 999999).ToString();
-                string generatedPassword = generatedUserID;
-
-                string hashedPassword = HashPassword(generatedPassword);
-
-                SqlCommand cmd = new SqlCommand("Registration_SP", connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.AddWithValue("@FirstName", txtFirstname.Text);
-                cmd.Parameters.AddWithValue("@LastName", txtLastname.Text);
-                cmd.Parameters.AddWithValue("@Age", age);
-                cmd.Parameters.AddWithValue("@Gender", cmbGender.Text);
-                cmd.Parameters.AddWithValue("@Phone", txtPhone.Text);
-                cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
-                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
-
-                cmd.Parameters.AddWithValue("@Username", generatedUserID);
-                cmd.Parameters.AddWithValue("@HashedPassword", hashedPassword);
-                         
-                cmd.Parameters.AddWithValue("@Status", "Active");
-
-
-                cmd.ExecuteNonQuery();
-
-                MessageBox.Show("Registration Successful!" + "\n Username: " + generatedUserID + "\n Password: " + generatedPassword + "\n The student account is officially active.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            }
-             
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            this.Hide();
         }
 
         private bool IsEmailExist(string email)
@@ -217,11 +222,6 @@ namespace KCUnivDB
                     return false;
                 }
             }
-        }
-
-        private void btnBack_Click(object sender, EventArgs e)
-        {
-            this.Hide();
         }
     }
 
