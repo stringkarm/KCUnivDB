@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Guna.UI2.WinForms.Suite;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -57,6 +58,8 @@ namespace KCUnivDB
             errorProvider1.Clear();
             bool isValid = true;
             string email = txtEmail.Text.Trim();
+            string action = "Add Student";
+            string description = "Added a new student";
 
             // First Name Validation
             if (string.IsNullOrWhiteSpace(txtFirstname.Text))
@@ -73,12 +76,12 @@ namespace KCUnivDB
             }
 
             // Age Validation
-            if (string.IsNullOrWhiteSpace(txtAge.Text))
+            int age;
+            if (string.IsNullOrWhiteSpace(txtAge.Text) || !int.TryParse(txtAge.Text, out age))
             {
-                errorProvider1.SetError(txtAge, "Age is required.");
+                errorProvider1.SetError(txtAge, "Please enter a valid age.");
                 isValid = false;
             }
-
 
             // Gender Validation
             if (string.IsNullOrWhiteSpace(cmbGender.Text))
@@ -128,65 +131,47 @@ namespace KCUnivDB
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtFirstname.Text) || string.IsNullOrWhiteSpace(txtLastname.Text) ||
-                string.IsNullOrWhiteSpace(txtEmail.Text))
-            {
-                MessageBox.Show("Please fill in all required fields.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            int age;
-            if (!int.TryParse(txtAge.Text, out age))
-            {
-                MessageBox.Show("Please enter a valid age.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-              
-                connection.Open();
-
-                SqlCommand checkCmd = new SqlCommand("SELECT COUNT(*) FROM Profiles WHERE Email = @email", connection);
-                checkCmd.Parameters.AddWithValue("@email", txtEmail.Text);
-
-                int userCount = (int)checkCmd.ExecuteScalar();
-
-                if (userCount > 0)
+                try
                 {
-                    MessageBox.Show("This email is already registered. Please use a different one.", "Registration Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    connection.Open();
+
+                    Random rnd = new Random();
+                    string generatedUserID = "ST" + rnd.Next(100000, 999999).ToString();
+                    string generatedPassword = generatedUserID;
+                    string hashedPassword = HashPassword(generatedPassword);
+
+                    SqlCommand cmd = new SqlCommand("AddStudent_SP", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@firstname", txtFirstname.Text);
+                    cmd.Parameters.AddWithValue("@lastname", txtLastname.Text);
+                    cmd.Parameters.AddWithValue("@age", txtAge.Text);
+                    cmd.Parameters.AddWithValue("@gender", cmbGender.Text);
+                    cmd.Parameters.AddWithValue("@phone", txtPhone.Text);
+                    cmd.Parameters.AddWithValue("@address", txtAddress.Text);
+                    cmd.Parameters.AddWithValue("@email", email);
+                    cmd.Parameters.AddWithValue("@Username", generatedUserID);
+                    cmd.Parameters.AddWithValue("@HashedPassword", hashedPassword);
+                    cmd.Parameters.AddWithValue("@EnrollmentDate", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@Action", action);
+                    cmd.Parameters.AddWithValue("@Description", description);
+
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Registration Successful!" + "\n Username: " + generatedUserID + "\n Password: " + generatedPassword + "\n The student account is officially active.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 }
-
-                Random rnd = new Random();
-                string generatedUserID = "ST" + rnd.Next(100000, 999999).ToString();
-                string generatedPassword = generatedUserID;
-
-                string hashedPassword = HashPassword(generatedPassword);
-
-                SqlCommand cmd = new SqlCommand("Registration_SP", connection);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.AddWithValue("@FirstName", txtFirstname.Text);
-                cmd.Parameters.AddWithValue("@LastName", txtLastname.Text);
-                cmd.Parameters.AddWithValue("@Age", age);
-                cmd.Parameters.AddWithValue("@Gender", cmbGender.Text);
-                cmd.Parameters.AddWithValue("@Phone", txtPhone.Text);
-                cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
-                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
-
-                cmd.Parameters.AddWithValue("@Username", generatedUserID);
-                cmd.Parameters.AddWithValue("@HashedPassword", hashedPassword);
-                         
-                cmd.Parameters.AddWithValue("@Status", "Active");
-
-
-                cmd.ExecuteNonQuery();
-
-                MessageBox.Show("Registration Successful!" + "\n Username: " + generatedUserID + "\n Password: " + generatedPassword + "\n The student account is officially active.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("Database error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An unexpected error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-             
         }
 
         private bool IsEmailExist(string email)

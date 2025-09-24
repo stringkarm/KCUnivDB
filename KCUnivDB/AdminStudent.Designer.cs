@@ -326,6 +326,7 @@
             this.btnLogs.TabIndex = 7;
             this.btnLogs.Text = "       Logs";
             this.btnLogs.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLogs.Click += new System.EventHandler(this.btnLogs_Click);
             // 
             // btnAddstudent
             // 
@@ -437,6 +438,7 @@
             this.dtgStudentsList.RowTemplate.Height = 24;
             this.dtgStudentsList.Size = new System.Drawing.Size(783, 436);
             this.dtgStudentsList.TabIndex = 75;
+            this.dtgStudentsList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgStudentsList_CellContentClick);
             this.dtgStudentsList.SelectionChanged += new System.EventHandler(this.dtgStudentsList_SelectionChanged);
             // 
             // lblTotalActive
@@ -548,7 +550,7 @@
             // 
             // adminRegister1
             // 
-            this.adminRegister1.Location = new System.Drawing.Point(244, 0);
+            this.adminRegister1.Location = new System.Drawing.Point(243, 417);
             this.adminRegister1.Name = "adminRegister1";
             this.adminRegister1.Size = new System.Drawing.Size(860, 729);
             this.adminRegister1.TabIndex = 78;

@@ -36,9 +36,7 @@
             this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             this.btnSearch = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.lblTotalActive = new System.Windows.Forms.Label();
-            this.lblTotalInactive = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.lblTotalPending = new System.Windows.Forms.Label();
             this.dtgApproval = new System.Windows.Forms.DataGridView();
@@ -60,7 +58,6 @@
             this.guna2Shapes4 = new Guna.UI2.WinForms.Guna2Shapes();
             this.guna2Shapes5 = new Guna.UI2.WinForms.Guna2Shapes();
             this.guna2Shapes6 = new Guna.UI2.WinForms.Guna2Shapes();
-            this.guna2Shapes7 = new Guna.UI2.WinForms.Guna2Shapes();
             this.guna2Shapes8 = new Guna.UI2.WinForms.Guna2Shapes();
             ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgApproval)).BeginInit();
@@ -134,13 +131,13 @@
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtSearch.ForeColor = System.Drawing.Color.Black;
             this.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtSearch.Location = new System.Drawing.Point(813, 64);
+            this.txtSearch.Location = new System.Drawing.Point(699, 64);
             this.txtSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.txtSearch.PlaceholderText = "Type to search";
             this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(215, 48);
+            this.txtSearch.Size = new System.Drawing.Size(329, 48);
             this.txtSearch.TabIndex = 58;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
@@ -168,17 +165,6 @@
             this.label3.TabIndex = 60;
             this.label3.Text = "Active ";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Century Gothic", 10F);
-            this.label4.ForeColor = System.Drawing.Color.Maroon;
-            this.label4.Location = new System.Drawing.Point(408, 78);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(80, 21);
-            this.label4.TabIndex = 61;
-            this.label4.Text = "Inactive";
-            // 
             // lblTotalActive
             // 
             this.lblTotalActive.AutoSize = true;
@@ -191,23 +177,12 @@
             this.lblTotalActive.TabIndex = 62;
             this.lblTotalActive.Text = "00";
             // 
-            // lblTotalInactive
-            // 
-            this.lblTotalInactive.AutoSize = true;
-            this.lblTotalInactive.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalInactive.ForeColor = System.Drawing.Color.Maroon;
-            this.lblTotalInactive.Location = new System.Drawing.Point(488, 81);
-            this.lblTotalInactive.Name = "lblTotalInactive";
-            this.lblTotalInactive.Size = new System.Drawing.Size(22, 17);
-            this.lblTotalInactive.TabIndex = 63;
-            this.lblTotalInactive.Text = "00";
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Century Gothic", 10F);
             this.label6.ForeColor = System.Drawing.Color.Maroon;
-            this.label6.Location = new System.Drawing.Point(540, 77);
+            this.label6.Location = new System.Drawing.Point(423, 78);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(82, 21);
             this.label6.TabIndex = 64;
@@ -218,7 +193,7 @@
             this.lblTotalPending.AutoSize = true;
             this.lblTotalPending.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalPending.ForeColor = System.Drawing.Color.Maroon;
-            this.lblTotalPending.Location = new System.Drawing.Point(619, 81);
+            this.lblTotalPending.Location = new System.Drawing.Point(506, 82);
             this.lblTotalPending.Name = "lblTotalPending";
             this.lblTotalPending.Size = new System.Drawing.Size(22, 17);
             this.lblTotalPending.TabIndex = 65;
@@ -253,7 +228,7 @@
             this.btnDelete.ForeColor = System.Drawing.Color.Maroon;
             this.btnDelete.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnDelete.ImageSize = new System.Drawing.Size(30, 30);
-            this.btnDelete.Location = new System.Drawing.Point(669, 67);
+            this.btnDelete.Location = new System.Drawing.Point(553, 68);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(117, 47);
             this.btnDelete.TabIndex = 67;
@@ -478,7 +453,7 @@
             this.guna2Shapes2.FillColor = System.Drawing.Color.Silver;
             this.guna2Shapes2.LineOrientation = System.Windows.Forms.Orientation.Vertical;
             this.guna2Shapes2.LineThickness = 2;
-            this.guna2Shapes2.Location = new System.Drawing.Point(647, 69);
+            this.guna2Shapes2.Location = new System.Drawing.Point(537, 70);
             this.guna2Shapes2.Name = "guna2Shapes2";
             this.guna2Shapes2.PolygonSkip = 1;
             this.guna2Shapes2.Rotate = 0F;
@@ -527,7 +502,7 @@
             this.guna2Shapes5.FillColor = System.Drawing.Color.Silver;
             this.guna2Shapes5.LineOrientation = System.Windows.Forms.Orientation.Vertical;
             this.guna2Shapes5.LineThickness = 2;
-            this.guna2Shapes5.Location = new System.Drawing.Point(784, 67);
+            this.guna2Shapes5.Location = new System.Drawing.Point(672, 70);
             this.guna2Shapes5.Name = "guna2Shapes5";
             this.guna2Shapes5.PolygonSkip = 1;
             this.guna2Shapes5.Rotate = 0F;
@@ -556,24 +531,6 @@
             this.guna2Shapes6.Text = "guna2Shapes6";
             this.guna2Shapes6.Zoom = 100;
             // 
-            // guna2Shapes7
-            // 
-            this.guna2Shapes7.BorderThickness = 1;
-            this.guna2Shapes7.FillColor = System.Drawing.Color.Red;
-            this.guna2Shapes7.LineEndCap = System.Drawing.Drawing2D.LineCap.Round;
-            this.guna2Shapes7.LineOrientation = System.Windows.Forms.Orientation.Vertical;
-            this.guna2Shapes7.LineThickness = 2;
-            this.guna2Shapes7.Location = new System.Drawing.Point(386, 81);
-            this.guna2Shapes7.Name = "guna2Shapes7";
-            this.guna2Shapes7.PolygonSkip = 1;
-            this.guna2Shapes7.Rotate = 0F;
-            this.guna2Shapes7.RoundedRadius = 10;
-            this.guna2Shapes7.Shape = Guna.UI2.WinForms.Enums.ShapeType.Ellipse;
-            this.guna2Shapes7.Size = new System.Drawing.Size(16, 16);
-            this.guna2Shapes7.TabIndex = 85;
-            this.guna2Shapes7.Text = "guna2Shapes7";
-            this.guna2Shapes7.Zoom = 100;
-            // 
             // guna2Shapes8
             // 
             this.guna2Shapes8.BorderThickness = 1;
@@ -581,7 +538,7 @@
             this.guna2Shapes8.LineEndCap = System.Drawing.Drawing2D.LineCap.Round;
             this.guna2Shapes8.LineOrientation = System.Windows.Forms.Orientation.Vertical;
             this.guna2Shapes8.LineThickness = 2;
-            this.guna2Shapes8.Location = new System.Drawing.Point(522, 81);
+            this.guna2Shapes8.Location = new System.Drawing.Point(405, 82);
             this.guna2Shapes8.Name = "guna2Shapes8";
             this.guna2Shapes8.PolygonSkip = 1;
             this.guna2Shapes8.Rotate = 0F;
@@ -598,7 +555,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
             this.Controls.Add(this.guna2Shapes8);
-            this.Controls.Add(this.guna2Shapes7);
             this.Controls.Add(this.guna2Shapes6);
             this.Controls.Add(this.guna2Shapes5);
             this.Controls.Add(this.guna2Shapes4);
@@ -608,9 +564,7 @@
             this.Controls.Add(this.dtgApproval);
             this.Controls.Add(this.lblTotalPending);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.lblTotalInactive);
             this.Controls.Add(this.lblTotalActive);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtSearch);
@@ -644,9 +598,7 @@
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
         private System.Windows.Forms.PictureBox btnSearch;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lblTotalActive;
-        private System.Windows.Forms.Label lblTotalInactive;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lblTotalPending;
         private System.Windows.Forms.DataGridView dtgApproval;
@@ -668,7 +620,6 @@
         private Guna.UI2.WinForms.Guna2Shapes guna2Shapes4;
         private Guna.UI2.WinForms.Guna2Shapes guna2Shapes5;
         private Guna.UI2.WinForms.Guna2Shapes guna2Shapes6;
-        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes7;
         private Guna.UI2.WinForms.Guna2Shapes guna2Shapes8;
     }
 }

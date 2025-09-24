@@ -60,7 +60,6 @@
             this.label5 = new System.Windows.Forms.Label();
             this.dtgTeacherList = new System.Windows.Forms.DataGridView();
             this.guna2Shapes3 = new Guna.UI2.WinForms.Guna2Shapes();
-            this.addTeacher1 = new KCUnivDB.AddTeacher();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
@@ -303,6 +302,7 @@
             this.btnLogs.TabIndex = 7;
             this.btnLogs.Text = "       Logs";
             this.btnLogs.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLogs.Click += new System.EventHandler(this.btnLogs_Click_1);
             // 
             // guna2Shapes6
             // 
@@ -546,19 +546,11 @@
             this.guna2Shapes3.Text = "guna2Shapes3";
             this.guna2Shapes3.Zoom = 100;
             // 
-            // addTeacher1
-            // 
-            this.addTeacher1.Location = new System.Drawing.Point(243, 0);
-            this.addTeacher1.Name = "addTeacher1";
-            this.addTeacher1.Size = new System.Drawing.Size(856, 726);
-            this.addTeacher1.TabIndex = 101;
-            // 
             // AdminTeachers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
-            this.Controls.Add(this.addTeacher1);
             this.Controls.Add(this.dtgTeacherList);
             this.Controls.Add(this.guna2Shapes3);
             this.Controls.Add(this.guna2Shapes6);
@@ -624,6 +616,5 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridView dtgTeacherList;
         private Guna.UI2.WinForms.Guna2Shapes guna2Shapes3;
-        private AddTeacher addTeacher1;
     }
 }

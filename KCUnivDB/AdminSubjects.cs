@@ -23,5 +23,12 @@ namespace KCUnivDB
             stud.Show();
             this.Hide();
         }
+
+        private void btnLogs_Click(object sender, EventArgs e)
+        {
+            Logs logs = new Logs();
+            logs.Show();
+            this.Hide();
+        }
     }
 }

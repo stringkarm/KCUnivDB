@@ -30,7 +30,7 @@ namespace KCUnivDB
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
- 
+
                 string query = @"
                     SELECT 
                         U.UserID,
@@ -55,26 +55,44 @@ namespace KCUnivDB
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
-                    
+                    // Clear the DataGridView before adding columns and rows
                     dtgApproval.Columns.Clear();
+                    dtgApproval.Rows.Clear();
 
+                    // Manually add the columns
+                    dtgApproval.Columns.Add("ProfileID", "Profile ID");
+                    dtgApproval.Columns.Add("FirstName", "First Name");
+                    dtgApproval.Columns.Add("LastName", "Last Name");
+                    dtgApproval.Columns.Add("Age", "Age");
+                    dtgApproval.Columns.Add("Gender", "Gender");
+                    dtgApproval.Columns.Add("Email", "Email");
+                    dtgApproval.Columns.Add("Address", "Address");
+
+                    // Add the custom ComboBoxColumn with only "Active" and "Pending"
                     var statusColumn = new DataGridViewComboBoxColumn();
                     statusColumn.HeaderText = "Status";
                     statusColumn.Name = "Status_Dropdown";
-
-                    statusColumn.DataSource = new string[] { "Active", "Pending", "Inactive" };
+                    statusColumn.DataSource = new string[] { "Active", "Pending" };
                     dtgApproval.Columns.Add(statusColumn);
 
- 
-                    dtgApproval.DataSource = dt;
+                    // Add data from the DataTable to the DataGridView rows
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        dtgApproval.Rows.Add(
+                            row["ProfileID"],
+                            row["FirstName"],
+                            row["LastName"],
+                            row["Age"],
+                            row["Gender"],
+                            row["Email"],
+                            row["Address"],
+                            row["Status"]
+                        );
+                    }
 
-                    dtgApproval.Columns["Status_Dropdown"].DataPropertyName = "Status";
-
-                    dtgApproval.AutoResizeColumns();
-
-                    dtgApproval.Columns["UserID"].Visible = false;
+                    // Hide the ProfileID column
                     dtgApproval.Columns["ProfileID"].Visible = false;
-
+                    dtgApproval.AutoResizeColumns();
                 }
                 catch (SqlException ex)
                 {
@@ -87,25 +105,60 @@ namespace KCUnivDB
             }
         }
 
+        // This method is now used to refresh the students data for the AdminStudent form.
+        private void LoadStudentsData()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"
+                SELECT 
+                    P.ProfileID,
+                    P.FirstName,
+                    P.LastName,
+                    P.Age,
+                    P.Gender,
+                    P.Email,
+                    P.Phone,
+                    P.Address,
+                    P.Status
+                FROM Profiles P
+                INNER JOIN Users U ON P.ProfileID = U.ProfileID
+                WHERE U.RoleID = 3 AND P.Status = 'Active'
+                ORDER BY P.ProfileID DESC; -- Adjust this to order by a different column if you wish
+                ";
+                SqlCommand cmd = new SqlCommand(query, connection);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    dtgApproval.DataSource = dt;
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("Database error: " + ex.Message);
+                }
+            }
+        }
+
         private void LoadStudentCounts()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-              
-                SqlCommand cmdActive = new SqlCommand("SELECT COUNT(*) FROM Profiles WHERE Status = 'Active' AND ProfileID IN (SELECT ProfileID FROM Users WHERE RoleID = 3)", connection);
 
-                SqlCommand cmdInactive = new SqlCommand("SELECT COUNT(*) FROM Profiles WHERE Status = 'Inactive' AND ProfileID IN (SELECT ProfileID FROM Users WHERE RoleID = 3)", connection);
+                SqlCommand cmdActive = new SqlCommand("SELECT COUNT(*) FROM Profiles WHERE Status = 'Active' AND ProfileID IN (SELECT ProfileID FROM Users WHERE RoleID = 3)", connection);
                 SqlCommand cmdPending = new SqlCommand("SELECT COUNT(*) FROM Profiles WHERE Status = 'Pending' AND ProfileID IN (SELECT ProfileID FROM Users WHERE RoleID = 3)", connection);
 
                 try
                 {
                     connection.Open();
                     int activeCount = (int)cmdActive.ExecuteScalar();
-                    int inactiveCount = (int)cmdInactive.ExecuteScalar();
                     int pendingCount = (int)cmdPending.ExecuteScalar();
 
                     lblTotalActive.Text = activeCount.ToString();
-                    lblTotalInactive.Text = inactiveCount.ToString();
                     lblTotalPending.Text = pendingCount.ToString();
                 }
                 catch (SqlException ex)
@@ -170,19 +223,17 @@ namespace KCUnivDB
 
         private void dtgApproval_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
- 
+
             if (e.ColumnIndex == dtgApproval.Columns["Status_Dropdown"].Index && e.RowIndex >= 0)
             {
-   
                 string newStatus = dtgApproval.Rows[e.RowIndex].Cells["Status_Dropdown"].Value.ToString();
                 int profileId = Convert.ToInt32(dtgApproval.Rows[e.RowIndex].Cells["ProfileID"].Value);
 
                 DialogResult dialogResult = MessageBox.Show($"Are you sure you want to change the status to '{newStatus}' for this student?",
-                                                            "Confirm Status Change", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                                             "Confirm Status Change", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (dialogResult == DialogResult.Yes)
                 {
- 
                     string updateQuery = "UPDATE Profiles SET Status = @NewStatus WHERE ProfileID = @ProfileID";
                     using (SqlConnection connection = new SqlConnection(connectionString))
                     {
@@ -195,7 +246,8 @@ namespace KCUnivDB
                             connection.Open();
                             cmd.ExecuteNonQuery();
                             MessageBox.Show("Student status updated successfully.");
-                            LoadStudentCounts(); 
+                            AddLogEntry(profileId, "Updated Status", $"Changed student status to {newStatus}");
+                            LoadStudentCounts();
                         }
                         catch (SqlException ex)
                         {
@@ -205,7 +257,6 @@ namespace KCUnivDB
                 }
                 else
                 {
-                    
                     LoadApprovalData();
                 }
             }
@@ -295,47 +346,98 @@ namespace KCUnivDB
         //    }
         //}
 
+       
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dtgApproval.SelectedRows.Count > 0)
+            try
             {
-                DialogResult dialogResult = MessageBox.Show(
-                    "Are you sure you want to change delete this student?", "Confirm Status Change",MessageBoxButtons.YesNo,MessageBoxIcon.Warning
-                );
-
-                if (dialogResult == DialogResult.Yes)
+                if (dtgApproval.SelectedRows.Count > 0)
                 {
-                   
-                    int profileId = Convert.ToInt32(dtgApproval.SelectedRows[0].Cells["ProfileID"].Value);
-                    string updateQuery = "UPDATE Profiles SET Status = 'Inactive' WHERE ProfileID = @ProfileID";
+                    DataGridViewRow selectedRow = dtgApproval.SelectedRows[0];
 
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    string profileId = selectedRow.Cells["ProfileID"].Value.ToString();
+
+                    string currentStatus = string.Empty;
+                    if (selectedRow.Cells["Status"].Value != null)
                     {
-                        SqlCommand cmd = new SqlCommand(updateQuery, connection);
-
-                        cmd.Parameters.AddWithValue("@ProfileID", profileId);
-
-                        try
-                        {
-                            connection.Open();
-                            int rowsAffected = cmd.ExecuteNonQuery();
-
-                            if (rowsAffected > 0)
-                            {
-                                MessageBox.Show("Students data successfully removed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
-                            else
-                            {
-                                MessageBox.Show("No changes were made. Student not found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
-                            LoadApprovalData();
-                            LoadStudentCounts();
-                        }
-                        catch (SqlException ex)
-                        {
-                            MessageBox.Show("Failed to update student status: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                        currentStatus = selectedRow.Cells["Status"].Value.ToString();
                     }
+
+                    if (currentStatus.Equals("Inactive", StringComparison.OrdinalIgnoreCase))
+                    {
+                        MessageBox.Show("This student is already inactive.", "Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
+                    DialogResult confirmResult = MessageBox.Show($"Are you sure you want to deactivate Student {profileId}?", "Confirm Deactivation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        string newStatus = "Inactive";
+                        UpdateUserStatus(profileId, newStatus);
+
+                        string logDescription = $"Deactivated a student";
+                        AddLogEntry(Convert.ToInt32(profileId), "Delete Student", logDescription);
+
+                        // After successfully updating the status and adding the log, reload the data
+                        // This will refresh the datagridview and remove the deactivated student.
+                        LoadStudentsData();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select a student to deactivate.", "No Student Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void AddLogEntry(int profileID, string action, string description)
+        {
+
+            string sqlQuery = "INSERT INTO Logs (ProfileID, Action, Description) VALUES (@profileId, @action, @description)";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@profileId", profileID);
+                    cmd.Parameters.AddWithValue("@action", action);
+                    cmd.Parameters.AddWithValue("@description", description);
+
+                    try
+                    {
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error logging action: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        private void UpdateUserStatus(string profileId, string newStatus)
+        {
+            string updateQuery = "UPDATE Profiles SET Status = @Status WHERE ProfileID = @ProfileID";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand(updateQuery, connection);
+                cmd.Parameters.AddWithValue("@Status", newStatus);
+                cmd.Parameters.AddWithValue("@ProfileID", profileId);
+
+                try
+                {
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("Database error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

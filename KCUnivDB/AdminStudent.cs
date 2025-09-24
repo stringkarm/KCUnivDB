@@ -108,42 +108,73 @@ namespace KCUnivDB
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dtgStudentsList.SelectedRows.Count > 0)
+            try
             {
-                DialogResult dialogResult = MessageBox.Show(
-                    "Are you sure you want to delete this student?",
-                    "Confirm Status Change",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning
-                );
-
-                if (dialogResult == DialogResult.Yes)
+                if (dtgStudentsList.SelectedRows.Count > 0)
                 {
-                    int profileId = Convert.ToInt32(dtgStudentsList.SelectedRows[0].Cells["ProfileID"].Value);
-                    string updateQuery = "UPDATE Profiles SET Status = 'Inactive' WHERE ProfileID = @ProfileID";
+                    DataGridViewRow selectedRow = dtgStudentsList.SelectedRows[0];
 
-                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    string profileId = selectedRow.Cells["ProfileID"].Value.ToString();
+
+                    string currentStatus = string.Empty;
+                    if (selectedRow.Cells["Status"].Value != null)
                     {
-                        SqlCommand cmd = new SqlCommand(updateQuery, connection);
-                        cmd.Parameters.AddWithValue("@ProfileID", profileId);
-
-                        try
-                        {
-                            connection.Open();
-                            cmd.ExecuteNonQuery();
-                            MessageBox.Show("You successfully deleted this student.");
-
-                            // Refresh the DataGridView to show the updated data
-                            LoadStudentsData();
-                        }
-                        catch (SqlException ex)
-                        {
-                            MessageBox.Show("Failed to update student status: " + ex.Message);
-                        }
+                        currentStatus = selectedRow.Cells["Status"].Value.ToString();
                     }
+
+                    if (currentStatus.Equals("Inactive", StringComparison.OrdinalIgnoreCase))
+                    {
+                        MessageBox.Show("This student is already inactive.", "Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+
+                    DialogResult confirmResult = MessageBox.Show($"Are you sure you want to deactivate Student {profileId}?", "Confirm Deactivation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        string newStatus = "Inactive";
+                        UpdateUserStatus(profileId, newStatus);
+
+                        string logDescription = $"Deactivated a student";
+                        AddLogEntry(Convert.ToInt32(profileId), "Delete Student", logDescription);
+
+                        // After successfully updating the status and adding the log, reload the data
+                        // This will refresh the datagridview and remove the deactivated student.
+                        LoadStudentsData();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select a student to deactivate.", "No Student Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void UpdateUserStatus(string profileId, string newStatus)
+        {
+            string updateQuery = "UPDATE Profiles SET Status = @Status WHERE ProfileID = @ProfileID";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand(updateQuery, connection);
+                cmd.Parameters.AddWithValue("@Status", newStatus);
+                cmd.Parameters.AddWithValue("@ProfileID", profileId);
+
+                try
+                {
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("Database error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
+
 
         private void UpdateStudentInfo(int profileId, string firstName, string lastName, int age, string gender, string email, string address)
         {
@@ -246,7 +277,6 @@ namespace KCUnivDB
 
                 if (dialogResult == DialogResult.Yes)
                 {
-
                     int profileId = Convert.ToInt32(dtgStudentsList.SelectedRows[0].Cells["ProfileID"].Value);
                     string firstName = dtgStudentsList.SelectedRows[0].Cells["FirstName"].Value.ToString();
                     string lastName = dtgStudentsList.SelectedRows[0].Cells["LastName"].Value.ToString();
@@ -255,10 +285,40 @@ namespace KCUnivDB
                     string email = dtgStudentsList.SelectedRows[0].Cells["Email"].Value.ToString();
                     string address = dtgStudentsList.SelectedRows[0].Cells["Address"].Value.ToString();
 
-
                     UpdateStudentInfo(profileId, firstName, lastName, age, gender, email, address);
+
+                    string logAction = "Update Student";
+                    string logDescription = $"Updated student information for ProfileID: {profileId}";
+                    AddLogEntry(profileId, logAction, logDescription);
+
                     LoadStudentCounts();
                     LoadApprovalData();
+                }
+            }
+        }
+
+        private void AddLogEntry(int profileID, string action, string description)
+        {
+
+            string sqlQuery = "INSERT INTO Logs (ProfileID, Action, Description) VALUES (@profileId, @action, @description)";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@profileId", profileID);
+                    cmd.Parameters.AddWithValue("@action", action);
+                    cmd.Parameters.AddWithValue("@description", description);
+
+                    try
+                    {
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error logging action: " + ex.Message);
+                    }
                 }
             }
         }
@@ -297,6 +357,18 @@ namespace KCUnivDB
             AdminTeachers teachers = new AdminTeachers();
             this.Hide();
             teachers.Show();
+        }
+
+        private void btnLogs_Click(object sender, EventArgs e)
+        {
+            Logs logs = new Logs();
+            logs.Show();
+            this.Hide();
+        }
+
+        private void dtgStudentsList_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
     

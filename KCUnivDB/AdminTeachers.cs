@@ -16,7 +16,7 @@ namespace KCUnivDB
         public AdminTeachers()
         {
             InitializeComponent();
-            addTeacher1.Hide();
+            //addTeacher1.Hide();
             LoadTeachersData();
         }
 
@@ -59,7 +59,7 @@ namespace KCUnivDB
 
         private void btnAddstudent_Click(object sender, EventArgs e)
         {
-            addTeacher1.Show();
+            //addTeacher1.Show();
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -93,6 +93,13 @@ namespace KCUnivDB
                     MessageBox.Show("An error occurred while loading teacher data: " + ex.Message);
                 }
             }
+        }
+
+        private void btnLogs_Click_1(object sender, EventArgs e)
+        {
+            Logs logs = new Logs();
+            logs.Show();
+            this.Hide();
         }
     }
 }
