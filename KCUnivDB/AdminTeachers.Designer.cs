@@ -60,12 +60,36 @@
             this.label5 = new System.Windows.Forms.Label();
             this.dtgTeacherList = new System.Windows.Forms.DataGridView();
             this.guna2Shapes3 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.EditTeacherPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.cmbGender = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.txtEmail = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtAddress = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtPhone = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtAge = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtLastname = new Guna.UI2.WinForms.Guna2TextBox();
+            this.btnSave = new Guna.UI2.WinForms.Guna2Button();
+            this.txtFirstname = new Guna.UI2.WinForms.Guna2TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.guna2Shapes8 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.guna2ComboBox1 = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.addTeacher1 = new KCUnivDB.AddTeacher();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgTeacherList)).BeginInit();
+            this.EditTeacherPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnClose
@@ -475,6 +499,7 @@
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(55, 47);
             this.btnUpdate.TabIndex = 89;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnDelete
             // 
@@ -494,6 +519,7 @@
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(55, 47);
             this.btnDelete.TabIndex = 88;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // guna2Shapes1
             // 
@@ -533,6 +559,7 @@
             this.dtgTeacherList.RowTemplate.Height = 24;
             this.dtgTeacherList.Size = new System.Drawing.Size(783, 436);
             this.dtgTeacherList.TabIndex = 99;
+            this.dtgTeacherList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgTeacherList_CellClick);
             // 
             // guna2Shapes3
             // 
@@ -550,11 +577,397 @@
             this.guna2Shapes3.Text = "guna2Shapes3";
             this.guna2Shapes3.Zoom = 100;
             // 
+            // EditTeacherPanel
+            // 
+            this.EditTeacherPanel.BackColor = System.Drawing.Color.Brown;
+            this.EditTeacherPanel.Controls.Add(this.guna2ComboBox1);
+            this.EditTeacherPanel.Controls.Add(this.label2);
+            this.EditTeacherPanel.Controls.Add(this.label13);
+            this.EditTeacherPanel.Controls.Add(this.label14);
+            this.EditTeacherPanel.Controls.Add(this.label15);
+            this.EditTeacherPanel.Controls.Add(this.label16);
+            this.EditTeacherPanel.Controls.Add(this.label17);
+            this.EditTeacherPanel.Controls.Add(this.label18);
+            this.EditTeacherPanel.Controls.Add(this.cmbGender);
+            this.EditTeacherPanel.Controls.Add(this.label19);
+            this.EditTeacherPanel.Controls.Add(this.txtEmail);
+            this.EditTeacherPanel.Controls.Add(this.txtAddress);
+            this.EditTeacherPanel.Controls.Add(this.txtPhone);
+            this.EditTeacherPanel.Controls.Add(this.txtAge);
+            this.EditTeacherPanel.Controls.Add(this.txtLastname);
+            this.EditTeacherPanel.Controls.Add(this.btnSave);
+            this.EditTeacherPanel.Controls.Add(this.txtFirstname);
+            this.EditTeacherPanel.Controls.Add(this.label20);
+            this.EditTeacherPanel.Controls.Add(this.guna2Shapes8);
+            this.EditTeacherPanel.Controls.Add(this.label21);
+            this.EditTeacherPanel.Controls.Add(this.label22);
+            this.EditTeacherPanel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.EditTeacherPanel.Location = new System.Drawing.Point(288, 76);
+            this.EditTeacherPanel.Name = "EditTeacherPanel";
+            this.EditTeacherPanel.Size = new System.Drawing.Size(783, 577);
+            this.EditTeacherPanel.TabIndex = 146;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.Color.Transparent;
+            this.label13.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label13.Location = new System.Drawing.Point(42, 381);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(163, 17);
+            this.label13.TabIndex = 144;
+            this.label13.Text = "Address (where you live)";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.BackColor = System.Drawing.Color.Transparent;
+            this.label14.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label14.Location = new System.Drawing.Point(446, 295);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(96, 17);
+            this.label14.TabIndex = 143;
+            this.label14.Text = "Email Address";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.BackColor = System.Drawing.Color.Transparent;
+            this.label15.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label15.Location = new System.Drawing.Point(36, 290);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(103, 17);
+            this.label15.TabIndex = 142;
+            this.label15.Text = "Phone number";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.BackColor = System.Drawing.Color.Transparent;
+            this.label16.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label16.Location = new System.Drawing.Point(42, 197);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(34, 17);
+            this.label16.TabIndex = 141;
+            this.label16.Text = "Age";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.BackColor = System.Drawing.Color.Transparent;
+            this.label17.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label17.Location = new System.Drawing.Point(446, 104);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(71, 17);
+            this.label17.TabIndex = 140;
+            this.label17.Text = "Lastname";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.BackColor = System.Drawing.Color.Transparent;
+            this.label18.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label18.Location = new System.Drawing.Point(36, 105);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(69, 17);
+            this.label18.TabIndex = 139;
+            this.label18.Text = "Firstname";
+            // 
+            // cmbGender
+            // 
+            this.cmbGender.BackColor = System.Drawing.Color.Transparent;
+            this.cmbGender.BorderColor = System.Drawing.Color.Gray;
+            this.cmbGender.BorderRadius = 10;
+            this.cmbGender.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbGender.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbGender.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cmbGender.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cmbGender.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbGender.ForeColor = System.Drawing.Color.Black;
+            this.cmbGender.ItemHeight = 30;
+            this.cmbGender.Items.AddRange(new object[] {
+            "Male",
+            "Female",
+            "Preferred not to say"});
+            this.cmbGender.Location = new System.Drawing.Point(449, 219);
+            this.cmbGender.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbGender.Name = "cmbGender";
+            this.cmbGender.Size = new System.Drawing.Size(300, 36);
+            this.cmbGender.TabIndex = 138;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.BackColor = System.Drawing.Color.Transparent;
+            this.label19.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label19.Location = new System.Drawing.Point(446, 198);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(56, 17);
+            this.label19.TabIndex = 137;
+            this.label19.Text = "Gender";
+            // 
+            // txtEmail
+            // 
+            this.txtEmail.BorderColor = System.Drawing.Color.Gray;
+            this.txtEmail.BorderRadius = 10;
+            this.txtEmail.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtEmail.DefaultText = "";
+            this.txtEmail.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtEmail.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtEmail.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtEmail.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtEmail.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtEmail.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtEmail.ForeColor = System.Drawing.Color.Black;
+            this.txtEmail.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtEmail.Location = new System.Drawing.Point(449, 316);
+            this.txtEmail.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtEmail.Name = "txtEmail";
+            this.txtEmail.PlaceholderForeColor = System.Drawing.Color.Gray;
+            this.txtEmail.PlaceholderText = "example@gmail.com";
+            this.txtEmail.SelectedText = "";
+            this.txtEmail.Size = new System.Drawing.Size(300, 48);
+            this.txtEmail.TabIndex = 136;
+            // 
+            // txtAddress
+            // 
+            this.txtAddress.BorderColor = System.Drawing.Color.Gray;
+            this.txtAddress.BorderRadius = 10;
+            this.txtAddress.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtAddress.DefaultText = "";
+            this.txtAddress.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtAddress.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtAddress.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtAddress.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtAddress.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtAddress.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtAddress.ForeColor = System.Drawing.Color.Black;
+            this.txtAddress.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtAddress.Location = new System.Drawing.Point(39, 402);
+            this.txtAddress.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtAddress.Name = "txtAddress";
+            this.txtAddress.PlaceholderForeColor = System.Drawing.Color.Gray;
+            this.txtAddress.PlaceholderText = "Please enter your address";
+            this.txtAddress.SelectedText = "";
+            this.txtAddress.Size = new System.Drawing.Size(294, 48);
+            this.txtAddress.TabIndex = 135;
+            // 
+            // txtPhone
+            // 
+            this.txtPhone.BorderColor = System.Drawing.Color.Gray;
+            this.txtPhone.BorderRadius = 10;
+            this.txtPhone.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtPhone.DefaultText = "";
+            this.txtPhone.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtPhone.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtPhone.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtPhone.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtPhone.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtPhone.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtPhone.ForeColor = System.Drawing.Color.Black;
+            this.txtPhone.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtPhone.Location = new System.Drawing.Point(39, 311);
+            this.txtPhone.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtPhone.MaxLength = 11;
+            this.txtPhone.Name = "txtPhone";
+            this.txtPhone.PlaceholderForeColor = System.Drawing.Color.Gray;
+            this.txtPhone.PlaceholderText = "Please enter 11 digits number";
+            this.txtPhone.SelectedText = "";
+            this.txtPhone.Size = new System.Drawing.Size(294, 48);
+            this.txtPhone.TabIndex = 134;
+            // 
+            // txtAge
+            // 
+            this.txtAge.BorderColor = System.Drawing.Color.Gray;
+            this.txtAge.BorderRadius = 10;
+            this.txtAge.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtAge.DefaultText = "";
+            this.txtAge.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtAge.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtAge.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtAge.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtAge.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtAge.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtAge.ForeColor = System.Drawing.Color.Black;
+            this.txtAge.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtAge.Location = new System.Drawing.Point(39, 218);
+            this.txtAge.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtAge.MaxLength = 2;
+            this.txtAge.Name = "txtAge";
+            this.txtAge.PlaceholderForeColor = System.Drawing.Color.Gray;
+            this.txtAge.PlaceholderText = "Please enter your age";
+            this.txtAge.SelectedText = "";
+            this.txtAge.Size = new System.Drawing.Size(294, 48);
+            this.txtAge.TabIndex = 133;
+            // 
+            // txtLastname
+            // 
+            this.txtLastname.BorderColor = System.Drawing.Color.Gray;
+            this.txtLastname.BorderRadius = 10;
+            this.txtLastname.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtLastname.DefaultText = "";
+            this.txtLastname.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtLastname.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtLastname.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtLastname.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtLastname.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtLastname.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtLastname.ForeColor = System.Drawing.Color.Black;
+            this.txtLastname.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtLastname.Location = new System.Drawing.Point(449, 127);
+            this.txtLastname.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtLastname.Name = "txtLastname";
+            this.txtLastname.PlaceholderForeColor = System.Drawing.Color.Gray;
+            this.txtLastname.PlaceholderText = "Please enter your last name";
+            this.txtLastname.SelectedText = "";
+            this.txtLastname.Size = new System.Drawing.Size(300, 48);
+            this.txtLastname.TabIndex = 132;
+            // 
+            // btnSave
+            // 
+            this.btnSave.Animated = true;
+            this.btnSave.BorderRadius = 20;
+            this.btnSave.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSave.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnSave.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnSave.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSave.FillColor = System.Drawing.Color.Maroon;
+            this.btnSave.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(242, 492);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(300, 46);
+            this.btnSave.TabIndex = 131;
+            this.btnSave.Text = "Save Changes";
+            // 
+            // txtFirstname
+            // 
+            this.txtFirstname.BorderColor = System.Drawing.Color.Gray;
+            this.txtFirstname.BorderRadius = 10;
+            this.txtFirstname.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtFirstname.DefaultText = "";
+            this.txtFirstname.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.txtFirstname.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
+            this.txtFirstname.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtFirstname.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.txtFirstname.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtFirstname.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.txtFirstname.ForeColor = System.Drawing.Color.Black;
+            this.txtFirstname.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.txtFirstname.Location = new System.Drawing.Point(39, 128);
+            this.txtFirstname.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtFirstname.Name = "txtFirstname";
+            this.txtFirstname.PlaceholderForeColor = System.Drawing.Color.Gray;
+            this.txtFirstname.PlaceholderText = "Please enter your name";
+            this.txtFirstname.SelectedText = "";
+            this.txtFirstname.Size = new System.Drawing.Size(298, 48);
+            this.txtFirstname.TabIndex = 130;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.BackColor = System.Drawing.Color.Transparent;
+            this.label20.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.ForeColor = System.Drawing.Color.White;
+            this.label20.Location = new System.Drawing.Point(24, 47);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(487, 20);
+            this.label20.TabIndex = 129;
+            this.label20.Text = "Editing teacher informations including their credential information.";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // guna2Shapes8
+            // 
+            this.guna2Shapes8.BorderThickness = 1;
+            this.guna2Shapes8.FillColor = System.Drawing.Color.Silver;
+            this.guna2Shapes8.LineThickness = 2;
+            this.guna2Shapes8.Location = new System.Drawing.Point(28, 71);
+            this.guna2Shapes8.Name = "guna2Shapes8";
+            this.guna2Shapes8.PolygonSkip = 1;
+            this.guna2Shapes8.Rotate = 0F;
+            this.guna2Shapes8.RoundedRadius = 10;
+            this.guna2Shapes8.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
+            this.guna2Shapes8.Size = new System.Drawing.Size(738, 17);
+            this.guna2Shapes8.TabIndex = 128;
+            this.guna2Shapes8.Text = "guna2Shapes8";
+            this.guna2Shapes8.Zoom = 100;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Century Gothic", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.ForeColor = System.Drawing.Color.White;
+            this.label21.Location = new System.Drawing.Point(23, 14);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(379, 29);
+            this.label21.TabIndex = 127;
+            this.label21.Text = "Modifying teacher information";
+            this.label21.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label22.ForeColor = System.Drawing.Color.White;
+            this.label22.Location = new System.Drawing.Point(748, 6);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(28, 29);
+            this.label22.TabIndex = 126;
+            this.label22.Text = "×";
+            this.label22.Click += new System.EventHandler(this.label22_Click);
+            // 
+            // guna2ComboBox1
+            // 
+            this.guna2ComboBox1.BackColor = System.Drawing.Color.Transparent;
+            this.guna2ComboBox1.BorderColor = System.Drawing.Color.Gray;
+            this.guna2ComboBox1.BorderRadius = 10;
+            this.guna2ComboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.guna2ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.guna2ComboBox1.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.guna2ComboBox1.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.guna2ComboBox1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.guna2ComboBox1.ForeColor = System.Drawing.Color.Black;
+            this.guna2ComboBox1.ItemHeight = 30;
+            this.guna2ComboBox1.Location = new System.Drawing.Point(449, 403);
+            this.guna2ComboBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2ComboBox1.Name = "guna2ComboBox1";
+            this.guna2ComboBox1.Size = new System.Drawing.Size(300, 36);
+            this.guna2ComboBox1.TabIndex = 146;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label2.Location = new System.Drawing.Point(446, 382);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(87, 17);
+            this.label2.TabIndex = 145;
+            this.label2.Text = "Department";
+            // 
+            // addTeacher1
+            // 
+            this.addTeacher1.Location = new System.Drawing.Point(249, 3);
+            this.addTeacher1.Name = "addTeacher1";
+            this.addTeacher1.Size = new System.Drawing.Size(854, 726);
+            this.addTeacher1.TabIndex = 147;
+            // 
             // AdminTeachers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
+            this.Controls.Add(this.addTeacher1);
+            this.Controls.Add(this.EditTeacherPanel);
             this.Controls.Add(this.dtgTeacherList);
             this.Controls.Add(this.guna2Shapes3);
             this.Controls.Add(this.guna2Shapes6);
@@ -584,6 +997,8 @@
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgTeacherList)).EndInit();
+            this.EditTeacherPanel.ResumeLayout(false);
+            this.EditTeacherPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -620,5 +1035,28 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridView dtgTeacherList;
         private Guna.UI2.WinForms.Guna2Shapes guna2Shapes3;
+        private Guna.UI2.WinForms.Guna2Panel EditTeacherPanel;
+        private Guna.UI2.WinForms.Guna2ComboBox guna2ComboBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private Guna.UI2.WinForms.Guna2ComboBox cmbGender;
+        private System.Windows.Forms.Label label19;
+        private Guna.UI2.WinForms.Guna2TextBox txtEmail;
+        private Guna.UI2.WinForms.Guna2TextBox txtAddress;
+        private Guna.UI2.WinForms.Guna2TextBox txtPhone;
+        private Guna.UI2.WinForms.Guna2TextBox txtAge;
+        private Guna.UI2.WinForms.Guna2TextBox txtLastname;
+        private Guna.UI2.WinForms.Guna2Button btnSave;
+        private Guna.UI2.WinForms.Guna2TextBox txtFirstname;
+        private System.Windows.Forms.Label label20;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes8;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label22;
+        private AddTeacher addTeacher1;
     }
 }

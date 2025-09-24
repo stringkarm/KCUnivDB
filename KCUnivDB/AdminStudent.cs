@@ -26,7 +26,6 @@ namespace KCUnivDB
 
         private string selectedProfileId;
         string mailPattern = @"^[\w\.-]+@gmail\.com$";
-        string phonePattern = @"^(?:\+63|0)?9\d{9}$";
         string agePattern = @"^(1[0-9]{2}|[1-9]?[0-9])$";
 
         string connectionString = @"Data Source = canasa\SQLEXPRESS;
@@ -236,7 +235,11 @@ namespace KCUnivDB
                     int rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected > 0)
                     {
-                        MessageBox.Show("Student information updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        if (MessageBox.Show("Student information updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)==DialogResult.OK)
+                        {
+                            EditStudentPanel.Hide();
+                        }
+                     
                     }
                     else
                     {
@@ -481,12 +484,6 @@ namespace KCUnivDB
                     allValid = false;
                 }
 
-                if (!IsValid(phone, phonePattern))
-                {
-                    errorProvider2.SetError(txtPhone, "Please enter a valid Phone number.");
-                    allValid = false;
-                }
-
                 if (!IsValid(age, agePattern))
                 {
                     errorProvider3.SetError(txtAge, "Age is in invalid format.");
@@ -513,14 +510,14 @@ namespace KCUnivDB
 
 
                 string sqlQuery = "UPDATE Profiles SET " +
-                                    "FirstName = @firstName, " +
-                                    "LastName = @lastName, " +
-                                    "Age = @age, " +
-                                    "Gender = @gender, " +
-                                    "Phone = @phone, " +
-                                    "Address = @address, " +
-                                    "Email = @email " +
-                                    "WHERE ProfileID = @profileId";
+                                  "FirstName = @firstName, " +
+                                  "LastName = @lastName, " +
+                                  "Age = @age, " +
+                                  "Gender = @gender, " +
+                                  "Phone = @phone, " +
+                                  "Address = @address, " +
+                                  "Email = @email " +
+                                  "WHERE ProfileID = @profileId";
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
@@ -528,7 +525,6 @@ namespace KCUnivDB
                     {
                         cmd.Parameters.AddWithValue("@firstName", firstName);
                         cmd.Parameters.AddWithValue("@lastName", lastName);
-                        // The missing line was here. It has been added.
                         cmd.Parameters.AddWithValue("@age", Convert.ToInt32(age));
                         cmd.Parameters.AddWithValue("@gender", gender);
                         cmd.Parameters.AddWithValue("@phone", phone);

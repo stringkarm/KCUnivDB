@@ -155,8 +155,8 @@ namespace KCUnivDB
                     connection.Open();
 
                     Random rnd = new Random();
-                    // A more robust way to generate a unique ID to prevent duplicates
-                    string generatedUserID = "ST" + Guid.NewGuid().ToString("N").Substring(0, 5).ToUpper();
+
+                    string generatedUserID = "ST" + Guid.NewGuid().ToString("N").Substring(0, 6).ToUpper();
                     string generatedPassword = generatedUserID;
                     string hashedPassword = HashPassword(generatedPassword);
 
@@ -165,7 +165,7 @@ namespace KCUnivDB
 
                     cmd.Parameters.AddWithValue("@firstname", txtFirstname.Text);
                     cmd.Parameters.AddWithValue("@lastname", txtLastname.Text);
-                    cmd.Parameters.AddWithValue("@age", txtAge.Text); // Corrected: use the parsed integer value
+                    cmd.Parameters.AddWithValue("@age", txtAge.Text); 
                     cmd.Parameters.AddWithValue("@gender", cmbGender.Text);
                     cmd.Parameters.AddWithValue("@phone", txtPhone.Text);
                     cmd.Parameters.AddWithValue("@address", txtAddress.Text);
@@ -180,10 +180,10 @@ namespace KCUnivDB
 
                     MessageBox.Show("Registration Successful!" + "\n Username: " + generatedUserID + "\n Password: " + generatedPassword + "\n The student account is officially active.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Call the method to clear all fields after successful registration
+
                     ClearFields();
 
-                    // Raise the event to notify the parent form
+
                     RegistrationCompleted?.Invoke(this, EventArgs.Empty);
 
                 }

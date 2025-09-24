@@ -18,9 +18,45 @@ namespace KCUnivDB
         public AddTeacher()
         {
             InitializeComponent();
+            LoadDepartments();
         }
 
         private string connectionString = @"Data Source=canasa\SQLEXPRESS; Initial catalog=KCUnivDB; Integrated Security=true";
+
+        string cmbG;
+
+        string mailPattern = @"^[\w\.-]+@gmail\.com$";
+
+        string agePattern = @"^(1[0-9]{2}|[1-9]?[0-9])$";
+
+        private void LoadDepartments()
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string query = "SELECT DepartmentName FROM Departments";
+                    SqlCommand cmd = new SqlCommand(query, connection);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    // Assuming you have a ComboBox named cbDepartment on your form
+                    cmbDepartment.Items.Clear();
+                    while (reader.Read())
+                    {
+                        cmbDepartment.Items.Add(reader["DepartmentName"].ToString());
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show("Database error while loading departments: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An unexpected error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private string HashPassword(string plainPassword)
         {
@@ -39,145 +75,186 @@ namespace KCUnivDB
 
         private void btnRegister_Click(object sender, EventArgs e)
         {
+
             errorProvider1.Clear();
-            bool isValid = true;
-            string email = txtEmail.Text.Trim();
-
-            // First Name Validation
-            if (string.IsNullOrWhiteSpace(txtFirstname.Text))
-            {
-                errorProvider1.SetError(txtFirstname, "First Name is required.");
-                isValid = false;
-            }
-
-            // Last Name Validation
-            if (string.IsNullOrWhiteSpace(txtLastname.Text))
-            {
-                errorProvider1.SetError(txtLastname, "Last Name is required.");
-                isValid = false;
-            }
-
-            // Age Validation
-            if (string.IsNullOrWhiteSpace(txtAge.Text))
-            {
-                errorProvider1.SetError(txtAge, "Age is required.");
-                isValid = false;
-            }
+            errorProvider2.Clear();
+            errorProvider3.Clear();
+            errorProvider4.Clear();
+            errorProvider5.Clear();
+            errorProvider6.Clear();
+            errorProvider7.Clear();
+            errorProvider8.Clear();
 
 
-            // Gender Validation
-            if (string.IsNullOrWhiteSpace(cmbGender.Text))
+            string age = txtAge.Text;
+            string phone = txtPhone.Text;
+            string email = txtEmail.Text;
+            DateTime hireDate;
+            hireDate = dateTimePicker1.Value;
+
+            string action = "Add Teacher";
+            string description = "Added a new teacher";
+
+
+
+            if (string.IsNullOrEmpty(txtFirstname.Text) || string.IsNullOrEmpty(txtLastname.Text) || string.IsNullOrEmpty(cmbGender.Text) || string.IsNullOrEmpty(txtAge.Text)
+                 || string.IsNullOrEmpty(txtPhone.Text) || string.IsNullOrEmpty(txtAddress.Text) || string.IsNullOrEmpty(txtEmail.Text) || string.IsNullOrEmpty(cmbDepartment.Text))
             {
-                errorProvider1.SetError(cmbGender, "Gender is required.");
-                isValid = false;
+
+
+                if (string.IsNullOrWhiteSpace(txtFirstname.Text))
+                {
+                    errorProvider1.SetError(txtFirstname, "First name is required.");
+
+                }
+
+                if (string.IsNullOrWhiteSpace(txtLastname.Text))
+                {
+                    errorProvider2.SetError(txtLastname, "Last name is required.");
+
+                }
+
+                if (string.IsNullOrWhiteSpace(cmbGender.Text))
+                {
+                    errorProvider3.SetError(cmbGender, "Gender is required.");
+
+                }
+
+                if (string.IsNullOrWhiteSpace(txtAge.Text))
+                {
+                    errorProvider4.SetError(txtAge, "Age is required.");
+
+                }
+
+                if (string.IsNullOrWhiteSpace(txtPhone.Text))
+                {
+                    errorProvider5.SetError(txtPhone, "Phone number is required.");
+                }
+
+                if (string.IsNullOrWhiteSpace(txtAddress.Text))
+                {
+                    errorProvider6.SetError(txtAddress, "Address is required.");
+
+                }
+
+                if (string.IsNullOrWhiteSpace(txtEmail.Text))
+                {
+                    errorProvider7.SetError(txtEmail, "Email is required.");
+                }
+
+                if (string.IsNullOrWhiteSpace(cmbDepartment.Text))
+                {
+                    errorProvider8.SetError(cmbDepartment, "Department is required.");
+                }
+
             }
 
-            // Phone Number Validation
-            if (string.IsNullOrWhiteSpace(txtPhone.Text))
+
+
+            bool allValid = true;
+
+            if (!IsValid(email, mailPattern))
             {
-                errorProvider1.SetError(txtPhone, "Phone Number is required.");
-                isValid = false;
-            }
-            else if (!Regex.IsMatch(txtPhone.Text, @"^\d{11}$"))
-            {
-                errorProvider1.SetError(txtPhone, "Phone Number must be 11 digits.");
-                isValid = false;
+                errorProvider7.SetError(txtEmail, "Please enter a valid Email.");
+                allValid = false;
             }
 
-            // Email Validation
-            if (string.IsNullOrWhiteSpace(email))
+            if (!IsValid(age, agePattern))
             {
-                errorProvider1.SetError(txtEmail, "Email Address is required.");
-                isValid = false;
-            }
-            else if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
-            {
-                errorProvider1.SetError(txtEmail, "Please enter a valid email address.");
-                isValid = false;
-            }
-            else if (IsEmailExist(email))
-            {
-                errorProvider1.SetError(txtEmail, "Email already exists. Please use a different one.");
-                isValid = false;
+                errorProvider4.SetError(txtAge, "Age is in invalid format.");
+                allValid = false;
             }
 
-            // Address Validation
-            if (string.IsNullOrWhiteSpace(txtAddress.Text))
-            {
-                errorProvider1.SetError(txtAddress, "Address is required.");
-                isValid = false;
-            }
-
-            if (!isValid)
+            if (!allValid)
             {
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtFirstname.Text) || string.IsNullOrWhiteSpace(txtLastname.Text) ||
-                string.IsNullOrWhiteSpace(txtEmail.Text))
+
+            if (cmbGender.SelectedIndex == 0)
             {
-                MessageBox.Show("Please fill in all required fields.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                cmbG += cmbGender.Text;
             }
-            int age;
-            if (!int.TryParse(txtAge.Text, out age))
+            if (cmbGender.SelectedIndex == 1)
             {
-                MessageBox.Show("Please enter a valid age.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                cmbG += cmbGender.Text;
+            }
+            if (cmbGender.SelectedIndex == 2)
+            {
+                cmbG += cmbGender.Text;
             }
 
+
+            SqlTransaction transaction = null;
             try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    using (SqlConnection connection = new SqlConnection(connectionString))
-                    {
-                        connection.Open();
+                    connection.Open();
+                    transaction = connection.BeginTransaction();
 
-                        // Generate a new unique teacher username (e.g., TC000001, TC000002)
-                        string getNextIdQuery = "SELECT ISNULL(MAX(SUBSTRING(Username, 3, 6)), 0) FROM Users WHERE Username LIKE 'TC%'";
-                        SqlCommand getNextIdCmd = new SqlCommand(getNextIdQuery, connection);
-                        int nextId = Convert.ToInt32(getNextIdCmd.ExecuteScalar()) + 1;
-                        string generatedUsername = $"TC{nextId:D6}";
-                        string generatedPassword = generatedUsername; // Password is the same as the username
-                        string hashedPassword = HashPassword(generatedPassword);
+                    // Generate a new unique teacher username (e.g., TC000001, TC000002)
+                    string getNextIdQuery = "SELECT ISNULL(MAX(SUBSTRING(Username, 3, 6)), 0) FROM Users WHERE Username LIKE 'TC%'";
+                    SqlCommand getNextIdCmd = new SqlCommand(getNextIdQuery, connection, transaction);
+                    int nextId = Convert.ToInt32(getNextIdCmd.ExecuteScalar()) + 1;
+                    string generatedUsername = $"TC{nextId:D6}";
+                    string generatedPassword = generatedUsername; // Password is the same as the username
+                    string hashedPassword = HashPassword(generatedPassword);
 
-                        // 1. Insert into Profiles table
-                        string insertProfileQuery = "INSERT INTO Profiles (FirstName, LastName, Age, Gender, Phone, Email, Address, Status) VALUES (@FirstName, @LastName, @Age, @Gender, @Phone, @Email, @Address, 'Active'); SELECT SCOPE_IDENTITY();";
-                        SqlCommand insertProfileCmd = new SqlCommand(insertProfileQuery, connection);
-                        insertProfileCmd.Parameters.AddWithValue("@FirstName", txtFirstname.Text.Trim());
-                        insertProfileCmd.Parameters.AddWithValue("@LastName", txtLastname.Text.Trim());
-                        insertProfileCmd.Parameters.AddWithValue("@Age", int.Parse(txtAge.Text.Trim()));
-                        insertProfileCmd.Parameters.AddWithValue("@Gender", cmbGender.Text);
-                        insertProfileCmd.Parameters.AddWithValue("@Phone", txtPhone.Text.Trim());
-                        insertProfileCmd.Parameters.AddWithValue("@Email", txtEmail.Text.Trim());
-                        insertProfileCmd.Parameters.AddWithValue("@Address", txtAddress.Text.Trim());
+                    // 1. Insert into Profiles table
+                    string insertProfileQuery = "INSERT INTO Profiles (FirstName, LastName, Age, Gender, Phone, Email, Address, Status) VALUES (@FirstName, @LastName, @Age, @Gender, @Phone, @Email, @Address, 'Active'); SELECT SCOPE_IDENTITY();";
+                    SqlCommand insertProfileCmd = new SqlCommand(insertProfileQuery, connection, transaction);
+                    insertProfileCmd.Parameters.AddWithValue("@FirstName", txtFirstname.Text.Trim());
+                    insertProfileCmd.Parameters.AddWithValue("@LastName", txtLastname.Text.Trim());
+                    insertProfileCmd.Parameters.AddWithValue("@Age", int.Parse(txtAge.Text.Trim()));
+                    insertProfileCmd.Parameters.AddWithValue("@Gender", cmbGender.Text);
+                    insertProfileCmd.Parameters.AddWithValue("@Phone", txtPhone.Text.Trim());
+                    insertProfileCmd.Parameters.AddWithValue("@Email", txtEmail.Text.Trim());
+                    insertProfileCmd.Parameters.AddWithValue("@Address", txtAddress.Text.Trim());
 
-                        int profileId = Convert.ToInt32(insertProfileCmd.ExecuteScalar());
+                    int profileId = Convert.ToInt32(insertProfileCmd.ExecuteScalar());
 
-                        // 2. Insert into Users table
-                        string insertUserQuery = "INSERT INTO Users (Username, Password, RoleID, ProfileID) VALUES (@Username, @Password, @RoleID, @ProfileID)";
-                        SqlCommand insertUserCmd = new SqlCommand(insertUserQuery, connection);
-                        insertUserCmd.Parameters.AddWithValue("@Username", generatedUsername);
-                        insertUserCmd.Parameters.AddWithValue("@Password", hashedPassword);
-                        insertUserCmd.Parameters.AddWithValue("@RoleID", 2); 
-                        insertUserCmd.Parameters.AddWithValue("@ProfileID", profileId);
 
-                        insertUserCmd.ExecuteNonQuery();
+                    string insertUserQuery = "INSERT INTO Users (Username, Password, RoleID, ProfileID) VALUES (@Username, @Password, @RoleID, @ProfileID)";
+                    SqlCommand insertUserCmd = new SqlCommand(insertUserQuery, connection, transaction);
+                    insertUserCmd.Parameters.AddWithValue("@Username", generatedUsername);
+                    insertUserCmd.Parameters.AddWithValue("@Password", hashedPassword);
+                    insertUserCmd.Parameters.AddWithValue("@RoleID", 2); 
+                    insertUserCmd.Parameters.AddWithValue("@ProfileID", profileId);
 
-                        MessageBox.Show($"Teacher registered successfully!\nUsername: {generatedUsername}\nPassword: {generatedPassword}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        ClearFields();
-                    }
+                    insertUserCmd.ExecuteNonQuery();
+
+                    string getDeptIdQuery = "SELECT DepartmentID FROM Departments WHERE DepartmentName = @DepartmentName";
+                    SqlCommand getDeptIdCmd = new SqlCommand(getDeptIdQuery, connection, transaction);
+                    getDeptIdCmd.Parameters.AddWithValue("@DepartmentName", cmbDepartment.Text);
+                    int departmentId = Convert.ToInt32(getDeptIdCmd.ExecuteScalar());
+
+                    string insertInstructorQuery = "INSERT INTO Instructors (ProfileID, HireDate, DepartmentID) VALUES (@ProfileID, GETDATE(), @DepartmentID)";
+                    SqlCommand insertInstructorCmd = new SqlCommand(insertInstructorQuery, connection, transaction);
+                    insertInstructorCmd.Parameters.AddWithValue("@ProfileID", profileId);
+                    insertInstructorCmd.Parameters.AddWithValue("@DepartmentID", departmentId);
+
+                    insertInstructorCmd.ExecuteNonQuery();
+
+                    transaction.Commit();
+                    MessageBox.Show($"Teacher registered successfully!\nUsername: {generatedUsername}\nPassword: {generatedPassword}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    ClearFields();
                 }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("Database error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("An unexpected error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            
-            
+            }
+            catch (SqlException ex)
+            {
+                transaction?.Rollback();
+                MessageBox.Show("Database error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                transaction?.Rollback();
+                MessageBox.Show("An unexpected error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+        
         private void ClearFields()
         {
             txtFirstname.Clear();
@@ -191,7 +268,7 @@ namespace KCUnivDB
 
         private void btnBack_Click(object sender, EventArgs e)
         {
-            this.Hide();
+                this.Hide();
         }
 
         private bool IsEmailExist(string email)
@@ -223,6 +300,17 @@ namespace KCUnivDB
                 }
             }
         }
+
+        private void AddTeacher_Load(object sender, EventArgs e)
+        {
+            dateTimePicker1.Value = DateTime.Now;
+        }
+
+        public static bool IsValid(string input, string pattern)
+        {
+            return Regex.IsMatch(input, pattern);
+        }
+
     }
 
 }

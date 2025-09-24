@@ -71,12 +71,6 @@
     <Compile Include="AdminDashboard.Designer.cs">
       <DependentUpon>AdminDashboard.cs</DependentUpon>
     </Compile>
-    <Compile Include="AdminEditTeacher.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="AdminEditTeacher.Designer.cs">
-      <DependentUpon>AdminEditTeacher.cs</DependentUpon>
-    </Compile>
     <Compile Include="AdminLogout.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -171,9 +165,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AdminDashboard.resx">
       <DependentUpon>AdminDashboard.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AdminEditTeacher.resx">
-      <DependentUpon>AdminEditTeacher.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AdminLogout.resx">
       <DependentUpon>AdminLogout.cs</DependentUpon>
