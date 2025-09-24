@@ -144,5 +144,48 @@ namespace KCUnivDB
                 }
             }
         }
+
+        private void btnDashboard_Click(object sender, EventArgs e)
+        {
+            AdminDashboard dash = new AdminDashboard();
+            dash.Show();
+            this.Hide();
+        }
+
+        private void btnApproval_Click(object sender, EventArgs e)
+        {
+            AdminApproval approval = new AdminApproval();
+            approval.Show();
+            this.Hide();
+        }
+
+        private void btnStudents_Click_1(object sender, EventArgs e)
+        {
+            AdminStudent student = new AdminStudent();
+            student.Show();
+            this.Hide();
+        }
+
+        private void btnTeachers_Click(object sender, EventArgs e)
+        {
+            AdminTeachers teachers = new AdminTeachers();
+            teachers.Show();
+            this.Hide();
+
+        }
+
+        private void btnSubjects_Click(object sender, EventArgs e)
+        {
+            AdminSubjects sub = new AdminSubjects();
+            sub.Show();
+            this.Hide();
+        }
+
+        private void btnReports_Click(object sender, EventArgs e)
+        {
+            AdminReports rep = new AdminReports();
+            rep.Show();
+            this.Hide();
+        }
     }
 }

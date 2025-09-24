@@ -244,4 +244,16 @@
         HV8kDTRYup5qlPASpvApXPVRceF/98UT/4YvbHvY8FUQN5YAAAAASUVORK5CYII=
 </value>
   </data>
+  <metadata name="guna2Elipse1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="errorProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>161, 17</value>
+  </metadata>
+  <metadata name="errorProvider2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>316, 17</value>
+  </metadata>
+  <metadata name="errorProvider3.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>471, 17</value>
+  </metadata>
 </root>

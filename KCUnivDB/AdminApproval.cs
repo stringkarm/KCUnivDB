@@ -17,7 +17,6 @@ namespace KCUnivDB
         public AdminApproval()
         {
             InitializeComponent();
-
             LoadApprovalData();
             LoadStudentCounts();
             SetButtonStates();
@@ -44,7 +43,7 @@ namespace KCUnivDB
                         P.Status
                     FROM Users U
                     INNER JOIN Profiles P ON U.ProfileID = P.ProfileID
-                    WHERE U.RoleID = 3; -- RoleID 3 is for Students
+                    WHERE U.RoleID = 3 AND (P.Status = 'Active' OR P.Status = 'Pending'); -- Only show students with Active or Pending status
                 ";
                 SqlCommand cmd = new SqlCommand(query, connection);
 
@@ -101,45 +100,6 @@ namespace KCUnivDB
                 catch (Exception ex)
                 {
                     MessageBox.Show("An unexpected error occurred: " + ex.Message);
-                }
-            }
-        }
-
-        // This method is now used to refresh the students data for the AdminStudent form.
-        private void LoadStudentsData()
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = @"
-                SELECT 
-                    P.ProfileID,
-                    P.FirstName,
-                    P.LastName,
-                    P.Age,
-                    P.Gender,
-                    P.Email,
-                    P.Phone,
-                    P.Address,
-                    P.Status
-                FROM Profiles P
-                INNER JOIN Users U ON P.ProfileID = U.ProfileID
-                WHERE U.RoleID = 3 AND P.Status = 'Active'
-                ORDER BY P.ProfileID DESC; -- Adjust this to order by a different column if you wish
-                ";
-                SqlCommand cmd = new SqlCommand(query, connection);
-
-                try
-                {
-                    connection.Open();
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-
-                    dtgApproval.DataSource = dt;
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("Database error: " + ex.Message);
                 }
             }
         }
@@ -224,13 +184,14 @@ namespace KCUnivDB
         private void dtgApproval_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
 
+
             if (e.ColumnIndex == dtgApproval.Columns["Status_Dropdown"].Index && e.RowIndex >= 0)
             {
                 string newStatus = dtgApproval.Rows[e.RowIndex].Cells["Status_Dropdown"].Value.ToString();
                 int profileId = Convert.ToInt32(dtgApproval.Rows[e.RowIndex].Cells["ProfileID"].Value);
 
                 DialogResult dialogResult = MessageBox.Show($"Are you sure you want to change the status to '{newStatus}' for this student?",
-                                                             "Confirm Status Change", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                                            "Confirm Status Change", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (dialogResult == DialogResult.Yes)
                 {
@@ -262,50 +223,7 @@ namespace KCUnivDB
             }
         }
 
-       
-        //private void UpdateStudentInfo(int profileId, string firstName, string lastName, int age, string gender, string email, string address)
-        //{
-        //    string updateQuery = @"
-        //        UPDATE Profiles 
-        //        SET FirstName = @FirstName, 
-        //            LastName = @LastName, 
-        //            Age = @Age, 
-        //            Gender = @Gender, 
-        //            Email = @Email, 
-        //            Address = @Address 
-        //        WHERE ProfileID = @ProfileID";
-
-        //    using (SqlConnection connection = new SqlConnection(connectionString))
-        //    {
-        //        SqlCommand cmd = new SqlCommand(updateQuery, connection);
-        //        cmd.Parameters.AddWithValue("@FirstName", firstName);
-        //        cmd.Parameters.AddWithValue("@LastName", lastName);
-        //        cmd.Parameters.AddWithValue("@Age", age);
-        //        cmd.Parameters.AddWithValue("@Gender", gender);
-        //        cmd.Parameters.AddWithValue("@Email", email);
-        //        cmd.Parameters.AddWithValue("@Address", address);
-        //        cmd.Parameters.AddWithValue("@ProfileID", profileId);
-
-        //        try
-        //        {
-        //            connection.Open();
-        //            int rowsAffected = cmd.ExecuteNonQuery();
-        //            if (rowsAffected > 0)
-        //            {
-        //                MessageBox.Show("Student information updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("No changes were made.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //            }
-        //        }
-        //        catch (SqlException ex)
-        //        {
-        //            MessageBox.Show("Failed to update student information: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        }
-        //    }
-        //}
-
+     
         private void SetButtonStates()
         {
             bool rowSelected = dtgApproval.SelectedRows.Count > 0;
@@ -319,34 +237,6 @@ namespace KCUnivDB
             SetButtonStates();
         }
 
-        //private void btnUpdate_Click_1(object sender, EventArgs e)
-        //{
-        //    if (dtgApproval.SelectedRows.Count > 0)
-        //    {
-        //        DialogResult dialogResult = MessageBox.Show("Are you sure you want to save the changes for this student?", "Confirm Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-        //        if (dialogResult == DialogResult.Yes)
-        //        {
-        //            // Get the data from the selected row.
-        //            int profileId = Convert.ToInt32(dtgApproval.SelectedRows[0].Cells["ProfileID"].Value);
-        //            string firstName = dtgApproval.SelectedRows[0].Cells["FirstName"].Value.ToString();
-        //            string lastName = dtgApproval.SelectedRows[0].Cells["LastName"].Value.ToString();
-        //            int age = Convert.ToInt32(dtgApproval.SelectedRows[0].Cells["Age"].Value);
-        //            string gender = dtgApproval.SelectedRows[0].Cells["Gender"].Value.ToString();
-        //            string email = dtgApproval.SelectedRows[0].Cells["Email"].Value.ToString();
-        //            string address = dtgApproval.SelectedRows[0].Cells["Address"].Value.ToString();
-
-        //            // Now, call the new method to update the database.
-        //            UpdateStudentInfo(profileId, firstName, lastName, age, gender, email, address);
-
-        //            // Refresh the data to show the changes.
-        //            LoadApprovalData();
-        //            LoadStudentCounts();
-        //        }
-        //    }
-        //}
-
-       
         private void btnDelete_Click(object sender, EventArgs e)
         {
             try
@@ -354,20 +244,7 @@ namespace KCUnivDB
                 if (dtgApproval.SelectedRows.Count > 0)
                 {
                     DataGridViewRow selectedRow = dtgApproval.SelectedRows[0];
-
                     string profileId = selectedRow.Cells["ProfileID"].Value.ToString();
-
-                    string currentStatus = string.Empty;
-                    if (selectedRow.Cells["Status"].Value != null)
-                    {
-                        currentStatus = selectedRow.Cells["Status"].Value.ToString();
-                    }
-
-                    if (currentStatus.Equals("Inactive", StringComparison.OrdinalIgnoreCase))
-                    {
-                        MessageBox.Show("This student is already inactive.", "Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return;
-                    }
 
                     DialogResult confirmResult = MessageBox.Show($"Are you sure you want to deactivate Student {profileId}?", "Confirm Deactivation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
@@ -381,7 +258,7 @@ namespace KCUnivDB
 
                         // After successfully updating the status and adding the log, reload the data
                         // This will refresh the datagridview and remove the deactivated student.
-                        LoadStudentsData();
+                        LoadApprovalData();
                     }
                 }
                 else

@@ -20,10 +20,21 @@ namespace KCUnivDB
             SetButtonStates();
             LoadStudentCounts();
             adminRegister1.Hide();
+            EditStudentPanel.Hide();
         }
+
+        private string selectedProfileId;
 
         string connectionString = @"Data Source = canasa\SQLEXPRESS;
         Initial catalog = KCUnivDB; Integrated Security = true";
+
+        public void RefreshStudentData()
+        {
+            LoadStudentsData();
+            LoadStudentCounts();
+
+
+        }
 
         private void LoadStudentCounts()
         {
@@ -36,14 +47,12 @@ namespace KCUnivDB
                     connection.Open();
                     int activeCount = (int)cmdActive.ExecuteScalar();
                     lblTotalActive.Text = activeCount.ToString();
- 
                 }
                 catch (SqlException ex)
                 {
                     MessageBox.Show("Database error while counting students: " + ex.Message);
                 }
             }
-
         }
 
         private void SetButtonStates()
@@ -54,13 +63,14 @@ namespace KCUnivDB
             btnUpdate.Enabled = rowSelected;
         }
 
-    
+
         private void LoadStudentsData()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = @"
                 SELECT 
+                    U.UserID,
                     P.ProfileID,
                     P.FirstName,
                     P.LastName,
@@ -74,7 +84,7 @@ namespace KCUnivDB
                 INNER JOIN Users U ON P.ProfileID = U.ProfileID
                 WHERE U.RoleID = 3 AND P.Status = 'Active'
                 ORDER BY P.ProfileID DESC; -- Adjust this to order by a different column if you wish
- ";
+";
 
                 SqlCommand cmd = new SqlCommand(query, connection);
 
@@ -85,14 +95,27 @@ namespace KCUnivDB
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
+                    dtgStudentsList.Columns.Clear();
+
                     dtgStudentsList.DataSource = dt;
+                    dtgStudentsList.AutoResizeColumns();
+
+                    dtgStudentsList.Columns["UserID"].Visible = false;
+                    dtgStudentsList.Columns["ProfileID"].Visible = false;
+
                 }
                 catch (SqlException ex)
                 {
                     MessageBox.Show("Database error: " + ex.Message);
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An unexpected error occurred: " + ex.Message);
+                }
             }
         }
+
+
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
@@ -139,8 +162,8 @@ namespace KCUnivDB
                         AddLogEntry(Convert.ToInt32(profileId), "Delete Student", logDescription);
 
                         // After successfully updating the status and adding the log, reload the data
-                        // This will refresh the datagridview and remove the deactivated student.
                         LoadStudentsData();
+                        LoadStudentCounts();
                     }
                 }
                 else
@@ -175,8 +198,7 @@ namespace KCUnivDB
             }
         }
 
-
-        private void UpdateStudentInfo(int profileId, string firstName, string lastName, int age, string gender, string email, string address)
+        public void UpdateStudentInfo(int profileId, string firstName, string lastName, int age, string gender, string email, string phone, string address)
         {
             string updateQuery = @"
                 UPDATE Profiles 
@@ -185,6 +207,7 @@ namespace KCUnivDB
                     Age = @Age, 
                     Gender = @Gender, 
                     Email = @Email, 
+                    Phone = @Phone,
                     Address = @Address 
                 WHERE ProfileID = @ProfileID";
 
@@ -196,6 +219,7 @@ namespace KCUnivDB
                 cmd.Parameters.AddWithValue("@Age", age);
                 cmd.Parameters.AddWithValue("@Gender", gender);
                 cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@Phone", phone);
                 cmd.Parameters.AddWithValue("@Address", address);
                 cmd.Parameters.AddWithValue("@ProfileID", profileId);
 
@@ -218,7 +242,6 @@ namespace KCUnivDB
                 }
             }
         }
-
         private void LoadApprovalData()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -269,31 +292,44 @@ namespace KCUnivDB
             }
         }
 
+
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             if (dtgStudentsList.SelectedRows.Count > 0)
             {
-                DialogResult dialogResult = MessageBox.Show("Are you sure you want to save the changes for this student?", "Confirm Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DataGridViewRow selectedRow = dtgStudentsList.SelectedRows[0];
 
-                if (dialogResult == DialogResult.Yes)
+                try
                 {
-                    int profileId = Convert.ToInt32(dtgStudentsList.SelectedRows[0].Cells["ProfileID"].Value);
-                    string firstName = dtgStudentsList.SelectedRows[0].Cells["FirstName"].Value.ToString();
-                    string lastName = dtgStudentsList.SelectedRows[0].Cells["LastName"].Value.ToString();
-                    int age = Convert.ToInt32(dtgStudentsList.SelectedRows[0].Cells["Age"].Value);
-                    string gender = dtgStudentsList.SelectedRows[0].Cells["Gender"].Value.ToString();
-                    string email = dtgStudentsList.SelectedRows[0].Cells["Email"].Value.ToString();
-                    string address = dtgStudentsList.SelectedRows[0].Cells["Address"].Value.ToString();
+                    // Get data from the selected row
+                    int profileId = Convert.ToInt32(selectedRow.Cells["ProfileID"].Value);
+                    string firstName = selectedRow.Cells["FirstName"].Value.ToString();
+                    string lastName = selectedRow.Cells["LastName"].Value.ToString();
+                    int age = Convert.ToInt32(selectedRow.Cells["Age"].Value);
+                    string gender = selectedRow.Cells["Gender"].Value.ToString();
+                    string email = selectedRow.Cells["Email"].Value.ToString();
+                    string phone = selectedRow.Cells["Phone"].Value.ToString(); 
+                    string address = selectedRow.Cells["Address"].Value.ToString();
 
-                    UpdateStudentInfo(profileId, firstName, lastName, age, gender, email, address);
+                    EditStudentPanel.Controls["txtFirstname"].Text = firstName;
+                    EditStudentPanel.Controls["txtLastname"].Text = lastName;
+                    EditStudentPanel.Controls["txtAge"].Text = age.ToString();
+                    EditStudentPanel.Controls["cmbGender"].Text = gender;
+                    EditStudentPanel.Controls["txtPhone"].Text = phone;
+                    EditStudentPanel.Controls["txtEmail"].Text = email;
+                    EditStudentPanel.Controls["txtAddress"].Text = address;
 
-                    string logAction = "Update Student";
-                    string logDescription = $"Updated student information for ProfileID: {profileId}";
-                    AddLogEntry(profileId, logAction, logDescription);
-
-                    LoadStudentCounts();
-                    LoadApprovalData();
+                    // Show the user control on the form.
+                    EditStudentPanel.Show();
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred while preparing to edit the student: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a student to update.", "No Student Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -369,6 +405,137 @@ namespace KCUnivDB
         private void dtgStudentsList_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void dtgStudentsList_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                btnUpdate_Click(sender, e);
+            }
+        }
+
+        private void label22_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+        }
+
+        private void adminRegister1_Load_1(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            errorProvider1.Clear();
+            errorProvider2.Clear();
+            errorProvider3.Clear();
+
+
+            if (string.IsNullOrEmpty(selectedProfileId))
+            {
+                MessageBox.Show("Please select a student to update.", "No Student Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                string firstName = txtFirstname.Text;
+                string lastName = txtLastname.Text;
+                string gender = cmbGender.Text;
+                string address = txtAddress.Text;
+                string newEmail = txtEmail.Text;
+                string age = txtAge.Text;
+                string phone = txtPhone.Text;
+
+
+                bool allValid = true;
+
+                if (!IsValid(newEmail, mailPattern))
+                {
+                    errorProvider1.SetError(txtEmail, "Please enter a valid Email.");
+                    allValid = false;
+                }
+
+                if (!IsValid(phone, phonePattern))
+                {
+                    errorProvider2.SetError(txtPhone, "Please enter a valid Phone number.");
+                    allValid = false;
+                }
+
+                if (!IsValid(age, agePattern))
+                {
+                    errorProvider3.SetError(txtAge, "Age is in invalid format.");
+                    allValid = false;
+                }
+
+                if (!allValid)
+                {
+                    return;
+
+                }
+
+                string originalEmail = StudentData.SelectedRows[0].Cells["Email"].Value.ToString();
+
+
+                if (newEmail != originalEmail)
+                {
+                    if (IsEmailTaken(newEmail, selectedProfileId))
+                    {
+                        MessageBox.Show("This email address is already in use by another user.", "Email Invalid", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+
+                string sqlQuery = "UPDATE Profiles SET " +
+                                  "FirstName = @firstName, " +
+                                  "LastName = @lastName, " +
+                                  "Age = @age, " +
+                                  "Gender = @gender, " +
+                                  "Phone = @phone, " +
+                                  "Address = @address, " +
+                                  "Email = @email " +
+                                  "WHERE ProfileID = @profileId";
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@firstName", firstName);
+                        cmd.Parameters.AddWithValue("@lastName", lastName);
+                        cmd.Parameters.AddWithValue("@age", age);
+                        cmd.Parameters.AddWithValue("@gender", gender);
+                        cmd.Parameters.AddWithValue("@phone", phone);
+                        cmd.Parameters.AddWithValue("@address", address);
+                        cmd.Parameters.AddWithValue("@email", newEmail);
+                        cmd.Parameters.AddWithValue("@profileId", selectedProfileId);
+
+                        conn.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Student profile updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            LoadData();
+                            EditStudentPanel.Visible = false;
+
+                            string logDescription = $"Updated a student";
+                            AddLogEntry(Convert.ToInt32(selectedProfileId), "Update Student", logDescription);
+                        }
+                        else
+                        {
+                            MessageBox.Show("No records were updated. Profile not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred during the update: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
     

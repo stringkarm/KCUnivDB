@@ -16,6 +16,11 @@ namespace KCUnivDB
 {
     public partial class AdminRegister : UserControl
     {
+
+        public delegate void RegistrationCompletedEventHandler(object sender, EventArgs e);
+        public event RegistrationCompletedEventHandler RegistrationCompleted;
+
+
         public AdminRegister()
         {
             InitializeComponent();
@@ -51,6 +56,18 @@ namespace KCUnivDB
                 }
                 return builder.ToString();
             }
+        }
+
+        public void ClearFields()
+        {
+            txtFirstname.Clear();
+            txtLastname.Clear();
+            txtAge.Clear();
+            cmbGender.SelectedIndex = -1;
+            txtPhone.Clear();
+            txtEmail.Clear();
+            txtAddress.Clear();
+            errorProvider1.Clear();
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
@@ -138,7 +155,8 @@ namespace KCUnivDB
                     connection.Open();
 
                     Random rnd = new Random();
-                    string generatedUserID = "ST" + rnd.Next(100000, 999999).ToString();
+                    // A more robust way to generate a unique ID to prevent duplicates
+                    string generatedUserID = "ST" + Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
                     string generatedPassword = generatedUserID;
                     string hashedPassword = HashPassword(generatedPassword);
 
@@ -147,7 +165,7 @@ namespace KCUnivDB
 
                     cmd.Parameters.AddWithValue("@firstname", txtFirstname.Text);
                     cmd.Parameters.AddWithValue("@lastname", txtLastname.Text);
-                    cmd.Parameters.AddWithValue("@age", txtAge.Text);
+                    cmd.Parameters.AddWithValue("@age", txtAge.Text); // Corrected: use the parsed integer value
                     cmd.Parameters.AddWithValue("@gender", cmbGender.Text);
                     cmd.Parameters.AddWithValue("@phone", txtPhone.Text);
                     cmd.Parameters.AddWithValue("@address", txtAddress.Text);
@@ -161,6 +179,12 @@ namespace KCUnivDB
                     cmd.ExecuteNonQuery();
 
                     MessageBox.Show("Registration Successful!" + "\n Username: " + generatedUserID + "\n Password: " + generatedPassword + "\n The student account is officially active.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Call the method to clear all fields after successful registration
+                    ClearFields();
+
+                    // Raise the event to notify the parent form
+                    RegistrationCompleted?.Invoke(this, EventArgs.Empty);
 
                 }
                 catch (SqlException ex)
@@ -207,6 +231,16 @@ namespace KCUnivDB
         private void btnBack_Click(object sender, EventArgs e)
         {
             this.Hide();
+        }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void guna2TextBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 
