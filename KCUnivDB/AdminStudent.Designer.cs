@@ -80,10 +80,10 @@
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
-            this.adminRegister1 = new KCUnivDB.AdminRegister();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.adminRegister1 = new KCUnivDB.AdminRegister();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
@@ -467,6 +467,7 @@
             this.dtgStudentsList.RowTemplate.Height = 24;
             this.dtgStudentsList.Size = new System.Drawing.Size(783, 436);
             this.dtgStudentsList.TabIndex = 75;
+            this.dtgStudentsList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgStudentsList_CellClick);
             this.dtgStudentsList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgStudentsList_CellContentClick);
             this.dtgStudentsList.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgStudentsList_CellContentDoubleClick);
             this.dtgStudentsList.SelectionChanged += new System.EventHandler(this.dtgStudentsList_SelectionChanged);
@@ -929,14 +930,6 @@
             this.guna2Elipse1.BorderRadius = 10;
             this.guna2Elipse1.TargetControl = this.EditStudentPanel;
             // 
-            // adminRegister1
-            // 
-            this.adminRegister1.Location = new System.Drawing.Point(249, 2);
-            this.adminRegister1.Name = "adminRegister1";
-            this.adminRegister1.Size = new System.Drawing.Size(849, 727);
-            this.adminRegister1.TabIndex = 146;
-            this.adminRegister1.Load += new System.EventHandler(this.adminRegister1_Load_1);
-            // 
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
@@ -949,13 +942,20 @@
             // 
             this.errorProvider3.ContainerControl = this;
             // 
+            // adminRegister1
+            // 
+            this.adminRegister1.Location = new System.Drawing.Point(249, 1);
+            this.adminRegister1.Name = "adminRegister1";
+            this.adminRegister1.Size = new System.Drawing.Size(853, 728);
+            this.adminRegister1.TabIndex = 146;
+            // 
             // AdminStudent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
-            this.Controls.Add(this.EditStudentPanel);
             this.Controls.Add(this.adminRegister1);
+            this.Controls.Add(this.EditStudentPanel);
             this.Controls.Add(this.guna2Shapes6);
             this.Controls.Add(this.guna2Shapes5);
             this.Controls.Add(this.guna2Shapes4);
@@ -1046,10 +1046,10 @@
         private Guna.UI2.WinForms.Guna2Shapes guna2Shapes8;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label22;
-        private AdminRegister adminRegister1;
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse1;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private System.Windows.Forms.ErrorProvider errorProvider3;
+        private AdminRegister adminRegister1;
     }
 }

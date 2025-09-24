@@ -446,6 +446,7 @@
             this.btnLogs.TabIndex = 7;
             this.btnLogs.Text = "       Logs";
             this.btnLogs.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnLogs.Click += new System.EventHandler(this.btnLogs_Click_1);
             // 
             // guna2Shapes2
             // 

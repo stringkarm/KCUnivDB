@@ -256,8 +256,6 @@ namespace KCUnivDB
                         string logDescription = $"Deactivated a student";
                         AddLogEntry(Convert.ToInt32(profileId), "Delete Student", logDescription);
 
-                        // After successfully updating the status and adding the log, reload the data
-                        // This will refresh the datagridview and remove the deactivated student.
                         LoadApprovalData();
                     }
                 }
@@ -359,6 +357,13 @@ namespace KCUnivDB
             AdminTeachers teachers= new AdminTeachers();
             this.Hide();
             teachers.Show();
+        }
+
+        private void btnLogs_Click_1(object sender, EventArgs e)
+        {
+            Logs logs =new Logs();
+            logs.Show();
+            this.Hide();
         }
     }
 }

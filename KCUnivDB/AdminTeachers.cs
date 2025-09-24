@@ -101,6 +101,34 @@ namespace KCUnivDB
             logs.Show();
             this.Hide();
         }
+
+        private void btnApproval_Click_1(object sender, EventArgs e)
+        {
+            AdminApproval app = new AdminApproval();
+            app.Show();
+            this.Hide();
+        }
+
+        private void btnDashboard_Click_1(object sender, EventArgs e)
+        {
+            AdminDashboard dash = new AdminDashboard();
+            dash.Show();
+            this.Hide();
+        }
+
+        private void btnStudents_Click(object sender, EventArgs e)
+        {
+            AdminStudent stu = new AdminStudent();
+            stu.Show();
+            this.Hide();
+        }
+
+        private void btnReports_Click_1(object sender, EventArgs e)
+        {
+            AdminReports adminReports = new AdminReports();
+            adminReports.Show();
+            this.Hide();
+        }
     }
 }
 

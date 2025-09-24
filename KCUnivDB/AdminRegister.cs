@@ -156,7 +156,7 @@ namespace KCUnivDB
 
                     Random rnd = new Random();
                     // A more robust way to generate a unique ID to prevent duplicates
-                    string generatedUserID = "ST" + Guid.NewGuid().ToString("N").Substring(0, 8).ToUpper();
+                    string generatedUserID = "ST" + Guid.NewGuid().ToString("N").Substring(0, 5).ToUpper();
                     string generatedPassword = generatedUserID;
                     string hashedPassword = HashPassword(generatedPassword);
 

@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,7 +17,7 @@ namespace KCUnivDB
         public AdminStudent()
         {
             InitializeComponent();
-            LoadStudentsData();
+            LoadStudentsData(); 
             SetButtonStates();
             LoadStudentCounts();
             adminRegister1.Hide();
@@ -24,6 +25,9 @@ namespace KCUnivDB
         }
 
         private string selectedProfileId;
+        string mailPattern = @"^[\w\.-]+@gmail\.com$";
+        string phonePattern = @"^(?:\+63|0)?9\d{9}$";
+        string agePattern = @"^(1[0-9]{2}|[1-9]?[0-9])$";
 
         string connectionString = @"Data Source = canasa\SQLEXPRESS;
         Initial catalog = KCUnivDB; Integrated Security = true";
@@ -36,11 +40,67 @@ namespace KCUnivDB
 
         }
 
+        public void LoadStudentsData()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+      
+                string query = @"
+                    SELECT
+                        U.UserID,
+                        P.ProfileID,
+                        P.FirstName,
+                        P.LastName,
+                        P.Age,
+                        P.Gender,
+                        P.Email,
+                        P.Phone,
+                        P.Address,
+                        P.Status
+                    FROM Profiles P
+                    INNER JOIN Users U ON P.ProfileID = U.ProfileID
+                    WHERE U.RoleID = 3 AND P.Status != 'Inactive'
+                    ORDER BY
+                        CASE P.Status
+                            WHEN 'Active' THEN 1
+                            WHEN 'Pending' THEN 2
+                            ELSE 3
+                        END,
+                        P.ProfileID DESC;
+                ";
+
+                SqlCommand cmd = new SqlCommand(query, connection);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    dtgStudentsList.Columns.Clear();
+                    dtgStudentsList.DataSource = dt;
+                    dtgStudentsList.AutoResizeColumns();
+                    
+                    dtgStudentsList.Columns["UserID"].Visible = false;
+
+
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("Database error: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An unexpected error occurred: " + ex.Message);
+                }
+            }
+        }
+
         private void LoadStudentCounts()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-
                 SqlCommand cmdActive = new SqlCommand("SELECT COUNT(*) FROM Profiles WHERE Status = 'Active' AND ProfileID IN (SELECT ProfileID FROM Users WHERE RoleID = 3)", connection);
                 try
                 {
@@ -58,61 +118,8 @@ namespace KCUnivDB
         private void SetButtonStates()
         {
             bool rowSelected = dtgStudentsList.SelectedRows.Count > 0;
-
             btnDelete.Enabled = rowSelected;
             btnUpdate.Enabled = rowSelected;
-        }
-
-
-        private void LoadStudentsData()
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = @"
-                SELECT 
-                    U.UserID,
-                    P.ProfileID,
-                    P.FirstName,
-                    P.LastName,
-                    P.Age,
-                    P.Gender,
-                    P.Email,
-                    P.Phone,
-                    P.Address,
-                    P.Status
-                FROM Profiles P
-                INNER JOIN Users U ON P.ProfileID = U.ProfileID
-                WHERE U.RoleID = 3 AND P.Status = 'Active'
-                ORDER BY P.ProfileID DESC; -- Adjust this to order by a different column if you wish
-";
-
-                SqlCommand cmd = new SqlCommand(query, connection);
-
-                try
-                {
-                    connection.Open();
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-
-                    dtgStudentsList.Columns.Clear();
-
-                    dtgStudentsList.DataSource = dt;
-                    dtgStudentsList.AutoResizeColumns();
-
-                    dtgStudentsList.Columns["UserID"].Visible = false;
-                    dtgStudentsList.Columns["ProfileID"].Visible = false;
-
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("Database error: " + ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("An unexpected error occurred: " + ex.Message);
-                }
-            }
         }
 
 
@@ -242,95 +249,14 @@ namespace KCUnivDB
                 }
             }
         }
-        private void LoadApprovalData()
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-
-                string query = @"
-                    SELECT 
-                        U.UserID,
-                        P.ProfileID,
-                        P.FirstName,
-                        P.LastName,
-                        P.Age,
-                        P.Gender,
-                        P.Email,
-                        P.Address,
-                        P.Status
-                    FROM Users U
-                    INNER JOIN Profiles P ON U.ProfileID = P.ProfileID
-                    WHERE U.RoleID = 3; -- RoleID 3 is for Students
-                ";
-                SqlCommand cmd = new SqlCommand(query, connection);
-
-                try
-                {
-                    connection.Open();
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-
-
-                    dtgStudentsList.Columns.Clear();
-
-                    dtgStudentsList.DataSource = dt;
-                    dtgStudentsList.AutoResizeColumns();
-
-                    dtgStudentsList.Columns["UserID"].Visible = false;
-                    dtgStudentsList.Columns["ProfileID"].Visible = false;
-
-                }
-                catch (SqlException ex)
-                {
-                    MessageBox.Show("Database error: " + ex.Message);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("An unexpected error occurred: " + ex.Message);
-                }
-            }
-        }
+       
 
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            if (dtgStudentsList.SelectedRows.Count > 0)
-            {
-                DataGridViewRow selectedRow = dtgStudentsList.SelectedRows[0];
-
-                try
-                {
-                    // Get data from the selected row
-                    int profileId = Convert.ToInt32(selectedRow.Cells["ProfileID"].Value);
-                    string firstName = selectedRow.Cells["FirstName"].Value.ToString();
-                    string lastName = selectedRow.Cells["LastName"].Value.ToString();
-                    int age = Convert.ToInt32(selectedRow.Cells["Age"].Value);
-                    string gender = selectedRow.Cells["Gender"].Value.ToString();
-                    string email = selectedRow.Cells["Email"].Value.ToString();
-                    string phone = selectedRow.Cells["Phone"].Value.ToString(); 
-                    string address = selectedRow.Cells["Address"].Value.ToString();
-
-                    EditStudentPanel.Controls["txtFirstname"].Text = firstName;
-                    EditStudentPanel.Controls["txtLastname"].Text = lastName;
-                    EditStudentPanel.Controls["txtAge"].Text = age.ToString();
-                    EditStudentPanel.Controls["cmbGender"].Text = gender;
-                    EditStudentPanel.Controls["txtPhone"].Text = phone;
-                    EditStudentPanel.Controls["txtEmail"].Text = email;
-                    EditStudentPanel.Controls["txtAddress"].Text = address;
-
-                    // Show the user control on the form.
+ 
                     EditStudentPanel.Show();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("An error occurred while preparing to edit the student: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please select a student to update.", "No Student Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+              
         }
 
         private void AddLogEntry(int profileID, string action, string description)
@@ -417,7 +343,7 @@ namespace KCUnivDB
 
         private void label22_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            EditStudentPanel.Hide();
         }
 
         private void adminRegister1_Load_1(object sender, EventArgs e)
@@ -425,7 +351,103 @@ namespace KCUnivDB
             Application.Exit();
         }
 
+        private void LoadData()
+        {
+            string connectionString = "Data Source=DESKTOP-5QHCE6M; Initial Catalog=NAVASCA_DB; Integrated Security=true";
 
+            // SQL query to count students with 'Active' status
+            string sqlQuery_TotalCount = "SELECT COUNT(p.ProfileID) " +
+                                          "FROM Profiles AS p " +
+                                          "INNER JOIN Users AS u ON p.ProfileID = u.ProfileID " +
+                                          "INNER JOIN Roles AS r ON u.RoleID = r.RoleID " +
+                                          "WHERE r.RoleName = 'Student' AND p.Status = 'Active'";
+
+            // SQL query to load all student data for the DataGridView, sorted by status
+            string sqlQuery_LoadData = "SELECT p.ProfileID, p.FirstName, p.LastName, p.Age, p.Gender, p.Phone, p.Address, p.Email, ISNULL(p.Status, 'Unknown') AS Status " +
+                                       "FROM Profiles AS p " +
+                                       "INNER JOIN Users AS u ON p.ProfileID = u.ProfileID " +
+                                       "INNER JOIN Roles AS r ON u.RoleID = r.RoleID " +
+                                       "WHERE r.RoleName IN ('Student') AND p.Status <> 'Inactive' " + // Exclude inactive users
+                                       "ORDER BY " +
+                                       "CASE p.Status " +
+                                       "WHEN 'Active' THEN 1 " +
+                                       "WHEN 'Pending' THEN 2 " +
+                                       "ELSE 3 END";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    SqlCommand countCmd = new SqlCommand(sqlQuery_TotalCount, conn);
+                    int activeStudentCount = (int)countCmd.ExecuteScalar();
+                    lblTotalActive.Text = activeStudentCount.ToString();
+
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlQuery_LoadData, conn);
+                    DataTable dataTable = new DataTable();
+                    dataAdapter.Fill(dataTable);
+
+                    dtgStudentsList.AutoGenerateColumns = false;
+                    dtgStudentsList.Columns.Clear();
+                    dtgStudentsList.ReadOnly = true;
+
+                    dtgStudentsList.Columns.Add("ProfileID", "Profile ID");
+                    dtgStudentsList.Columns.Add("FirstName", "First Name");
+                    dtgStudentsList.Columns.Add("LastName", "Last Name");
+                    dtgStudentsList.Columns.Add("Age", "Age");
+                    dtgStudentsList.Columns.Add("Gender", "Gender");
+                    dtgStudentsList.Columns.Add("Phone", "Phone");
+                    dtgStudentsList.Columns.Add("Address", "Address");
+                    dtgStudentsList.Columns.Add("Email", "Email");
+                    dtgStudentsList.Columns.Add("Status", "Status");
+
+                    DataGridViewButtonColumn btnColumn = new DataGridViewButtonColumn();
+                    btnColumn.Name = "StatusActionButton";
+                    btnColumn.HeaderText = "Change Status";
+                    btnColumn.Text = "Approve";
+                    btnColumn.UseColumnTextForButtonValue = true;
+                    dtgStudentsList.Columns.Insert(9, btnColumn);
+
+                    foreach (DataGridViewColumn col in dtgStudentsList.Columns)
+                    {
+                        if (dataTable.Columns.Contains(col.Name))
+                        {
+                            col.DataPropertyName = col.Name;
+                        }
+                    }
+                    dtgStudentsList.DataSource = dataTable;
+                    dtgStudentsList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private bool IsEmailTaken(string email, string currentProfileId)
+        {
+
+            string sqlQuery = "SELECT COUNT(*) FROM Profiles WHERE Email = @email AND ProfileID != @currentProfileId";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@email", email);
+                    cmd.Parameters.AddWithValue("@currentProfileId", currentProfileId);
+                    conn.Open();
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
+        public static bool IsValid(string input, string pattern)
+        {
+            return Regex.IsMatch(input, pattern);
+        }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -477,7 +499,7 @@ namespace KCUnivDB
 
                 }
 
-                string originalEmail = StudentData.SelectedRows[0].Cells["Email"].Value.ToString();
+                string originalEmail = dtgStudentsList.SelectedRows[0].Cells["Email"].Value.ToString();
 
 
                 if (newEmail != originalEmail)
@@ -491,14 +513,14 @@ namespace KCUnivDB
 
 
                 string sqlQuery = "UPDATE Profiles SET " +
-                                  "FirstName = @firstName, " +
-                                  "LastName = @lastName, " +
-                                  "Age = @age, " +
-                                  "Gender = @gender, " +
-                                  "Phone = @phone, " +
-                                  "Address = @address, " +
-                                  "Email = @email " +
-                                  "WHERE ProfileID = @profileId";
+                                    "FirstName = @firstName, " +
+                                    "LastName = @lastName, " +
+                                    "Age = @age, " +
+                                    "Gender = @gender, " +
+                                    "Phone = @phone, " +
+                                    "Address = @address, " +
+                                    "Email = @email " +
+                                    "WHERE ProfileID = @profileId";
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
@@ -506,7 +528,8 @@ namespace KCUnivDB
                     {
                         cmd.Parameters.AddWithValue("@firstName", firstName);
                         cmd.Parameters.AddWithValue("@lastName", lastName);
-                        cmd.Parameters.AddWithValue("@age", age);
+                        // The missing line was here. It has been added.
+                        cmd.Parameters.AddWithValue("@age", Convert.ToInt32(age));
                         cmd.Parameters.AddWithValue("@gender", gender);
                         cmd.Parameters.AddWithValue("@phone", phone);
                         cmd.Parameters.AddWithValue("@address", address);
@@ -537,6 +560,34 @@ namespace KCUnivDB
                 MessageBox.Show("An error occurred during the update: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void dtgStudentsList_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dtgStudentsList.Rows[e.RowIndex];
+
+                selectedProfileId = row.Cells["ProfileID"].Value.ToString();
+
+                string firstName = row.Cells["FirstName"].Value.ToString();
+                string lastName = row.Cells["LastName"].Value.ToString();
+                string age = row.Cells["Age"].Value.ToString();
+                string gender = row.Cells["Gender"].Value.ToString();
+                string phone = row.Cells["Phone"].Value.ToString();
+                string address = row.Cells["Address"].Value.ToString();
+                string email = row.Cells["Email"].Value.ToString();
+
+                txtFirstname.Text = firstName;
+                txtLastname.Text = lastName;
+                txtAge.Text = age;
+                txtPhone.Text = phone;
+                txtAddress.Text = address;
+                txtEmail.Text = email;
+
+                cmbGender.Text = gender;
+            }
+        }
+    }
     }
     
-}
+
