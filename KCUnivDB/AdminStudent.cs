@@ -167,7 +167,6 @@ namespace KCUnivDB
                         string logDescription = $"Deactivated a student";
                         AddLogEntry(Convert.ToInt32(profileId), "Delete Student", logDescription);
 
-                        // After successfully updating the status and adding the log, reload the data
                         LoadStudentsData();
                         LoadStudentCounts();
                     }
@@ -358,19 +357,17 @@ namespace KCUnivDB
         {
             string connectionString = "Data Source=DESKTOP-5QHCE6M; Initial Catalog=NAVASCA_DB; Integrated Security=true";
 
-            // SQL query to count students with 'Active' status
             string sqlQuery_TotalCount = "SELECT COUNT(p.ProfileID) " +
                                           "FROM Profiles AS p " +
                                           "INNER JOIN Users AS u ON p.ProfileID = u.ProfileID " +
                                           "INNER JOIN Roles AS r ON u.RoleID = r.RoleID " +
                                           "WHERE r.RoleName = 'Student' AND p.Status = 'Active'";
 
-            // SQL query to load all student data for the DataGridView, sorted by status
             string sqlQuery_LoadData = "SELECT p.ProfileID, p.FirstName, p.LastName, p.Age, p.Gender, p.Phone, p.Address, p.Email, ISNULL(p.Status, 'Unknown') AS Status " +
                                        "FROM Profiles AS p " +
                                        "INNER JOIN Users AS u ON p.ProfileID = u.ProfileID " +
                                        "INNER JOIN Roles AS r ON u.RoleID = r.RoleID " +
-                                       "WHERE r.RoleName IN ('Student') AND p.Status <> 'Inactive' " + // Exclude inactive users
+                                       "WHERE r.RoleName IN ('Student') AND p.Status <> 'Inactive' " + 
                                        "ORDER BY " +
                                        "CASE p.Status " +
                                        "WHEN 'Active' THEN 1 " +

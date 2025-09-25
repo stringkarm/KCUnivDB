@@ -556,7 +556,6 @@
         private Guna.UI2.WinForms.Guna2Button btnBack;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ErrorProvider errorProvider1;
-        private Guna.UI2.WinForms.Guna2ComboBox cmbDepartment;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private System.Windows.Forms.ErrorProvider errorProvider3;
@@ -567,5 +566,6 @@
         private System.Windows.Forms.ErrorProvider errorProvider8;
         private System.Windows.Forms.ErrorProvider errorProvider9;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        public Guna.UI2.WinForms.Guna2ComboBox cmbDepartment;
     }
 }

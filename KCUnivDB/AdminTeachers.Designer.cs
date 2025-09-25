@@ -61,6 +61,8 @@
             this.dtgTeacherList = new System.Windows.Forms.DataGridView();
             this.guna2Shapes3 = new Guna.UI2.WinForms.Guna2Shapes();
             this.EditTeacherPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.cmbDepartment = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -80,9 +82,10 @@
             this.guna2Shapes8 = new Guna.UI2.WinForms.Guna2Shapes();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.guna2ComboBox1 = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.addTeacher1 = new KCUnivDB.AddTeacher();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
@@ -90,6 +93,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.btnSearch)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgTeacherList)).BeginInit();
             this.EditTeacherPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
             this.SuspendLayout();
             // 
             // btnClose
@@ -580,7 +586,7 @@
             // EditTeacherPanel
             // 
             this.EditTeacherPanel.BackColor = System.Drawing.Color.Brown;
-            this.EditTeacherPanel.Controls.Add(this.guna2ComboBox1);
+            this.EditTeacherPanel.Controls.Add(this.cmbDepartment);
             this.EditTeacherPanel.Controls.Add(this.label2);
             this.EditTeacherPanel.Controls.Add(this.label13);
             this.EditTeacherPanel.Controls.Add(this.label14);
@@ -606,6 +612,36 @@
             this.EditTeacherPanel.Name = "EditTeacherPanel";
             this.EditTeacherPanel.Size = new System.Drawing.Size(783, 577);
             this.EditTeacherPanel.TabIndex = 146;
+            // 
+            // cmbDepartment
+            // 
+            this.cmbDepartment.BackColor = System.Drawing.Color.Transparent;
+            this.cmbDepartment.BorderColor = System.Drawing.Color.Gray;
+            this.cmbDepartment.BorderRadius = 10;
+            this.cmbDepartment.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbDepartment.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDepartment.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cmbDepartment.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cmbDepartment.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbDepartment.ForeColor = System.Drawing.Color.Black;
+            this.cmbDepartment.ItemHeight = 30;
+            this.cmbDepartment.Location = new System.Drawing.Point(449, 403);
+            this.cmbDepartment.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbDepartment.Name = "cmbDepartment";
+            this.cmbDepartment.Size = new System.Drawing.Size(300, 36);
+            this.cmbDepartment.TabIndex = 146;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label2.Location = new System.Drawing.Point(446, 382);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(87, 17);
+            this.label2.TabIndex = 145;
+            this.label2.Text = "Department";
             // 
             // label13
             // 
@@ -847,6 +883,7 @@
             this.btnSave.Size = new System.Drawing.Size(300, 46);
             this.btnSave.TabIndex = 131;
             this.btnSave.Text = "Save Changes";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // txtFirstname
             // 
@@ -924,50 +961,32 @@
             this.label22.Text = "×";
             this.label22.Click += new System.EventHandler(this.label22_Click);
             // 
-            // guna2ComboBox1
-            // 
-            this.guna2ComboBox1.BackColor = System.Drawing.Color.Transparent;
-            this.guna2ComboBox1.BorderColor = System.Drawing.Color.Gray;
-            this.guna2ComboBox1.BorderRadius = 10;
-            this.guna2ComboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.guna2ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.guna2ComboBox1.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.guna2ComboBox1.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.guna2ComboBox1.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.guna2ComboBox1.ForeColor = System.Drawing.Color.Black;
-            this.guna2ComboBox1.ItemHeight = 30;
-            this.guna2ComboBox1.Location = new System.Drawing.Point(449, 403);
-            this.guna2ComboBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.guna2ComboBox1.Name = "guna2ComboBox1";
-            this.guna2ComboBox1.Size = new System.Drawing.Size(300, 36);
-            this.guna2ComboBox1.TabIndex = 146;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label2.Location = new System.Drawing.Point(446, 382);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(87, 17);
-            this.label2.TabIndex = 145;
-            this.label2.Text = "Department";
-            // 
             // addTeacher1
             // 
-            this.addTeacher1.Location = new System.Drawing.Point(249, 3);
+            this.addTeacher1.Location = new System.Drawing.Point(249, 1);
             this.addTeacher1.Name = "addTeacher1";
-            this.addTeacher1.Size = new System.Drawing.Size(854, 726);
+            this.addTeacher1.Size = new System.Drawing.Size(855, 728);
             this.addTeacher1.TabIndex = 147;
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
+            // errorProvider2
+            // 
+            this.errorProvider2.ContainerControl = this;
+            // 
+            // errorProvider3
+            // 
+            this.errorProvider3.ContainerControl = this;
             // 
             // AdminTeachers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
-            this.Controls.Add(this.addTeacher1);
             this.Controls.Add(this.EditTeacherPanel);
+            this.Controls.Add(this.addTeacher1);
             this.Controls.Add(this.dtgTeacherList);
             this.Controls.Add(this.guna2Shapes3);
             this.Controls.Add(this.guna2Shapes6);
@@ -999,6 +1018,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtgTeacherList)).EndInit();
             this.EditTeacherPanel.ResumeLayout(false);
             this.EditTeacherPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1036,7 +1058,7 @@
         private System.Windows.Forms.DataGridView dtgTeacherList;
         private Guna.UI2.WinForms.Guna2Shapes guna2Shapes3;
         private Guna.UI2.WinForms.Guna2Panel EditTeacherPanel;
-        private Guna.UI2.WinForms.Guna2ComboBox guna2ComboBox1;
+        private Guna.UI2.WinForms.Guna2ComboBox cmbDepartment;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
@@ -1058,5 +1080,8 @@
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label22;
         private AddTeacher addTeacher1;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.ErrorProvider errorProvider2;
+        private System.Windows.Forms.ErrorProvider errorProvider3;
     }
 }

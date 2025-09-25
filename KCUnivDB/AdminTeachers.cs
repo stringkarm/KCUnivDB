@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -17,17 +18,46 @@ namespace KCUnivDB
         {
             InitializeComponent();
             addTeacher1.Hide();
+            LoadDepartmentsToComboBox();
             LoadTeachersData();
             SetButtonStates();
             LoadTeacherCounts();
             EditTeacherPanel.Hide();
+            LoadData();
         }
+
         private string selectedProfileId;
+        private string selectedInstructorId;
         string mailPattern = @"^[\w\.-]+@gmail\.com$";
         string agePattern = @"^(1[0-9]{2}|[1-9]?[0-9])$";
 
+
         string connectionString = @"Data Source = canasa\SQLEXPRESS; Initial catalog = KCUnivDB; Integrated Security = true";
 
+        private void LoadDepartmentsToComboBox()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT DepartmentName FROM Departments";
+                SqlCommand cmd = new SqlCommand(query, connection);
+
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    cmbDepartment.Items.Clear(); // Clear existing items
+
+                    while (reader.Read())
+                    {
+                        cmbDepartment.Items.Add(reader["DepartmentName"].ToString());
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("Database error while loading departments: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
 
         public void LoadTeachersData()
         {
@@ -73,7 +103,6 @@ namespace KCUnivDB
                     dtgTeacherList.DataSource = dt;
                     dtgTeacherList.AutoResizeColumns();
 
-                    // Hide the InstructorID and ProfileID columns for security
                     if (dtgTeacherList.Columns.Contains("InstructorID"))
                     {
                         dtgTeacherList.Columns["InstructorID"].Visible = false;
@@ -210,7 +239,13 @@ namespace KCUnivDB
                     DataGridViewRow selectedRow = dtgTeacherList.SelectedRows[0];
 
                     string profileId = selectedRow.Cells["ProfileID"].Value.ToString();
-                    string currentStatus = selectedRow.Cells["Status"].Value.ToString();
+                    string firstname = selectedRow.Cells["FirstName"].Value.ToString();
+
+                    string currentStatus = string.Empty;
+                    if (selectedRow.Cells["Status"].Value != null)
+                    {
+                        currentStatus = selectedRow.Cells["Status"].Value.ToString();
+                    }
 
                     if (currentStatus.Equals("Inactive", StringComparison.OrdinalIgnoreCase))
                     {
@@ -218,16 +253,15 @@ namespace KCUnivDB
                         return;
                     }
 
-                    DialogResult confirmResult = MessageBox.Show($"Are you sure you want to deactivate Teacher {profileId}?", "Confirm Deactivation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    DialogResult confirmResult = MessageBox.Show($"Are you sure you want to deactivate Teacher {firstname}?", "Confirm Deactivation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                     if (confirmResult == DialogResult.Yes)
                     {
                         string newStatus = "Inactive";
                         UpdateUserStatus(profileId, newStatus);
-                        AddLogEntry(Convert.ToInt32(profileId), "Delete Teacher", "Deactivated a teacher");
 
-                        LoadTeachersData();
-                        LoadTeacherCounts();
+                        string logDescription = $"Deactivated a teacher";
+                        AddLogEntry(Convert.ToInt32(profileId), "Delete Teacher", logDescription);
                     }
                 }
                 else
@@ -294,28 +328,296 @@ namespace KCUnivDB
 
         private void dtgTeacherList_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-           
-                if (e.RowIndex >= 0)
-                {
-                    DataGridViewRow row = dtgTeacherList.Rows[e.RowIndex];
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dtgTeacherList.Rows[e.RowIndex];
 
-                    selectedProfileId = row.Cells["ProfileID"].Value.ToString();
-                    string firstName = row.Cells["FirstName"].Value.ToString();
-                    string lastName = row.Cells["LastName"].Value.ToString();
-                    string age = row.Cells["Age"].Value.ToString();
-                    string gender = row.Cells["Gender"].Value.ToString();
-                    string phone = row.Cells["Phone"].Value.ToString();
-                    string address = row.Cells["Address"].Value.ToString();
-                    string email = row.Cells["Email"].Value.ToString();
+                selectedProfileId = row.Cells["ProfileID"].Value.ToString();
 
-                  
-                }
-            
+                string firstName = row.Cells["FirstName"].Value.ToString();
+                string lastName = row.Cells["LastName"].Value.ToString();
+                string age = row.Cells["Age"].Value.ToString();
+                string gender = row.Cells["Gender"].Value.ToString();
+                string phone = row.Cells["Phone"].Value.ToString();
+                string address = row.Cells["Address"].Value.ToString();
+                string email = row.Cells["Email"].Value.ToString();
+
+                object departmentValue = row.Cells["DepartmentName"].Value;
+                string department = (departmentValue != DBNull.Value && departmentValue != null) ? departmentValue.ToString() : string.Empty;
+
+
+                txtFirstname.Text = firstName;
+                txtLastname.Text = lastName;
+                txtAge.Text = age;
+                txtPhone.Text = phone;
+                txtAddress.Text = address;
+                txtEmail.Text = email;
+                cmbGender.Text = gender;
+                cmbDepartment.Text = department;
+            }
+            SetButtonStates();
         }
 
         private void label22_Click(object sender, EventArgs e)
         {
             EditTeacherPanel.Hide();
+        }
+
+       
+
+        private int GetDepartmentID(string departmentName)
+        {
+            int departmentID = -1;
+            string sqlQuery = "SELECT DepartmentID FROM Departments WHERE DepartmentName = @DepartmentName";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sqlQuery, conn);
+                    cmd.Parameters.AddWithValue("@DepartmentName", departmentName);
+                    object result = cmd.ExecuteScalar();
+                    if (result != null)
+                    {
+                        departmentID = Convert.ToInt32(result);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred while getting DepartmentID: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            return departmentID;
+        }
+
+
+        private void LoadData()
+        {
+            string sqlQuery_TotalCount = "SELECT COUNT(p.ProfileID) " +
+                                  "FROM Profiles AS p " +
+                                  "INNER JOIN Users AS u ON p.ProfileID = u.ProfileID " +
+                                  "INNER JOIN Roles AS r ON u.RoleID = r.RoleID " +
+                                  "WHERE r.RoleName = 'Instructor' AND p.Status = 'Active'";
+
+            // SQL query to load teacher data, including the department name
+            string sqlQuery_LoadData = "SELECT p.ProfileID, p.FirstName, p.LastName, p.Age, p.Gender, p.Phone, p.Address, p.Email, ISNULL(p.Status, 'Unknown') AS Status, d.DepartmentName " +
+                                       "FROM Profiles AS p " +
+                                       "INNER JOIN Users AS u ON p.ProfileID = u.ProfileID " +
+                                       "INNER JOIN Roles AS r ON u.RoleID = r.RoleID " +
+                                       "INNER JOIN Instructors AS i ON p.ProfileID = i.ProfileID " + // Join with Instructors table
+                                       "INNER JOIN Departments AS d ON i.DepartmentID = d.DepartmentID " + // Join with Departments table
+                                       "WHERE r.RoleName IN ('Instructor') AND p.Status <> 'Inactive' " +
+                                       "ORDER BY " +
+                                       "CASE p.Status " +
+                                       "WHEN 'Active' THEN 1 " +
+                                       "WHEN 'Pending' THEN 2 " +
+                                       "ELSE 3 END";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    SqlCommand countCmd = new SqlCommand(sqlQuery_TotalCount, conn);
+                    int activeTeacherCount = (int)countCmd.ExecuteScalar();
+                    lblTotalActive.Text = activeTeacherCount.ToString();
+
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlQuery_LoadData, conn);
+                    DataTable dataTable = new DataTable();
+                    dataAdapter.Fill(dataTable);
+
+                    dtgTeacherList.AutoGenerateColumns = false;
+                    dtgTeacherList.Columns.Clear();
+                    dtgTeacherList.ReadOnly = true;
+
+                    // Add the new 'Department Name' column
+                    dtgTeacherList.Columns.Add("ProfileID", "Profile ID");
+                    dtgTeacherList.Columns.Add("FirstName", "First Name");
+                    dtgTeacherList.Columns.Add("LastName", "Last Name");
+                    dtgTeacherList.Columns.Add("Age", "Age");
+                    dtgTeacherList.Columns.Add("Gender", "Gender");
+                    dtgTeacherList.Columns.Add("Phone", "Phone");
+                    dtgTeacherList.Columns.Add("Address", "Address");
+                    dtgTeacherList.Columns.Add("Email", "Email");
+                    dtgTeacherList.Columns.Add("DepartmentName", "Department Name");
+                    dtgTeacherList.Columns.Add("Status", "Status");
+
+
+                    foreach (DataGridViewColumn col in dtgTeacherList.Columns)
+                    {
+                        if (dataTable.Columns.Contains(col.Name))
+                        {
+                            col.DataPropertyName = col.Name;
+                        }
+                    }
+                    dtgTeacherList.DataSource = dataTable;
+                    dtgTeacherList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+        }
+
+        public static bool IsValid(string input, string pattern)
+        {
+            return Regex.IsMatch(input, pattern);
+        }
+
+        private bool IsEmailTaken(string email, string currentProfileId)
+        {
+
+            string sqlQuery = "SELECT COUNT(*) FROM Profiles WHERE Email = @email AND ProfileID != @currentProfileId";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@email", email);
+                    cmd.Parameters.AddWithValue("@currentProfileId", currentProfileId);
+                    conn.Open();
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
+     
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+
+            errorProvider1.Clear();
+            errorProvider2.Clear();
+            errorProvider3.Clear();
+
+
+            if (string.IsNullOrEmpty(selectedProfileId))
+            {
+                MessageBox.Show("Please select a teacher to update.", "No Student Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                string firstName = txtFirstname.Text;
+                string lastName = txtLastname.Text;
+                string gender = cmbGender.Text;
+                string address = txtAddress.Text;
+                string newEmail = txtEmail.Text;
+                string age = txtAge.Text;
+                string phone = txtPhone.Text;
+
+
+                bool allValid = true;
+
+                if (!IsValid(newEmail, mailPattern))
+                {
+                    errorProvider1.SetError(txtEmail, "Please enter a valid Email.");
+                    allValid = false;
+                }
+
+
+                if (!IsValid(age, agePattern))
+                {
+                    errorProvider3.SetError(txtAge, "Age is in invalid format.");
+                    allValid = false;
+                }
+
+                if (!allValid)
+                {
+                    return;
+
+                }
+
+                string originalEmail = dtgTeacherList.SelectedRows[0].Cells["Email"].Value.ToString();
+
+
+                if (newEmail != originalEmail)
+                {
+                    if (IsEmailTaken(newEmail, selectedProfileId))
+                    {
+                        MessageBox.Show("This email address is already in use by another user.", "Email Invalid", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                string selectedDepartmentName = cmbDepartment.SelectedItem.ToString();
+
+                int departmentID = GetDepartmentID(selectedDepartmentName);
+
+                if (departmentID == -1)
+                {
+                    MessageBox.Show("Selected department not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                int selectedProfileID = (int)dtgTeacherList.SelectedRows[0].Cells["ProfileID"].Value;
+
+                string sqlQuery = "UPDATE Profiles SET " +
+                                  "FirstName = @FirstName, " +
+                                  "LastName = @LastName, " +
+                                  "Age = @Age, " +
+                                  "Gender = @Gender, " +
+                                  "Phone = @Phone, " +
+                                  "Address = @Address, " +
+                                  "Email = @Email " +
+                                  "WHERE ProfileID = @profileId; " +
+                                  "UPDATE Instructors SET DepartmentID = @DepartmentID WHERE ProfileID = @profileId;";
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    try
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand(sqlQuery, conn);
+
+                        cmd.Parameters.AddWithValue("@FirstName", txtFirstname.Text);
+                        cmd.Parameters.AddWithValue("@LastName", txtLastname.Text);
+                        cmd.Parameters.AddWithValue("@Age", txtAge.Text);
+                        cmd.Parameters.AddWithValue("@Gender", cmbGender.SelectedItem.ToString());
+                        cmd.Parameters.AddWithValue("@Phone", txtPhone.Text);
+                        cmd.Parameters.AddWithValue("@Address", txtAddress.Text);
+                        cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
+                        cmd.Parameters.AddWithValue("@profileId", selectedProfileID);
+
+                        cmd.Parameters.AddWithValue("@DepartmentID", departmentID);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Teacher updated successfully!");
+
+                            // Build description for log
+                            string logDescription = $"Updated Teacher: {txtFirstname.Text} {txtLastname.Text}";
+
+                            // Log the action using the teacher’s ProfileID (not admin ID)
+                            AddLogEntry(selectedProfileID, "Update Teacher", logDescription);
+
+                            MessageBox.Show("Teacher updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            LoadData();
+                        }
+                        else
+                        {
+                            MessageBox.Show("No records were updated. Profile not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("An error occurred during the update: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred during the update: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
     }
 }
