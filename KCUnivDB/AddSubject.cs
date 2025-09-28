@@ -105,44 +105,173 @@ namespace KCUnivDB
             }
         }
 
-        private void btnSubmit_Click(object sender, EventArgs e)
+        private bool CourseNameExists(string courseName, SqlConnection conn)
         {
+            string query = "SELECT COUNT(1) FROM Courses WHERE CourseName = @CourseName";
 
-            if (string.IsNullOrWhiteSpace(txtCourseName.Text) ||
-                string.IsNullOrWhiteSpace(txtCourseCode.Text) ||
-                string.IsNullOrWhiteSpace(txtCredits.Text) ||
-                cmbDepartment.SelectedValue == null ||
-                cmbTeacher.SelectedValue == null)
+            using (SqlCommand cmd = new SqlCommand(query, conn))
             {
-                MessageBox.Show("All required fields must be filled and selections made.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                cmd.Parameters.AddWithValue("@CourseName", courseName);
+                return (int)cmd.ExecuteScalar() > 0;
+            }
+        }
+
+        private bool CourseCodeExists(string courseCode, SqlConnection conn)
+        {
+            string query = "SELECT COUNT(1) FROM Courses WHERE CourseCode = @CourseCode";
+
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("@CourseCode", courseCode);
+                return (int)cmd.ExecuteScalar() > 0;
+            }
+        }
+
+        private bool ValidateForm(SqlConnection conn)
+        {
+            errorProvider1.Clear();
+            bool isValid = true;
+
+
+            if (string.IsNullOrWhiteSpace(txtCourseName.Text))
+            {
+                errorProvider1.SetError(txtCourseName, "Course Name is required.");
+                isValid = false;
             }
 
-            if (!int.TryParse(txtCredits.Text, out int credits) || credits <= 0)
+
+            if (string.IsNullOrWhiteSpace(txtCourseCode.Text))
             {
-                MessageBox.Show("Credits must be a positive whole number.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                errorProvider1.SetError(txtCourseCode, "Course Code is required.");
+                isValid = false;
             }
 
-            int departmentId = (int)cmbDepartment.SelectedValue;
-            int instructorId = (int)cmbTeacher.SelectedValue;
-            string courseName = txtCourseName.Text.Trim();
-            string courseCode = txtCourseCode.Text.Trim();
+
+
+            if (string.IsNullOrWhiteSpace(txtCredits.Text))
+            {
+                errorProvider1.SetError(txtCredits, "Credits field is required.");
+                isValid = false;
+            }
+            else if (!int.TryParse(txtCredits.Text, out int credits) || credits <= 0)
+            {
+                errorProvider1.SetError(txtCredits, "Credits must be a positive whole number.");
+                isValid = false;
+            }
+
+
+            if (cmbDepartment.SelectedValue == null || cmbDepartment.SelectedIndex == -1)
+            {
+                errorProvider1.SetError(cmbDepartment, "A Department selection is required.");
+                isValid = false;
+            }
+
+
+            if (cmbTeacher.SelectedValue == null || cmbTeacher.SelectedIndex == -1 || cmbTeacher.Text.Contains("No Teachers"))
+            {
+                errorProvider1.SetError(cmbTeacher, "A Teacher selection is required.");
+                isValid = false;
+            }
+
+   
+            if (isValid)
+            {
+                try
+                {
+             
+                    if (CourseNameExists(txtCourseName.Text.Trim(), conn))
+                    {
+                        errorProvider1.SetError(txtCourseName, "A course with this Course Name already exists.");
+                        isValid = false;
+                    }
+
+                    if (CourseCodeExists(txtCourseCode.Text.Trim(), conn))
+                    {
+                        errorProvider1.SetError(txtCourseCode, "A course with this Course Code already exists.");
+                        isValid = false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Database check failed: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+
+        private void LogAction(string actionType, string details)
+        {
+            const int maxDetailLength = 500;
+            string safeDetails = details.Length > maxDetailLength
+                                     ? details.Substring(0, maxDetailLength)
+                                     : details;
+
            
-            string courseDescription = txtDescription.Text.Trim(); 
-
-          
-            string insertQuery = @"
-                INSERT INTO Courses 
-                    (CourseName, CourseCode, Credits, InstructorID, DepartmentID, Status, Description) 
-                VALUES 
-                    (@CourseName, @CourseCode, @Credits, @InstructorID, @DepartmentID, 'Active', @Description)";
+            string logQuery = @"
+                INSERT INTO Logs (ProfileID, Action, Description, Date, Time)
+                VALUES (@ProfileID, @Action, @Description, CAST(GETDATE() AS DATE), CAST(GETDATE() AS TIME))";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
+                    using (SqlCommand cmd = new SqlCommand(logQuery, conn))
+                    {
+                        // ProfileID is not passed in the method, so we set it to NULL
+                        cmd.Parameters.AddWithValue("@ProfileID", DBNull.Value);
+
+                        // Map actionType to the 'Action' column
+                        cmd.Parameters.AddWithValue("@Action", actionType);
+
+                        // Map safeDetails to the 'Description' column
+                        cmd.Parameters.AddWithValue("@Description", safeDetails);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception logEx)
+                {
+                    MessageBox.Show("LOGGING ERROR: Could not write to log table. Check table schema and connection. The error was: " + logEx.Message, "Log Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnSubmit_Click(object sender, EventArgs e)
+        {
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    if (!ValidateForm(conn))
+                    {
+
+                        return;
+                    }
+
+                    int credits = int.Parse(txtCredits.Text);
+                    int departmentId = (int)cmbDepartment.SelectedValue;
+                    int instructorId = (int)cmbTeacher.SelectedValue;
+                    string courseName = txtCourseName.Text.Trim();
+                    string courseCode = txtCourseCode.Text.Trim();
+                    string courseDescription = txtDescription.Text.Trim();
+
+
+                    string departmentName = cmbDepartment.Text;
+                    string teacherName = cmbTeacher.Text;
+
+
+                    string insertQuery = @"
+                        INSERT INTO Courses 
+                            (CourseName, CourseCode, Credits, InstructorID, DepartmentID, Status, Description) 
+                        VALUES 
+                            (@CourseName, @CourseCode, @Credits, @InstructorID, @DepartmentID, 'Active', @Description)";
+
                     using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
                     {
                         cmd.Parameters.AddWithValue("@CourseName", courseName);
@@ -150,7 +279,8 @@ namespace KCUnivDB
                         cmd.Parameters.AddWithValue("@Credits", credits);
                         cmd.Parameters.AddWithValue("@InstructorID", instructorId);
                         cmd.Parameters.AddWithValue("@DepartmentID", departmentId);
-                      
+
+
                         if (string.IsNullOrEmpty(courseDescription))
                         {
                             cmd.Parameters.AddWithValue("@Description", DBNull.Value);
@@ -165,9 +295,11 @@ namespace KCUnivDB
                         if (rowsAffected > 0)
                         {
                             MessageBox.Show("Course added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                             ClearFormFields();
 
+
+                            string logDetails = $"Course: {courseCode} - {courseName} | Dept: {departmentName} | Instructor: {teacherName} | Credits: {credits}";
+                            LogAction("Add Subject", logDetails);
                         }
                         else
                         {

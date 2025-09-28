@@ -81,6 +81,7 @@
             this.guna2Shapes8 = new Guna.UI2.WinForms.Guna2Shapes();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
+            this.guna2Elipse2 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.addSubject1 = new KCUnivDB.AddSubject();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -254,6 +255,7 @@
             this.btnTeachers.TabIndex = 4;
             this.btnTeachers.Text = "       Teacher";
             this.btnTeachers.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnTeachers.Click += new System.EventHandler(this.btnTeachers_Click);
             // 
             // btnSubjects
             // 
@@ -627,7 +629,7 @@
             this.cmbDepartment.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbDepartment.ForeColor = System.Drawing.Color.Black;
             this.cmbDepartment.ItemHeight = 30;
-            this.cmbDepartment.Location = new System.Drawing.Point(191, 234);
+            this.cmbDepartment.Location = new System.Drawing.Point(191, 227);
             this.cmbDepartment.Margin = new System.Windows.Forms.Padding(4);
             this.cmbDepartment.Name = "cmbDepartment";
             this.cmbDepartment.Size = new System.Drawing.Size(254, 36);
@@ -639,7 +641,7 @@
             this.label9.AutoSize = true;
             this.label9.BackColor = System.Drawing.Color.Transparent;
             this.label9.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(188, 206);
+            this.label9.Location = new System.Drawing.Point(188, 202);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(87, 17);
             this.label9.TabIndex = 185;
@@ -705,7 +707,7 @@
             "Male",
             "Female",
             "Preferred not to say"});
-            this.cmbTeacherAssigned.Location = new System.Drawing.Point(490, 234);
+            this.cmbTeacherAssigned.Location = new System.Drawing.Point(490, 228);
             this.cmbTeacherAssigned.Margin = new System.Windows.Forms.Padding(4);
             this.cmbTeacherAssigned.Name = "cmbTeacherAssigned";
             this.cmbTeacherAssigned.Size = new System.Drawing.Size(258, 36);
@@ -716,7 +718,7 @@
             this.lblGender.AutoSize = true;
             this.lblGender.BackColor = System.Drawing.Color.Transparent;
             this.lblGender.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGender.Location = new System.Drawing.Point(487, 206);
+            this.lblGender.Location = new System.Drawing.Point(487, 202);
             this.lblGender.Name = "lblGender";
             this.lblGender.Size = new System.Drawing.Size(118, 17);
             this.lblGender.TabIndex = 179;
@@ -888,6 +890,11 @@
             this.label22.Text = "×";
             this.label22.Click += new System.EventHandler(this.label22_Click);
             // 
+            // guna2Elipse2
+            // 
+            this.guna2Elipse2.BorderRadius = 20;
+            this.guna2Elipse2.TargetControl = this.EditSubjectPanel;
+            // 
             // addSubject1
             // 
             this.addSubject1.Location = new System.Drawing.Point(249, 2);
@@ -995,5 +1002,6 @@
         private Guna.UI2.WinForms.Guna2TextBox txtCourseCode;
         private Guna.UI2.WinForms.Guna2TextBox txtCourseName;
         private AddSubject addSubject1;
+        private Guna.UI2.WinForms.Guna2Elipse guna2Elipse2;
     }
 }

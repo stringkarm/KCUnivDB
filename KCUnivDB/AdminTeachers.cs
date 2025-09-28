@@ -45,7 +45,7 @@ namespace KCUnivDB
                 {
                     connection.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
-                    cmbDepartment.Items.Clear(); // Clear existing items
+                    cmbDepartment.Items.Clear(); 
 
                     while (reader.Read())
                     {
@@ -396,8 +396,6 @@ namespace KCUnivDB
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                // This query already has the correct sorting logic to place the newest teacher on top 
-                // of their respective status group (and thus, at the very top if they are 'Active').
                 string query = @"
                     SELECT
                         I.InstructorID,

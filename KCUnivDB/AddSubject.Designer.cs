@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddSubject));
             this.cmbDepartment = new Guna.UI2.WinForms.Guna2ComboBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -48,6 +49,8 @@
             this.btnBack = new Guna.UI2.WinForms.Guna2Button();
             this.label2 = new System.Windows.Forms.Label();
             this.guna2Shapes1 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // cmbDepartment
@@ -353,6 +356,10 @@
             this.guna2Shapes1.Text = "guna2Shapes1";
             this.guna2Shapes1.Zoom = 100;
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
             // AddSubject
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -378,6 +385,7 @@
             this.Controls.Add(this.label2);
             this.Name = "AddSubject";
             this.Size = new System.Drawing.Size(854, 727);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -403,5 +411,6 @@
         private Guna.UI2.WinForms.Guna2Button btnBack;
         private System.Windows.Forms.Label label2;
         private Guna.UI2.WinForms.Guna2Shapes guna2Shapes1;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

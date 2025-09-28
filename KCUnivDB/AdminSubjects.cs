@@ -20,7 +20,7 @@ namespace KCUnivDB
             EditSubjectPanel.Hide();
             addSubject1.Hide();
             dtgSubjectsList.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            LoadCourses();
+            LoadSubjectsData();
             DataTable departmentsData = DatabaseManager.GetDepartments();
             cmbDepartment.DataSource = departmentsData;
             cmbDepartment.DisplayMember = "DepartmentName";
@@ -41,38 +41,7 @@ namespace KCUnivDB
              lblTotalActive.Text = $"{activeSubjectCount}";
         }
 
-        private void LoadCourses()
-        {
-
-            string sqlQuery = "SELECT c.CourseID, c.CourseName, c.CourseCode, c.Description, c.Credits, " +
-                     "p.FirstName, p.LastName, d.DepartmentName, c.Status " +
-                     "FROM Courses AS c " +
-                     "INNER JOIN Instructors AS i ON c.InstructorID = i.InstructorID " +
-                     "INNER JOIN Profiles AS p ON i.ProfileID = p.ProfileID " +
-                     "INNER JOIN Departments AS d ON c.DepartmentID = d.DepartmentID " +
-                     "WHERE c.Status = 'Active' " +
-                     "ORDER BY c.CourseID DESC"; 
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlQuery, conn);
-                    DataTable dataTable = new DataTable();
-                    dataAdapter.Fill(dataTable);
-
-                    dtgSubjectsList.DataSource = dataTable;
-                    SetupCoursesDataGridView();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("An error occurred while loading courses: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-
+     
         public void RefreshDataGrid()
         {
             LoadSubjectsData();
@@ -81,23 +50,24 @@ namespace KCUnivDB
         private void LoadSubjectsData()
         {
             string sqlQuery = @"
-                SELECT
-                    C.CourseID,
-                    C.CourseCode AS [Code],
-                    C.CourseName AS [Name],
-                    C.Description,
-                    C.Credits,
-                    ISNULL((P.FirstName + ' ' + P.LastName), 'Unassigned') AS [Instructor], -- Use ISNULL for unassigned
-                    D.DepartmentName AS [Department],
-                    C.Status
-                FROM Courses C
-                -- Use LEFT JOINs to allow for courses without assigned instructors or departments (if applicable)
-                LEFT JOIN Instructors I ON C.InstructorID = I.InstructorID
-                LEFT JOIN Profiles P ON I.ProfileID = P.ProfileID
-                INNER JOIN Departments D ON C.DepartmentID = D.DepartmentID
-                ORDER BY C.CourseID DESC, C.Status DESC, C.CourseCode ASC"; 
+                SELECT
+                    C.CourseID AS [Course ID] ,
+                    C.CourseCode AS [Code],
+                    C.CourseName AS [Name],
+                    C.Description,
+                    C.Credits,
+                    ISNULL((P.FirstName + ' ' + P.LastName), 'Unassigned') AS [Instructor], 
+                    D.DepartmentName AS [Department],
+                    C.Status
+                FROM Courses C
+                -- Use LEFT JOINs to allow for courses without assigned instructors or departments (if applicable)
+                LEFT JOIN Instructors I ON C.InstructorID = I.InstructorID
+                LEFT JOIN Profiles P ON I.ProfileID = P.ProfileID
+                INNER JOIN Departments D ON C.DepartmentID = D.DepartmentID
+                WHERE C.Status = 'Active' 
+                ORDER BY C.CourseID DESC, C.CourseCode DESC";
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
                 {
@@ -109,13 +79,10 @@ namespace KCUnivDB
                     dtgSubjectsList.DataSource = dataTable;
                     dtgSubjectsList.AutoResizeColumns();
 
-                    if (dtgSubjectsList.Columns.Contains("CourseID"))
-                    {
-                        dtgSubjectsList.Columns["CourseID"].Visible = true;
-                    }
+                    SetupCoursesDataGridView();
 
-                    activeSubjectCount = dataTable.AsEnumerable()
-                                  .Count(row => row.Field<string>("Status") == "Active");
+                    // Since we are only loading 'Active' subjects, the count is simply the row count.
+                    activeSubjectCount = dataTable.Rows.Count;
 
                     UpdateActiveCountLabel();
                 }
@@ -151,21 +118,24 @@ namespace KCUnivDB
 
             if (string.IsNullOrEmpty(searchTerm))
             {
-                LoadCourses();
+                LoadSubjectsData();
                 return;
             }
 
-            string sqlQuery = "SELECT c.CourseID, c.CourseName, c.CourseCode, c.Description, c.Credits, " +
-                     "p.FirstName, p.LastName, d.DepartmentName, c.Status " +
-                     "FROM Courses AS c " +
-                     "INNER JOIN Instructors AS i ON c.InstructorID = i.InstructorID " +
-                     "INNER JOIN Profiles AS p ON i.ProfileID = p.ProfileID " +
-                     "INNER JOIN Departments AS d ON c.DepartmentID = d.DepartmentID " +
-                     "WHERE c.Status = 'Active' AND " +
-                     "(c.CourseName LIKE @searchTerm OR c.CourseCode LIKE @searchTerm OR p.FirstName LIKE @searchTerm OR p.LastName LIKE @searchTerm OR d.DepartmentName LIKE @searchTerm) " +
-                     "ORDER BY c.CourseID DESC"; 
+            // FIX 1: Standardize the SELECT statement to use the same aliases as LoadSubjectsData()
+            // This ensures the DataGridView column mapping in SetupCoursesDataGridView works for both loading and searching.
+            string sqlQuery = "SELECT c.CourseID AS [Course ID], c.CourseCode AS [Code], c.CourseName AS [Name], c.Description, c.Credits, " +
+                             "ISNULL((p.FirstName + ' ' + p.LastName), 'Unassigned') AS [Instructor], " +
+                             "d.DepartmentName AS [Department], c.Status " +
+                             "FROM Courses AS c " +
+                             "LEFT JOIN Instructors AS i ON c.InstructorID = i.InstructorID " + // Use LEFT JOIN for consistency
+                             "LEFT JOIN Profiles AS p ON i.ProfileID = p.ProfileID " + // Use LEFT JOIN for consistency
+                             "INNER JOIN Departments AS d ON c.DepartmentID = d.DepartmentID " +
+                             "WHERE c.Status = 'Active' AND " +
+                             "(c.CourseName LIKE @searchTerm OR c.CourseCode LIKE @searchTerm OR p.FirstName LIKE @searchTerm OR p.LastName LIKE @searchTerm OR d.DepartmentName LIKE @searchTerm) " +
+                             "ORDER BY c.CourseID DESC";
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
                 {
@@ -198,6 +168,7 @@ namespace KCUnivDB
             dtgSubjectsList.Columns.Clear();
             dtgSubjectsList.ReadOnly = true;
 
+       
             dtgSubjectsList.Columns.Add("CourseID", "Course ID");
             dtgSubjectsList.Columns.Add("CourseName", "Course Name");
             dtgSubjectsList.Columns.Add("CourseCode", "Course Code");
@@ -207,57 +178,19 @@ namespace KCUnivDB
             dtgSubjectsList.Columns.Add("DepartmentName", "Department Name");
             dtgSubjectsList.Columns.Add("Status", "Status");
 
-            DataTable dataTable = (DataTable)dtgSubjectsList.DataSource;
-            if (dataTable != null && !dataTable.Columns.Contains("InstructorName"))
-            {
-                // This line seems incorrect as it assumes FirstName and LastName exist in the DataTable directly 
-                // when the table is populated by LoadCourses/LoadSubjectsData/btnSearch. 
-                // The query is responsible for creating the combined Instructor name. 
-                // I will comment it out as it is usually not needed when the SQL query handles the column.
-                // dataTable.Columns.Add("InstructorName", typeof(string), "FirstName + ' ' + LastName");
-            }
-
-            foreach (DataGridViewColumn col in dtgSubjectsList.Columns)
-            {
-                // The column names in the DataGridView must match the column names in the SQL query result set.
-                // Let's ensure the DataPropertyName is correctly mapped based on the query result:
-                string dataFieldName = "";
-                switch (col.Name)
-                {
-                    case "CourseID": dataFieldName = "CourseID"; break;
-                    case "CourseName": dataFieldName = "CourseName"; break;
-                    case "CourseCode": dataFieldName = "CourseCode"; break;
-                    case "Description": dataFieldName = "Description"; break;
-                    case "Credits": dataFieldName = "Credits"; break;
-                    case "InstructorName":
-                       
-                        dataFieldName = "FirstName"; 
-                        break;
-                    case "DepartmentName": dataFieldName = "DepartmentName"; break;
-                    case "Status": dataFieldName = "Status"; break;
-                }
-
-                if (dataTable != null && dataTable.Columns.Contains(dataFieldName))
-                {
-                   
-                    if (dataTable.Columns.Contains(col.Name))
-                    {
-                        col.DataPropertyName = col.Name;
-                    }
-                }
-            }
-
             
+            dtgSubjectsList.Columns["CourseID"].DataPropertyName = "Course ID";
+
+          
             dtgSubjectsList.Columns["CourseName"].DataPropertyName = "Name";
             dtgSubjectsList.Columns["CourseCode"].DataPropertyName = "Code";
             dtgSubjectsList.Columns["InstructorName"].DataPropertyName = "Instructor";
             dtgSubjectsList.Columns["DepartmentName"].DataPropertyName = "Department";
-            dtgSubjectsList.Columns["CourseID"].DataPropertyName = "CourseID";
             dtgSubjectsList.Columns["Credits"].DataPropertyName = "Credits";
             dtgSubjectsList.Columns["Description"].DataPropertyName = "Description";
             dtgSubjectsList.Columns["Status"].DataPropertyName = "Status";
 
-            dtgSubjectsList.Columns["CourseID"].Visible = false;
+            dtgSubjectsList.Columns["CourseID"].Visible = true;
             dtgSubjectsList.Columns["Status"].Visible = false;
         }
 
@@ -276,7 +209,7 @@ namespace KCUnivDB
             addSubject1.Show();
         }
 
-        private void DeleteCourse(int courseID)
+        private void DeleteCourse(int courseID, string courseName)
         {
             string sqlCommand = "UPDATE Courses SET Status = 'Inactive' WHERE CourseID = @CourseID";
 
@@ -290,15 +223,23 @@ namespace KCUnivDB
 
                     int rowsAffected = cmd.ExecuteNonQuery();
 
-                    // You could add a success message here if desired
                     if (rowsAffected > 0)
                     {
-                        // Logger.LogAction($"Course ID {courseID} soft deleted.");
+             
+                        AddLogEntry($"Course soft deleted → ID: {courseID}, Name: {courseName}");
+                    }
+                    else
+                    {
+                        MessageBox.Show("No rows were updated. Please check if the CourseID exists.",
+                            "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An error occurred during deletion: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("An error occurred during deletion: " + ex.Message,
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    AddLogEntry($"Error deleting course → {ex.Message}");
                 }
             }
         }
@@ -310,29 +251,34 @@ namespace KCUnivDB
             {
                 DataGridViewRow selectedRow = dtgSubjectsList.SelectedRows[0];
 
-                
                 if (selectedRow.Cells["CourseID"].Value == DBNull.Value)
                 {
                     MessageBox.Show("Invalid Course ID selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                int courseID = Convert.ToInt32(selectedRow.Cells["CourseID"].Value);
 
-                DialogResult result = MessageBox.Show("Are you sure you want to deactivate this course?", "Confirm Deactivation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                int courseID = Convert.ToInt32(selectedRow.Cells["CourseID"].Value);
+                string courseName = selectedRow.Cells["CourseName"].Value.ToString();
+
+                DialogResult result = MessageBox.Show(
+                    $"Are you sure you want to deactivate this course?\n\nCourse: {courseName}",
+                    "Confirm Deactivation",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
 
                 if (result == DialogResult.Yes)
                 {
-                    DeleteCourse(courseID);
+                    DeleteCourse(courseID, courseName);
+                    LoadSubjectsData();
 
-                   
-                    LoadCourses();
-
-                    MessageBox.Show("Course successfully deactivated and removed from the list.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Course successfully deactivated and removed from the list.",
+                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             else
             {
-                MessageBox.Show("Please select a course to delete.", "No Course Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please select a course to delete.", "No Course Selected",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -341,52 +287,34 @@ namespace KCUnivDB
             EditSubjectPanel.Visible = true;
         }
 
-
-        private void btnSave_Click(object sender, EventArgs e)
+        private void AddLogEntry(string logMessage)
         {
+            string sqlQuery = "INSERT INTO Logs (LogMessage, LogTime) VALUES (@Message, @Time)";
 
-            if (dtgSubjectsList.SelectedRows.Count == 0)
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                MessageBox.Show("Please select a course.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                try
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sqlQuery, conn))
+                    {
+
+                        cmd.Parameters.AddWithValue("@Message", logMessage);
+                        cmd.Parameters.AddWithValue("@Time", DateTime.Now);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    Console.WriteLine($"[LOGGING FAILED] Could not add log entry: '{logMessage}'. Error: {ex.Message}");
+                }
             }
+        }
 
-            int courseID = Convert.ToInt32(dtgSubjectsList.SelectedRows[0].Cells["CourseID"].Value);
-
-            string selectedDepartmentName = cmbDepartment.Text;
-            string selectedInstructorName = cmbTeacherAssigned.Text;
-
-
-            if (string.IsNullOrEmpty(txtCourseName.Text) || string.IsNullOrEmpty(txtCourseCode.Text) || string.IsNullOrEmpty(txtCredits.Text) || string.IsNullOrEmpty(txtDescription.Text))
-            {
-                MessageBox.Show("Please fill in all course detail fields.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (string.IsNullOrEmpty(selectedDepartmentName) || string.IsNullOrEmpty(selectedInstructorName))
-            {
-                MessageBox.Show("Please select both a Department and an Instructor.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (cmbDepartment.SelectedValue == null || cmbTeacherAssigned.SelectedValue == null)
-            {
-                
-                MessageBox.Show("Selected Department or Instructor is not a valid item. Please re-select from the list.", "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            
-            if (!int.TryParse(txtCredits.Text, out int credits))
-            {
-                MessageBox.Show("Credits must be a valid number.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-
-            int departmentID = Convert.ToInt32(cmbDepartment.SelectedValue);
-            int instructorID = Convert.ToInt32(cmbTeacherAssigned.SelectedValue);
-
+        private bool PerformUpdateCourse(int courseID, string courseName, string courseCode, int credits, string description, int departmentID, int instructorID)
+        {
             string sqlQuery = "UPDATE Courses SET " +
                               "CourseName = @CourseName, " +
                               "CourseCode = @CourseCode, " +
@@ -394,7 +322,7 @@ namespace KCUnivDB
                               "Description = @Description, " +
                               "DepartmentID = @DepartmentID, " +
                               "InstructorID = @InstructorID " +
-                              "WHERE CourseID = @CourseID;";
+                              "WHERE CourseID = @CourseID";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -403,12 +331,11 @@ namespace KCUnivDB
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(sqlQuery, conn);
 
-                    cmd.Parameters.AddWithValue("@CourseID", courseID);
-                    cmd.Parameters.AddWithValue("@CourseName", txtCourseName.Text.Trim());
-                    cmd.Parameters.AddWithValue("@CourseCode", txtCourseCode.Text.Trim());
-                    cmd.Parameters.AddWithValue("@Credits", credits); 
-                    cmd.Parameters.AddWithValue("@Description", txtDescription.Text.Trim());
-
+                    cmd.Parameters.AddWithValue("@CourseID", courseID); 
+                    cmd.Parameters.AddWithValue("@CourseName", courseName);
+                    cmd.Parameters.AddWithValue("@CourseCode", courseCode);
+                    cmd.Parameters.AddWithValue("@Credits", credits);
+                    cmd.Parameters.AddWithValue("@Description", description);
                     cmd.Parameters.AddWithValue("@DepartmentID", departmentID);
                     cmd.Parameters.AddWithValue("@InstructorID", instructorID);
 
@@ -416,18 +343,158 @@ namespace KCUnivDB
 
                     if (rowsAffected > 0)
                     {
-                        MessageBox.Show("Course details updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        LoadSubjectsData(); 
+                       
+                        AddLogEntry($"Course updated → ID: {courseID}, Name: {courseName}, Code: {courseCode}");
+                        return true;
                     }
+
                     else
                     {
-                        MessageBox.Show("Update failed. Course not found or no changes were made.", "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                       
+                        MessageBox.Show("No changes were made or Course ID not found.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An error occurred during the update: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("An error occurred while updating course: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    AddLogEntry($"Error updating course → ID: {courseID}. Error: {ex.Message}");
+                    return false;
                 }
+            }
+        }
+
+        private bool PerformInsertCourse(string courseName, string courseCode, int credits, string description, int departmentID, int instructorID)
+        {
+            string sqlQuery = "INSERT INTO Courses (CourseName, CourseCode, Credits, Description, DepartmentID, InstructorID, Status) " +
+                              "VALUES (@CourseName, @CourseCode, @Credits, @Description, @DepartmentID, @InstructorID, 'Active')";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(sqlQuery, conn);
+
+                    cmd.Parameters.AddWithValue("@CourseName", courseName);
+                    cmd.Parameters.AddWithValue("@CourseCode", courseCode);
+                    cmd.Parameters.AddWithValue("@Credits", credits);
+                    cmd.Parameters.AddWithValue("@Description", description);
+                    cmd.Parameters.AddWithValue("@DepartmentID", departmentID);
+                    cmd.Parameters.AddWithValue("@InstructorID", instructorID);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        AddLogEntry($"Course added → Name: {courseName}, Code: {courseCode}, Credits: {credits}, DeptID: {departmentID}, InstructorID: {instructorID}");
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("No rows were inserted. Please try again.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        AddLogEntry($"Failed attempt to add course → Name: {courseName}, Code: {courseCode}");
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred while adding course: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    AddLogEntry($"Error adding course → {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            errorProvider1.Clear();
+            bool isValid = true;
+
+            string courseName = txtCourseName.Text.Trim();
+            string courseCode = txtCourseCode.Text.Trim();
+            string description = txtDescription.Text.Trim();
+            int credits = 0;
+            int departmentID = 0;
+            int instructorID = 0;
+
+          
+            if (string.IsNullOrWhiteSpace(courseName))
+            {
+                errorProvider1.SetError(txtCourseName, "Course name is required.");
+                isValid = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(courseCode))
+            {
+                errorProvider1.SetError(txtCourseCode, "Course code is required.");
+                isValid = false;
+            }
+
+            if (!int.TryParse(txtCredits.Text.Trim(), out credits) || credits <= 0)
+            {
+                errorProvider1.SetError(txtCredits, "Credits must be a positive number.");
+                isValid = false;
+            }
+
+            if (cmbDepartment.SelectedValue == null)
+            {
+                errorProvider1.SetError(cmbDepartment, "Please select a department.");
+                isValid = false;
+            }
+            else
+            {
+                departmentID = Convert.ToInt32(cmbDepartment.SelectedValue);
+            }
+
+            if (cmbTeacherAssigned.SelectedValue == null)
+            {
+                errorProvider1.SetError(cmbTeacherAssigned, "Please select an instructor.");
+                isValid = false;
+            }
+            else
+            {
+                instructorID = Convert.ToInt32(cmbTeacherAssigned.SelectedValue);
+            }
+
+            if (!isValid)
+            {
+                MessageBox.Show("Please correct the highlighted errors.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                AddLogEntry("Failed attempt to save a course due to validation errors.");
+                return;
+            }
+            // --- End Validation Block ---
+
+            bool success = false;
+
+            // 🌟 CRITICAL FIX: Check the selectedCourseId to decide between UPDATE and INSERT.
+            if (!string.IsNullOrEmpty(selectedCourseId) && int.TryParse(selectedCourseId, out int courseID) && courseID > 0)
+            {
+                // Logic for UPDATE
+                success = PerformUpdateCourse(courseID, courseName, courseCode, credits, description, departmentID, instructorID);
+
+                if (success)
+                {
+                    MessageBox.Show("Course updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            else
+            {
+                // Logic for INSERT (Original logic)
+                success = PerformInsertCourse(courseName, courseCode, credits, description, departmentID, instructorID);
+
+                if (success)
+                {
+                    MessageBox.Show("Course added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+
+            // Common clean-up after successful operation
+            if (success)
+            {
+                LoadSubjectsData();
+                EditSubjectPanel.Hide(); 
+              
             }
         }
 
@@ -464,31 +531,23 @@ namespace KCUnivDB
                 txtDescription.Text = description;
 
                 cmbDepartment.SelectedIndexChanged -= cmbDepartment_SelectedIndexChanged;
-
-                int departmentIndex = cmbDepartment.FindStringExact(department);
-                if (departmentIndex != ListBox.NoMatches)
-                {
-                    cmbDepartment.SelectedIndex = departmentIndex;
-
-                    if (cmbDepartment.SelectedValue != null)
-                    {
-                        int selectedDepartmentID = Convert.ToInt32(cmbDepartment.SelectedValue);
-
-                        DataTable instructorsData = DatabaseManager.GetInstructorsByDepartment(selectedDepartmentID);
-                        cmbTeacherAssigned.DataSource = instructorsData;
-                        cmbTeacherAssigned.DisplayMember = "FullName";
-                        cmbTeacherAssigned.ValueMember = "InstructorID";
-
-                        cmbTeacherAssigned.SelectedIndex = cmbTeacherAssigned.FindStringExact(instructor);
-                    }
-                }
-
+                cmbDepartment.SelectedIndex = cmbDepartment.FindStringExact(department);
                 cmbDepartment.SelectedIndexChanged += cmbDepartment_SelectedIndexChanged;
 
-              
-                SetButtonStates();
+                if (cmbDepartment.SelectedValue != null)
+                {
+                    int selectedDepartmentID = Convert.ToInt32(cmbDepartment.SelectedValue);
+
+                    DataTable instructorsData = DatabaseManager.GetInstructorsByDepartment(selectedDepartmentID);
+                    cmbTeacherAssigned.DataSource = instructorsData;
+                    cmbTeacherAssigned.DisplayMember = "FullName";
+                    cmbTeacherAssigned.ValueMember = "InstructorID";
+                }
+
+                cmbTeacherAssigned.SelectedIndex = cmbTeacherAssigned.FindStringExact(instructor);
             }
 
+            SetButtonStates();
         }
 
         public static class DatabaseManager
@@ -509,23 +568,33 @@ namespace KCUnivDB
                 return dataTable;
             }
 
-   
+
             public static DataTable GetInstructorsByDepartment(int departmentID)
             {
                 DataTable dataTable = new DataTable();
+
+                dataTable.Columns.Add("InstructorID", typeof(int));
+                dataTable.Columns.Add("FullName", typeof(string));
+
+                DataRow unassignedRow = dataTable.NewRow();
+                unassignedRow["InstructorID"] = 0;
+                unassignedRow["FullName"] = "Unassigned";
+                dataTable.Rows.Add(unassignedRow);
+
+
                 string sqlQuery = @"
-                                     SELECT 
-                                     i.InstructorID, 
-                                     p.FirstName + ' ' + p.LastName AS FullName
-                                     FROM 
-                                     Instructors i
-                                     INNER JOIN 
-                                     Profiles p ON i.ProfileID = p.ProfileID
-                                     WHERE 
-                                     i.DepartmentID = @DepartmentID
-                                     AND
-                                     p.Status = 'Active';
-                                     ";
+                                            SELECT 
+                                            i.InstructorID, 
+                                            p.FirstName + ' ' + p.LastName AS FullName
+                                            FROM 
+                                            Instructors i
+                                            INNER JOIN 
+                                            Profiles p ON i.ProfileID = p.ProfileID
+                                            WHERE 
+                                            i.DepartmentID = @DepartmentID
+                                            AND
+                                            p.Status = 'Active';
+                                            ";
 
                 using (SqlConnection connection = new SqlConnection(Database.ConnectionString))
                 {
@@ -536,24 +605,26 @@ namespace KCUnivDB
                         {
                             connection.Open();
                             SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
+                            
                             dataAdapter.Fill(dataTable);
                         }
                         catch (Exception ex)
                         {
-                          
-                        
+
+
+
                             Console.WriteLine("Error in GetInstructorsByDepartment: " + ex.Message);
-                       
+
                         }
                     }
                 }
                 return dataTable;
             }
-        
         }
 
 
-        private void cmbDepartment_SelectedIndexChanged(object sender, EventArgs e)
+
+            private void cmbDepartment_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbDepartment.SelectedValue != null && cmbDepartment.SelectedValue.ToString() != "")
             {
@@ -586,5 +657,11 @@ namespace KCUnivDB
             btnDelete.Enabled = isRowSelected;
         }
 
+        private void btnTeachers_Click(object sender, EventArgs e)
+        {
+            AdminTeachers teacher= new AdminTeachers();
+            teacher.Show();
+            this.Hide();
+        }
     }
 }

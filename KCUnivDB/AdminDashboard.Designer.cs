@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminDashboard));
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminDashboard));
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.sidebarTimer = new System.Windows.Forms.Timer(this.components);
             this.sidebar = new System.Windows.Forms.FlowLayoutPanel();
@@ -54,7 +54,6 @@
             this.btnMinimize = new System.Windows.Forms.Label();
             this.guna2CirclePictureBox1 = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.adminLogout1 = new KCUnivDB.AdminLogout();
             this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
@@ -71,6 +70,13 @@
             this.guna2Panel5 = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.adminLogout1 = new KCUnivDB.AdminLogout();
+            this.guna2PictureBox1 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.guna2PictureBox2 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.guna2PictureBox3 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
@@ -82,7 +88,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.guna2CirclePictureBox2)).BeginInit();
             this.panelAccount.SuspendLayout();
             this.guna2Panel4.SuspendLayout();
+            this.guna2Panel6.SuspendLayout();
+            this.guna2Panel5.SuspendLayout();
+            this.guna2Panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox3)).BeginInit();
             this.SuspendLayout();
             // 
             // guna2Elipse1
@@ -357,14 +369,6 @@
             this.label3.TabIndex = 51;
             this.label3.Text = "Welcome, Admin!";
             // 
-            // adminLogout1
-            // 
-            this.adminLogout1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.adminLogout1.Location = new System.Drawing.Point(797, 107);
-            this.adminLogout1.Name = "adminLogout1";
-            this.adminLogout1.Size = new System.Drawing.Size(287, 307);
-            this.adminLogout1.TabIndex = 52;
-            // 
             // chart2
             // 
             this.chart2.BackColor = System.Drawing.Color.Silver;
@@ -490,6 +494,8 @@
             // 
             this.guna2Panel6.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.guna2Panel6.BorderRadius = 50;
+            this.guna2Panel6.Controls.Add(this.label6);
+            this.guna2Panel6.Controls.Add(this.guna2PictureBox3);
             this.guna2Panel6.Location = new System.Drawing.Point(329, 74);
             this.guna2Panel6.Name = "guna2Panel6";
             this.guna2Panel6.ShadowDecoration.BorderRadius = 20;
@@ -501,6 +507,8 @@
             // 
             this.guna2Panel5.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.guna2Panel5.BorderRadius = 50;
+            this.guna2Panel5.Controls.Add(this.label5);
+            this.guna2Panel5.Controls.Add(this.guna2PictureBox2);
             this.guna2Panel5.Location = new System.Drawing.Point(178, 74);
             this.guna2Panel5.Name = "guna2Panel5";
             this.guna2Panel5.ShadowDecoration.BorderRadius = 20;
@@ -512,6 +520,8 @@
             // 
             this.guna2Panel3.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.guna2Panel3.BorderRadius = 50;
+            this.guna2Panel3.Controls.Add(this.label4);
+            this.guna2Panel3.Controls.Add(this.guna2PictureBox1);
             this.guna2Panel3.Location = new System.Drawing.Point(30, 74);
             this.guna2Panel3.Name = "guna2Panel3";
             this.guna2Panel3.ShadowDecoration.BorderRadius = 20;
@@ -522,6 +532,86 @@
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
+            // 
+            // adminLogout1
+            // 
+            this.adminLogout1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.adminLogout1.Location = new System.Drawing.Point(796, 106);
+            this.adminLogout1.Name = "adminLogout1";
+            this.adminLogout1.Size = new System.Drawing.Size(287, 307);
+            this.adminLogout1.TabIndex = 52;
+            // 
+            // guna2PictureBox1
+            // 
+            this.guna2PictureBox1.FillColor = System.Drawing.Color.Transparent;
+            this.guna2PictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("guna2PictureBox1.Image")));
+            this.guna2PictureBox1.ImageRotate = 0F;
+            this.guna2PictureBox1.Location = new System.Drawing.Point(7, 10);
+            this.guna2PictureBox1.Name = "guna2PictureBox1";
+            this.guna2PictureBox1.Size = new System.Drawing.Size(38, 37);
+            this.guna2PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.guna2PictureBox1.TabIndex = 62;
+            this.guna2PictureBox1.TabStop = false;
+            // 
+            // guna2PictureBox2
+            // 
+            this.guna2PictureBox2.FillColor = System.Drawing.Color.Transparent;
+            this.guna2PictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("guna2PictureBox2.Image")));
+            this.guna2PictureBox2.ImageRotate = 0F;
+            this.guna2PictureBox2.Location = new System.Drawing.Point(3, 10);
+            this.guna2PictureBox2.Name = "guna2PictureBox2";
+            this.guna2PictureBox2.Size = new System.Drawing.Size(38, 37);
+            this.guna2PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.guna2PictureBox2.TabIndex = 63;
+            this.guna2PictureBox2.TabStop = false;
+            // 
+            // guna2PictureBox3
+            // 
+            this.guna2PictureBox3.FillColor = System.Drawing.Color.Transparent;
+            this.guna2PictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("guna2PictureBox3.Image")));
+            this.guna2PictureBox3.ImageRotate = 0F;
+            this.guna2PictureBox3.Location = new System.Drawing.Point(8, 10);
+            this.guna2PictureBox3.Name = "guna2PictureBox3";
+            this.guna2PictureBox3.Size = new System.Drawing.Size(38, 37);
+            this.guna2PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.guna2PictureBox3.TabIndex = 64;
+            this.guna2PictureBox3.TabStop = false;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.Font = new System.Drawing.Font("Century Gothic", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.Maroon;
+            this.label4.Location = new System.Drawing.Point(3, 51);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(107, 17);
+            this.label4.TabIndex = 52;
+            this.label4.Text = "Active Students";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.Font = new System.Drawing.Font("Century Gothic", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.Maroon;
+            this.label5.Location = new System.Drawing.Point(3, 50);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(108, 17);
+            this.label5.TabIndex = 63;
+            this.label5.Text = "Active Teachers";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
+            this.label6.Font = new System.Drawing.Font("Century Gothic", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.Maroon;
+            this.label6.Location = new System.Drawing.Point(5, 50);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(105, 17);
+            this.label6.TabIndex = 64;
+            this.label6.Text = "Active Subjects";
             // 
             // AdminDashboard
             // 
@@ -555,7 +645,16 @@
             this.panelAccount.ResumeLayout(false);
             this.panelAccount.PerformLayout();
             this.guna2Panel4.ResumeLayout(false);
+            this.guna2Panel6.ResumeLayout(false);
+            this.guna2Panel6.PerformLayout();
+            this.guna2Panel5.ResumeLayout(false);
+            this.guna2Panel5.PerformLayout();
+            this.guna2Panel3.ResumeLayout(false);
+            this.guna2Panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -598,5 +697,11 @@
         private Guna.UI2.WinForms.Guna2Panel guna2Panel3;
         private Guna.UI2.WinForms.Guna2Button btnStudents;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.Label label6;
+        private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox3;
+        private System.Windows.Forms.Label label5;
+        private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox2;
+        private System.Windows.Forms.Label label4;
+        private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox1;
     }
 }
