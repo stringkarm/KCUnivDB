@@ -65,5 +65,12 @@ namespace KCUnivDB
             dash.Show();
             this.Hide();
         }
+
+        private void btnSubjects_Click_1(object sender, EventArgs e)
+        {
+            AdminSubjects sub = new AdminSubjects();
+            sub.Show();
+            this.Hide();
+        }
     }
 }

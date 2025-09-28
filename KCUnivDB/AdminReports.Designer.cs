@@ -266,6 +266,7 @@
             this.btnSubjects.TabIndex = 5;
             this.btnSubjects.Text = "       Subjects";
             this.btnSubjects.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnSubjects.Click += new System.EventHandler(this.btnSubjects_Click_1);
             // 
             // btnReports
             // 

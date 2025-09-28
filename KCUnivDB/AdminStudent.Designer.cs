@@ -499,13 +499,13 @@
             this.guna2Shapes3.BackColor = System.Drawing.Color.Transparent;
             this.guna2Shapes3.BorderThickness = 0;
             this.guna2Shapes3.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.guna2Shapes3.Location = new System.Drawing.Point(267, 157);
+            this.guna2Shapes3.Location = new System.Drawing.Point(267, 134);
             this.guna2Shapes3.Name = "guna2Shapes3";
             this.guna2Shapes3.PolygonSkip = 1;
             this.guna2Shapes3.Rotate = 0F;
             this.guna2Shapes3.RoundedRadius = 10;
             this.guna2Shapes3.Shape = Guna.UI2.WinForms.Enums.ShapeType.Rounded;
-            this.guna2Shapes3.Size = new System.Drawing.Size(815, 546);
+            this.guna2Shapes3.Size = new System.Drawing.Size(815, 569);
             this.guna2Shapes3.TabIndex = 79;
             this.guna2Shapes3.Text = "guna2Shapes3";
             this.guna2Shapes3.Zoom = 100;
@@ -944,7 +944,7 @@
             // 
             // adminRegister1
             // 
-            this.adminRegister1.Location = new System.Drawing.Point(249, 1);
+            this.adminRegister1.Location = new System.Drawing.Point(250, 0);
             this.adminRegister1.Name = "adminRegister1";
             this.adminRegister1.Size = new System.Drawing.Size(853, 728);
             this.adminRegister1.TabIndex = 146;

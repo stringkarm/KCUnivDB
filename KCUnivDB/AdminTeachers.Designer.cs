@@ -82,10 +82,10 @@
             this.guna2Shapes8 = new Guna.UI2.WinForms.Guna2Shapes();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.addTeacher1 = new KCUnivDB.AddTeacher();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.addTeacher1 = new KCUnivDB.AddTeacher();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
@@ -293,6 +293,7 @@
             this.btnSubjects.TabIndex = 5;
             this.btnSubjects.Text = "       Subjects";
             this.btnSubjects.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnSubjects.Click += new System.EventHandler(this.btnSubjects_Click_1);
             // 
             // btnReports
             // 
@@ -608,7 +609,7 @@
             this.EditTeacherPanel.Controls.Add(this.label21);
             this.EditTeacherPanel.Controls.Add(this.label22);
             this.EditTeacherPanel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.EditTeacherPanel.Location = new System.Drawing.Point(288, 76);
+            this.EditTeacherPanel.Location = new System.Drawing.Point(288, 77);
             this.EditTeacherPanel.Name = "EditTeacherPanel";
             this.EditTeacherPanel.Size = new System.Drawing.Size(783, 577);
             this.EditTeacherPanel.TabIndex = 146;
@@ -961,13 +962,6 @@
             this.label22.Text = "×";
             this.label22.Click += new System.EventHandler(this.label22_Click);
             // 
-            // addTeacher1
-            // 
-            this.addTeacher1.Location = new System.Drawing.Point(249, 1);
-            this.addTeacher1.Name = "addTeacher1";
-            this.addTeacher1.Size = new System.Drawing.Size(855, 728);
-            this.addTeacher1.TabIndex = 147;
-            // 
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
@@ -979,6 +973,13 @@
             // errorProvider3
             // 
             this.errorProvider3.ContainerControl = this;
+            // 
+            // addTeacher1
+            // 
+            this.addTeacher1.Location = new System.Drawing.Point(249, 1);
+            this.addTeacher1.Name = "addTeacher1";
+            this.addTeacher1.Size = new System.Drawing.Size(855, 728);
+            this.addTeacher1.TabIndex = 147;
             // 
             // AdminTeachers
             // 

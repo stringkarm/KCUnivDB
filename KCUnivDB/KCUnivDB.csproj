@@ -53,6 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddSubject.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AddSubject.Designer.cs">
+      <DependentUpon>AddSubject.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddTeacher.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -107,6 +113,7 @@
     <Compile Include="AdminTeachers.Designer.cs">
       <DependentUpon>AdminTeachers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Database.cs" />
     <Compile Include="ForgotConfirmation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,6 +164,9 @@
     <Compile Include="StudentDashboard.Designer.cs">
       <DependentUpon>StudentDashboard.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AddSubject.resx">
+      <DependentUpon>AddSubject.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AddTeacher.resx">
       <DependentUpon>AddTeacher.cs</DependentUpon>
     </EmbeddedResource>
@@ -183,6 +193,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AdminTeachers.resx">
       <DependentUpon>AdminTeachers.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ForgotConfirmation.resx">
       <DependentUpon>ForgotConfirmation.cs</DependentUpon>

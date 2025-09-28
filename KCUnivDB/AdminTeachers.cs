@@ -392,72 +392,68 @@ namespace KCUnivDB
         }
 
 
-        private void LoadData()
+        public void LoadData()
         {
-            string sqlQuery_TotalCount = "SELECT COUNT(p.ProfileID) " +
-                                  "FROM Profiles AS p " +
-                                  "INNER JOIN Users AS u ON p.ProfileID = u.ProfileID " +
-                                  "INNER JOIN Roles AS r ON u.RoleID = r.RoleID " +
-                                  "WHERE r.RoleName = 'Instructor' AND p.Status = 'Active'";
-
-            // SQL query to load teacher data, including the department name
-            string sqlQuery_LoadData = "SELECT p.ProfileID, p.FirstName, p.LastName, p.Age, p.Gender, p.Phone, p.Address, p.Email, ISNULL(p.Status, 'Unknown') AS Status, d.DepartmentName " +
-                                       "FROM Profiles AS p " +
-                                       "INNER JOIN Users AS u ON p.ProfileID = u.ProfileID " +
-                                       "INNER JOIN Roles AS r ON u.RoleID = r.RoleID " +
-                                       "INNER JOIN Instructors AS i ON p.ProfileID = i.ProfileID " + // Join with Instructors table
-                                       "INNER JOIN Departments AS d ON i.DepartmentID = d.DepartmentID " + // Join with Departments table
-                                       "WHERE r.RoleName IN ('Instructor') AND p.Status <> 'Inactive' " +
-                                       "ORDER BY " +
-                                       "CASE p.Status " +
-                                       "WHEN 'Active' THEN 1 " +
-                                       "WHEN 'Pending' THEN 2 " +
-                                       "ELSE 3 END";
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                // This query already has the correct sorting logic to place the newest teacher on top 
+                // of their respective status group (and thus, at the very top if they are 'Active').
+                string query = @"
+                    SELECT
+                        I.InstructorID,
+                        P.ProfileID,
+                        P.FirstName,
+                        P.LastName,
+                        P.Age,
+                        P.Gender,
+                        P.Email,
+                        P.Phone,
+                        P.Address,
+                        D.DepartmentName,
+                        P.Status
+                    FROM Profiles P
+                    INNER JOIN Users U ON P.ProfileID = U.ProfileID
+                    INNER JOIN Instructors I ON P.ProfileID = I.ProfileID
+                    INNER JOIN Departments D ON I.DepartmentID = D.DepartmentID
+                    WHERE U.RoleID = 2 AND P.Status != 'Inactive'
+                    ORDER BY
+                        CASE P.Status
+                            WHEN 'Active' THEN 1
+                            WHEN 'Pending' THEN 2
+                            ELSE 3
+                        END,
+                        P.ProfileID DESC;
+                ";
+
+                SqlCommand cmd = new SqlCommand(query, connection);
+
                 try
                 {
-                    conn.Open();
+                    connection.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
 
-                    SqlCommand countCmd = new SqlCommand(sqlQuery_TotalCount, conn);
-                    int activeTeacherCount = (int)countCmd.ExecuteScalar();
-                    lblTotalActive.Text = activeTeacherCount.ToString();
-
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlQuery_LoadData, conn);
-                    DataTable dataTable = new DataTable();
-                    dataAdapter.Fill(dataTable);
-
-                    dtgTeacherList.AutoGenerateColumns = false;
                     dtgTeacherList.Columns.Clear();
-                    dtgTeacherList.ReadOnly = true;
+                    dtgTeacherList.DataSource = dt;
+                    dtgTeacherList.AutoResizeColumns();
 
-                    // Add the new 'Department Name' column
-                    dtgTeacherList.Columns.Add("ProfileID", "Profile ID");
-                    dtgTeacherList.Columns.Add("FirstName", "First Name");
-                    dtgTeacherList.Columns.Add("LastName", "Last Name");
-                    dtgTeacherList.Columns.Add("Age", "Age");
-                    dtgTeacherList.Columns.Add("Gender", "Gender");
-                    dtgTeacherList.Columns.Add("Phone", "Phone");
-                    dtgTeacherList.Columns.Add("Address", "Address");
-                    dtgTeacherList.Columns.Add("Email", "Email");
-                    dtgTeacherList.Columns.Add("DepartmentName", "Department Name");
-                    dtgTeacherList.Columns.Add("Status", "Status");
-
-
-                    foreach (DataGridViewColumn col in dtgTeacherList.Columns)
+                    if (dtgTeacherList.Columns.Contains("InstructorID"))
                     {
-                        if (dataTable.Columns.Contains(col.Name))
-                        {
-                            col.DataPropertyName = col.Name;
-                        }
+                        dtgTeacherList.Columns["InstructorID"].Visible = true;
                     }
-                    dtgTeacherList.DataSource = dataTable;
-                    dtgTeacherList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                    if (dtgTeacherList.Columns.Contains("ProfileID"))
+                    {
+                        dtgTeacherList.Columns["ProfileID"].Visible = false;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("Database error: " + ex.Message);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("An unexpected error occurred: " + ex.Message);
                 }
             }
 
@@ -618,6 +614,13 @@ namespace KCUnivDB
                 MessageBox.Show("An error occurred during the update: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+        }
+
+        private void btnSubjects_Click_1(object sender, EventArgs e)
+        {
+            AdminSubjects sub = new AdminSubjects();
+            sub.Show();
+            this.Hide();
         }
     }
 }

@@ -18,32 +18,33 @@ namespace KCUnivDB
             InitializeComponent();
             dtgLogs.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dtgLogs.ReadOnly = true;
-            Load();
+            LoadLogs();
         }
 
         string connectionString = @"Data Source = canasa\SQLEXPRESS;
         Initial catalog = KCUnivDB; Integrated Security = true";
 
-        private void Load()
+        private void LoadLogs()
         {
-
-            string sqlQuery = "SELECT l.LogID, p.FirstName, p.LastName, l.Action, l.Description, l.Date, " +
-                              "CONVERT(VARCHAR(8), l.Time, 100) AS Time " +
-                              "FROM Logs l " +
-                              "INNER JOIN Profiles p ON l.ProfileID = p.ProfileID " +
-                              "INNER JOIN Users u ON p.ProfileID = u.ProfileID " +
-                              "INNER JOIN Roles r ON u.RoleID = r.RoleID " +
-                              "WHERE r.RoleName IN ('Student', 'Instructor') " +
-                              "ORDER BY " +
-                              "CASE l.Action " +
-                              "WHEN 'Add Student' THEN 1 " +
-                              "WHEN 'Add Teacher' THEN 2 " +
-                              "WHEN 'Delete Student' THEN 3 " +
-                              "WHEN 'Delete Teacher' THEN 4 " +
-                              "WHEN 'Update Student' THEN 5 " +
-                              "WHEN 'Update Teacher' THEN 6 " +
-                              "ELSE 7 END, " +
-                              "l.Date DESC, l.Time DESC";
+            // Updated SQL Query: Now prioritizes sorting by LogID in descending order
+            string sqlQuery = @"
+                SELECT
+                    l.LogID AS [LogID], 
+                    p.FirstName AS [First Name], 
+                    p.LastName AS [Last Name], 
+                    l.Action AS [Action], 
+                    l.Description AS [Description], 
+                    l.Date AS [Date], 
+                    CONVERT(VARCHAR(8), l.Time, 100) AS [Time]
+                FROM Logs l 
+                INNER JOIN Profiles p ON l.ProfileID = p.ProfileID 
+                INNER JOIN Users u ON p.ProfileID = u.ProfileID 
+                INNER JOIN Roles r ON u.RoleID = r.RoleID 
+                WHERE r.RoleName IN ('Student', 'Instructor') 
+                ORDER BY
+                    l.LogID DESC,  -- Primary sort: show newest logs first
+                    l.Date DESC, 
+                    l.Time DESC;";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -55,6 +56,10 @@ namespace KCUnivDB
                     dataAdapter.Fill(dataTable);
 
                     dtgLogs.DataSource = dataTable;
+                    if (dtgLogs.Columns.Contains("LogID"))
+                    {
+                        dtgLogs.Columns["LogID"].DisplayIndex = 0;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -72,76 +77,58 @@ namespace KCUnivDB
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            string searchTerm = txtSearch.Text.Trim();
+            string searchValue = txtSearch.Text.Trim();
 
-            if (string.IsNullOrEmpty(searchTerm))
+            try
             {
-                Load();
-                return;
-            }
-
-            string sqlQuery = "SELECT l.LogID, p.FirstName, p.LastName, l.Action, l.Description, l.Date, " +
-                              "CONVERT(VARCHAR(8), l.Time, 100) AS Time " +
-                              "FROM Logs l " +
-                              "INNER JOIN Profiles p ON l.ProfileID = p.ProfileID ";
-
-            if (int.TryParse(searchTerm, out int numericSearchTerm))
-            {
-                sqlQuery += "WHERE l.LogID = @searchTerm";
-            }
-            else if (DateTime.TryParse(searchTerm, out DateTime dateValue))
-            {
-                sqlQuery += "WHERE l.Date = @searchTerm";
-            }
-            else
-            {
-                sqlQuery += "WHERE p.FirstName LIKE @searchTerm OR p.LastName LIKE @searchTerm OR l.Action LIKE @searchTerm OR l.Description LIKE @searchTerm";
-            }
-
-            sqlQuery += " ORDER BY " +
-                        "CASE l.Action " +
-                        "WHEN 'Add Student' THEN 1 " +
-                        "WHEN 'Delete Student' THEN 2 " +
-                        "WHEN 'Update Student' THEN 3 " +
-                        "WHEN 'Add Teacher' THEN 4 " +
-                        "WHEN 'Delete Teacher' THEN 5 " +
-                        "WHEN 'Update Teacher' THEN 6 " +
-                        "ELSE 7 END, " +
-                        "l.Date DESC, l.Time DESC";
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                try
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    conn.Open();
-                    SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlQuery, conn);
+                    string query = @"
+                        SELECT
+                            l.LogID AS [LogID],
+                            p.FirstName AS [FirstName],
+                            p.LastName AS [LastName],
+                            l.Action AS [Action],
+                            l.Description AS [Description],
+                            l.Date AS [Date],
+                            CONVERT(VARCHAR(8), l.Time, 100) AS [Time]
+                        FROM Logs l
+                        INNER JOIN Profiles p ON l.ProfileID = p.ProfileID
+                        INNER JOIN Users u ON p.ProfileID = u.ProfileID
+                        INNER JOIN Roles r ON u.RoleID = r.RoleID
+                        WHERE r.RoleName IN ('Student', 'Instructor')
+                          AND (
+                                l.LogID LIKE @search OR
+                                p.FirstName LIKE @search OR
+                                p.LastName LIKE @search OR
+                                l.Action LIKE @search OR
+                                l.Description LIKE @search OR
+                                CONVERT(VARCHAR, l.Date, 23) LIKE @search OR
+                                CONVERT(VARCHAR(8), l.Time, 100) LIKE @search
+                              )
+                        -- Search already uses LogID DESC
+                        ORDER BY l.LogID DESC;";
 
-                    if (int.TryParse(searchTerm, out int numericValue))
-                    {
-                        dataAdapter.SelectCommand.Parameters.AddWithValue("@searchTerm", numericValue);
-                    }
-                    else if (DateTime.TryParse(searchTerm, out DateTime date))
-                    {
-                        dataAdapter.SelectCommand.Parameters.AddWithValue("@searchTerm", date.Date);
-                    }
-                    else
-                    {
-                        dataAdapter.SelectCommand.Parameters.AddWithValue("@searchTerm", "%" + searchTerm + "%");
-                    }
+                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    da.SelectCommand.Parameters.AddWithValue("@search", "%" + searchValue + "%");
 
-                    DataTable dataTable = new DataTable();
-                    dataAdapter.Fill(dataTable);
-                    dtgLogs.DataSource = dataTable;
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
 
-                    if (dataTable.Rows.Count == 0)
+                    dtgLogs.DataSource = dt;
+                    dtgLogs.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+                    // force LogID to be the first column
+                    if (dtgLogs.Columns.Contains("LogID"))
                     {
-                        MessageBox.Show("No logs found matching your search criteria.", "No Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        dtgLogs.Columns["LogID"].DisplayIndex = 0;
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("An error occurred during search: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while searching logs: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

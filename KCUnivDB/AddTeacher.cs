@@ -285,7 +285,15 @@ namespace KCUnivDB
      
         private void AddTeacher_Load(object sender, EventArgs e)
         {
-            dateTimePicker1.Value = DateTime.Now;
+           
+            if (dateTimePicker1 != null)
+            {
+               
+                dateTimePicker1.Value = DateTime.Now;
+
+               
+                dateTimePicker1.Visible = false;
+            }
         }
 
         public static bool IsValid(string input, string pattern)

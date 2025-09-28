@@ -43,30 +43,33 @@ namespace KCUnivDB
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-      
+
                 string query = @"
-                    SELECT
-                        U.UserID,
-                        P.ProfileID,
-                        P.FirstName,
-                        P.LastName,
-                        P.Age,
-                        P.Gender,
-                        P.Email,
-                        P.Phone,
-                        P.Address,
-                        P.Status
-                    FROM Profiles P
-                    INNER JOIN Users U ON P.ProfileID = U.ProfileID
-                    WHERE U.RoleID = 3 AND P.Status != 'Inactive'
-                    ORDER BY
-                        CASE P.Status
-                            WHEN 'Active' THEN 1
-                            WHEN 'Pending' THEN 2
-                            ELSE 3
-                        END,
-                        P.ProfileID DESC;
-                ";
+            SELECT
+                U.UserID,
+                S.StudentID,            -- *** NEW: Fetch StudentID from the Students table ***
+                P.ProfileID,            -- Keep ProfileID for internal use (e.g., editing)
+                P.FirstName,
+                P.LastName,
+                P.Age,
+                P.Gender,
+                P.Email,
+                P.Phone,
+                P.Address,
+                P.Status
+            FROM Profiles P
+            INNER JOIN Users U ON P.ProfileID = U.ProfileID
+            INNER JOIN Students S ON P.ProfileID = S.ProfileID -- *** NEW: Join the Students table ***
+            -- RoleID 3 is for Student
+            WHERE U.RoleID = 3 AND P.Status != 'Inactive'
+            ORDER BY
+                CASE P.Status
+                    WHEN 'Active' THEN 1
+                    WHEN 'Pending' THEN 2
+                    ELSE 3
+                END,
+                P.ProfileID DESC;
+        ";
 
                 SqlCommand cmd = new SqlCommand(query, connection);
 
@@ -80,18 +83,31 @@ namespace KCUnivDB
                     dtgStudentsList.Columns.Clear();
                     dtgStudentsList.DataSource = dt;
                     dtgStudentsList.AutoResizeColumns();
-                    
-                    dtgStudentsList.Columns["UserID"].Visible = false;
 
+                    if (dtgStudentsList.Columns.Contains("UserID"))
+                    {
+                        dtgStudentsList.Columns["UserID"].Visible = false;
+                    }
+                    if (dtgStudentsList.Columns.Contains("ProfileID"))
+                    {
+                        dtgStudentsList.Columns["ProfileID"].Visible = false;
+                    }
+
+                    if (dtgStudentsList.Columns.Contains("StudentID"))
+                    {
+                        dtgStudentsList.Columns["StudentID"].HeaderText = "Student ID";
+ 
+                        dtgStudentsList.Columns["StudentID"].DisplayIndex = 0;
+                    }
 
                 }
                 catch (SqlException ex)
                 {
-                    MessageBox.Show("Database error: " + ex.Message);
+                    MessageBox.Show("Database error: " + ex.Message, "SQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An unexpected error occurred: " + ex.Message);
+                    MessageBox.Show("An unexpected error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -355,7 +371,8 @@ namespace KCUnivDB
 
         private void LoadData()
         {
-            string connectionString = "Data Source=DESKTOP-5QHCE6M; Initial Catalog=NAVASCA_DB; Integrated Security=true";
+            string connectionString = @"Data Source = canasa\SQLEXPRESS;
+            Initial catalog = KCUnivDB; Integrated Security = true";
 
             string sqlQuery_TotalCount = "SELECT COUNT(p.ProfileID) " +
                                           "FROM Profiles AS p " +
