@@ -80,8 +80,6 @@ namespace KCUnivDB
                     dtgSubjectsList.AutoResizeColumns();
 
                     SetupCoursesDataGridView();
-
-                    // Since we are only loading 'Active' subjects, the count is simply the row count.
                     activeSubjectCount = dataTable.Rows.Count;
 
                     UpdateActiveCountLabel();

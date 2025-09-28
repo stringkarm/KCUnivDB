@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace KCUnivDB
 {
@@ -201,43 +202,38 @@ namespace KCUnivDB
             return isValid;
         }
 
-        private void LogAction(string actionType, string details)
-        {
-            const int maxDetailLength = 500;
-            string safeDetails = details.Length > maxDetailLength
-                                     ? details.Substring(0, maxDetailLength)
-                                     : details;
+        //private void LogAction(string actionType, string details)
+        //{
+        //    const int maxDetailLength = 500;
+        //    string safeDetails = details.Length > maxDetailLength
+        //                             ? details.Substring(0, maxDetailLength)
+        //                             : details;
 
-           
-            string logQuery = @"
-                INSERT INTO Logs (ProfileID, Action, Description, Date, Time)
-                VALUES (@ProfileID, @Action, @Description, CAST(GETDATE() AS DATE), CAST(GETDATE() AS TIME))";
+        //    string logQuery = @"
+        //INSERT INTO Logs (ProfileID, Action, Description, Date, Time)
+        //VALUES (@ProfileID, @Action, @Description, CAST(GETDATE() AS DATE), CAST(GETDATE() AS TIME))";
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    conn.Open();
-                    using (SqlCommand cmd = new SqlCommand(logQuery, conn))
-                    {
-                        // ProfileID is not passed in the method, so we set it to NULL
-                        cmd.Parameters.AddWithValue("@ProfileID", DBNull.Value);
+        //    using (SqlConnection conn = new SqlConnection(connectionString))
+        //    {
+        //        try
+        //        {
+        //            conn.Open();
+        //            using (SqlCommand cmd = new SqlCommand(logQuery, conn))
+        //            {
+        //                // Always insert NULL into ProfileID since we’re not tracking users
+        //                cmd.Parameters.AddWithValue("@ProfileID", DBNull.Value);
+        //                cmd.Parameters.AddWithValue("@Action", actionType);
+        //                cmd.Parameters.AddWithValue("@Description", safeDetails);
 
-                        // Map actionType to the 'Action' column
-                        cmd.Parameters.AddWithValue("@Action", actionType);
-
-                        // Map safeDetails to the 'Description' column
-                        cmd.Parameters.AddWithValue("@Description", safeDetails);
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception logEx)
-                {
-                    MessageBox.Show("LOGGING ERROR: Could not write to log table. Check table schema and connection. The error was: " + logEx.Message, "Log Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
+        //                cmd.ExecuteNonQuery();
+        //            }
+        //        }
+        //        catch (Exception logEx)
+        //        {
+        //            MessageBox.Show("LOGGING ERROR: " + logEx.Message, "Log Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        }
+        //    }
+        //}
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
@@ -264,7 +260,7 @@ namespace KCUnivDB
 
                     string departmentName = cmbDepartment.Text;
                     string teacherName = cmbTeacher.Text;
-
+                    string status = "Active";
 
                     string insertQuery = @"
                         INSERT INTO Courses 
@@ -281,6 +277,7 @@ namespace KCUnivDB
                         cmd.Parameters.AddWithValue("@DepartmentID", departmentId);
 
 
+
                         if (string.IsNullOrEmpty(courseDescription))
                         {
                             cmd.Parameters.AddWithValue("@Description", DBNull.Value);
@@ -290,21 +287,12 @@ namespace KCUnivDB
                             cmd.Parameters.AddWithValue("@Description", courseDescription);
                         }
 
-                        int rowsAffected = cmd.ExecuteNonQuery();
-
-                        if (rowsAffected > 0)
-                        {
-                            MessageBox.Show("Course added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            ClearFormFields();
+                        cmd.Parameters.AddWithValue("@Status", status);
 
 
-                            string logDetails = $"Course: {courseCode} - {courseName} | Dept: {departmentName} | Instructor: {teacherName} | Credits: {credits}";
-                            LogAction("Add Subject", logDetails);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Course was not added. Please check the data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Added Subject Successful!" + "\n CourseCode: " + txtCourseCode,
+                                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (SqlException sqlEx)

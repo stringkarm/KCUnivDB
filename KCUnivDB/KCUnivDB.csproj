@@ -113,6 +113,7 @@
     <Compile Include="AdminTeachers.Designer.cs">
       <DependentUpon>AdminTeachers.cs</DependentUpon>
     </Compile>
+    <Compile Include="DashboardManager.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="ForgotConfirmation.cs">
       <SubType>Form</SubType>
@@ -245,6 +246,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
