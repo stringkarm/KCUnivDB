@@ -31,20 +31,21 @@ namespace KCUnivDB
             {
 
                 string query = @"
-                    SELECT 
-                        U.UserID,
-                        P.ProfileID,
-                        P.FirstName,
-                        P.LastName,
-                        P.Age,
-                        P.Gender,
-                        P.Email,
-                        P.Address,
-                        P.Status
-                    FROM Users U
-                    INNER JOIN Profiles P ON U.ProfileID = P.ProfileID
-                    WHERE U.RoleID = 3 AND (P.Status = 'Active' OR P.Status = 'Pending'); -- Only show students with Active or Pending status
-                ";
+    SELECT 
+        U.UserID,
+        P.ProfileID,
+        P.FirstName,
+        P.LastName,
+        P.Age,
+        P.Gender,
+        P.Email,
+        P.Address,
+        P.Status
+    FROM Users U
+    INNER JOIN Profiles P ON U.ProfileID = P.ProfileID
+    WHERE U.RoleID = 3 AND (P.Status = 'Active' OR P.Status = 'Pending')
+    ORDER BY U.UserID DESC; -- show newest students first
+";
                 SqlCommand cmd = new SqlCommand(query, connection);
 
                 try

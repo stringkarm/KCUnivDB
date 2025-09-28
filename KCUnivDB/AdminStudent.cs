@@ -417,14 +417,7 @@ namespace KCUnivDB
                     dtgStudentsList.Columns.Add("Phone", "Phone");
                     dtgStudentsList.Columns.Add("Address", "Address");
                     dtgStudentsList.Columns.Add("Email", "Email");
-                    dtgStudentsList.Columns.Add("Status", "Status");
 
-                    DataGridViewButtonColumn btnColumn = new DataGridViewButtonColumn();
-                    btnColumn.Name = "StatusActionButton";
-                    btnColumn.HeaderText = "Change Status";
-                    btnColumn.Text = "Approve";
-                    btnColumn.UseColumnTextForButtonValue = true;
-                    dtgStudentsList.Columns.Insert(9, btnColumn);
 
                     foreach (DataGridViewColumn col in dtgStudentsList.Columns)
                     {

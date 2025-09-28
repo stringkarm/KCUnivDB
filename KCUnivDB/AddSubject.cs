@@ -291,7 +291,7 @@ namespace KCUnivDB
 
 
                         cmd.ExecuteNonQuery();
-                        MessageBox.Show("Added Subject Successful!" + "\n CourseCode: " + txtCourseCode,
+                        MessageBox.Show("Added Subject Successful!" + "\n CourseCode: " + courseCode,
                                         "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }

@@ -584,12 +584,9 @@ namespace KCUnivDB
 
                         if (rowsAffected > 0)
                         {
-                            MessageBox.Show("Teacher updated successfully!");
 
-                            // Build description for log
                             string logDescription = $"Updated Teacher: {txtFirstname.Text} {txtLastname.Text}";
 
-                            // Log the action using the teacher’s ProfileID (not admin ID)
                             AddLogEntry(selectedProfileID, "Update Teacher", logDescription);
 
                             MessageBox.Show("Teacher updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
