@@ -22,6 +22,7 @@ namespace KCUnivDB
             this.cmbDepartment.SelectedIndexChanged += new EventHandler(cmbDepartment_SelectedIndexChanged);
         }
 
+      
         private string connectionString = @"Data Source = canasa\SQLEXPRESS;
         Initial catalog = KCUnivDB; Integrated Security = true";
 
@@ -202,38 +203,27 @@ namespace KCUnivDB
             return isValid;
         }
 
-        //private void LogAction(string actionType, string details)
-        //{
-        //    const int maxDetailLength = 500;
-        //    string safeDetails = details.Length > maxDetailLength
-        //                             ? details.Substring(0, maxDetailLength)
-        //                             : details;
+  
 
-        //    string logQuery = @"
-        //INSERT INTO Logs (ProfileID, Action, Description, Date, Time)
-        //VALUES (@ProfileID, @Action, @Description, CAST(GETDATE() AS DATE), CAST(GETDATE() AS TIME))";
+        private void InsertLog(SqlConnection conn, string action, string description)
+        {
+            string query = @"
+        INSERT INTO Logs (ProfileID, Action, Date, Time, Description)
+        VALUES (@ProfileID, @Action, CAST(GETDATE() AS DATE), CONVERT(VARCHAR(8), GETDATE(), 108), @Description)";
 
-        //    using (SqlConnection conn = new SqlConnection(connectionString))
-        //    {
-        //        try
-        //        {
-        //            conn.Open();
-        //            using (SqlCommand cmd = new SqlCommand(logQuery, conn))
-        //            {
-        //                // Always insert NULL into ProfileID since we’re not tracking users
-        //                cmd.Parameters.AddWithValue("@ProfileID", DBNull.Value);
-        //                cmd.Parameters.AddWithValue("@Action", actionType);
-        //                cmd.Parameters.AddWithValue("@Description", safeDetails);
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                // If you already have currentProfileID in your project, use it here.
+                // If not, you can set ProfileID to NULL or a default admin ID.
+                cmd.Parameters.AddWithValue("@ProfileID", DBNull.Value);
 
-        //                cmd.ExecuteNonQuery();
-        //            }
-        //        }
-        //        catch (Exception logEx)
-        //        {
-        //            MessageBox.Show("LOGGING ERROR: " + logEx.Message, "Log Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //        }
-        //    }
-        //}
+                cmd.Parameters.AddWithValue("@Action", action);
+                cmd.Parameters.AddWithValue("@Description", description);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
@@ -257,6 +247,8 @@ namespace KCUnivDB
                     string courseCode = txtCourseCode.Text.Trim();
                     string courseDescription = txtDescription.Text.Trim();
 
+                    string action = "Add Subject";
+                    string description = "Added a new subject";
 
                     string departmentName = cmbDepartment.Text;
                     string teacherName = cmbTeacher.Text;
@@ -275,25 +267,15 @@ namespace KCUnivDB
                         cmd.Parameters.AddWithValue("@Credits", credits);
                         cmd.Parameters.AddWithValue("@InstructorID", instructorId);
                         cmd.Parameters.AddWithValue("@DepartmentID", departmentId);
-
-
-
-                        if (string.IsNullOrEmpty(courseDescription))
-                        {
-                            cmd.Parameters.AddWithValue("@Description", DBNull.Value);
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@Description", courseDescription);
-                        }
-
                         cmd.Parameters.AddWithValue("@Status", status);
-
+                        cmd.Parameters.AddWithValue("@Action", action);
+                        cmd.Parameters.AddWithValue("@AddDescription", description);
 
                         cmd.ExecuteNonQuery();
                         MessageBox.Show("Added Subject Successful!" + "\n CourseCode: " + courseCode,
                                         "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
+
                 }
                 catch (SqlException sqlEx)
                 {
