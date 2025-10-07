@@ -17,24 +17,22 @@ namespace KCUnivDB
 
         public AddSubject()
         {
-            InitializeComponent();       
+            InitializeComponent();
             LoadDepartments();
-            this.cmbDepartment.SelectedIndexChanged += new EventHandler(cmbDepartment_SelectedIndexChanged);
+            LoadSemesters();
         }
 
-      
+
         private string connectionString = @"Data Source = canasa\SQLEXPRESS;
         Initial catalog = KCUnivDB; Integrated Security = true";
 
         private void LoadDepartments()
         {
-            string query = "SELECT DepartmentID, DepartmentName FROM Departments ORDER BY DepartmentName";
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            try
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    conn.Open();
+                    string query = "SELECT DepartmentID, DepartmentName FROM Departments";
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -43,69 +41,37 @@ namespace KCUnivDB
                     cmbDepartment.DisplayMember = "DepartmentName";
                     cmbDepartment.ValueMember = "DepartmentID";
                     cmbDepartment.SelectedIndex = -1;
-                    cmbDepartment.Text = "-- Select Department --";
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error loading departments: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading departments: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void cmbDepartment_SelectedIndexChanged(object sender, EventArgs e)
+        private void LoadSemesters()
         {
-            if (cmbDepartment.SelectedValue != null && cmbDepartment.SelectedValue is int)
+            try
             {
-                int departmentId = (int)cmbDepartment.SelectedValue;
-                LoadTeachersByDepartment(departmentId);
-            }
-            else
-            {
-                
-                cmbTeacher.DataSource = null;
-                cmbTeacher.Items.Clear();
-                cmbTeacher.Text = "-- Select Teacher --";
-            }
-        }
-
-        private void LoadTeachersByDepartment(int departmentId)
-        {
-
-            string query = @"
-                SELECT 
-                    I.InstructorID, 
-                    P.FirstName + ' ' + P.LastName AS FullName
-                FROM Instructors I
-                INNER JOIN Profiles P ON I.ProfileID = P.ProfileID
-                WHERE I.DepartmentID = @DepartmentID -- Filter by the selected department
-                ORDER BY FullName";
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                try
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    conn.Open();
+                    string query = "SELECT SemesterID, TermName FROM Semesters ORDER BY SemesterID";
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);
-                    da.SelectCommand.Parameters.AddWithValue("@DepartmentID", departmentId);
-
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
-
-                    cmbTeacher.DataSource = dt;
-                    cmbTeacher.DisplayMember = "FullName";
-                    cmbTeacher.ValueMember = "InstructorID";
-                    cmbTeacher.SelectedIndex = -1;
-                    cmbTeacher.Text = (dt.Rows.Count > 0)
-                                            ? "-- Select Teacher --"
-                                            : "-- No Teachers in this Dept --";
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error loading teachers: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    cmbSemester.DataSource = dt;
+                    cmbSemester.DisplayMember = "TermName";
+                    cmbSemester.ValueMember = "SemesterID";
+                    cmbSemester.SelectedIndex = -1;
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error loading semesters: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
 
         private bool CourseNameExists(string courseName, SqlConnection conn)
         {
@@ -168,19 +134,18 @@ namespace KCUnivDB
                 isValid = false;
             }
 
-
-            if (cmbTeacher.SelectedValue == null || cmbTeacher.SelectedIndex == -1 || cmbTeacher.Text.Contains("No Teachers"))
+            if (cmbSemester.SelectedValue == null || cmbSemester.SelectedIndex == -1)
             {
-                errorProvider1.SetError(cmbTeacher, "A Teacher selection is required.");
+                errorProvider1.SetError(cmbSemester, "A Semester selection is required.");
                 isValid = false;
             }
 
-   
             if (isValid)
             {
                 try
                 {
-             
+
+
                     if (CourseNameExists(txtCourseName.Text.Trim(), conn))
                     {
                         errorProvider1.SetError(txtCourseName, "A course with this Course Name already exists.");
@@ -203,102 +168,147 @@ namespace KCUnivDB
             return isValid;
         }
 
-  
 
-        private void InsertLog(SqlConnection conn, string action, string description)
-        {
-            string query = @"
+
+          private void InsertLog(SqlConnection conn, SqlTransaction transaction, string action, string description)
+            {
+                string query = @"
         INSERT INTO Logs (ProfileID, Action, Date, Time, Description)
         VALUES (@ProfileID, @Action, CAST(GETDATE() AS DATE), CONVERT(VARCHAR(8), GETDATE(), 108), @Description)";
 
-            using (SqlCommand cmd = new SqlCommand(query, conn))
-            {
-                // If you already have currentProfileID in your project, use it here.
-                // If not, you can set ProfileID to NULL or a default admin ID.
-                cmd.Parameters.AddWithValue("@ProfileID", DBNull.Value);
-
-                cmd.Parameters.AddWithValue("@Action", action);
-                cmd.Parameters.AddWithValue("@Description", description);
-
-                cmd.ExecuteNonQuery();
+                using (SqlCommand cmd = new SqlCommand(query, conn, transaction)) 
+                {
+                    cmd.Parameters.AddWithValue("@ProfileID", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Action", action);
+                    cmd.Parameters.AddWithValue("@Description", description);
+                    cmd.ExecuteNonQuery();
+                }
             }
-        }
+
+     
+
 
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
+
+            errorProvider1.Clear();
+            bool isValid = true;
+
+            string courseName = txtCourseName.Text.Trim();
+            string courseCode = txtCourseCode.Text.Trim();
+            string description = txtDescription.Text.Trim();
+            int credits = 0;
+            int departmentID = 0;
+            int? semesterID = null;
+
+
+            if (string.IsNullOrWhiteSpace(courseName))
+            {
+                errorProvider1.SetError(txtCourseName, "Course name is required.");
+                isValid = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(courseCode))
+            {
+                errorProvider1.SetError(txtCourseCode, "Course code is required.");
+                isValid = false;
+            }
+
+            if (!int.TryParse(txtCredits.Text.Trim(), out credits) || credits <= 0)
+            {
+                errorProvider1.SetError(txtCredits, "Credits must be a positive number.");
+                isValid = false;
+            }
+
+            if (cmbDepartment.SelectedValue == null)
+            {
+                errorProvider1.SetError(cmbDepartment, "Please select a department.");
+                isValid = false;
+            }
+            else
+            {
+                departmentID = Convert.ToInt32(cmbDepartment.SelectedValue);
+            }
+
+            if (cmbSemester.SelectedValue == null || cmbSemester.SelectedIndex == -1)
+            {
+                errorProvider1.SetError(cmbSemester, "Please select a semester.");
+                isValid = false;
+            }
+            else
+            {
+             
+                semesterID = Convert.ToInt32(cmbSemester.SelectedValue);
+            }
+
+            if (!isValid)
+            {
+                MessageBox.Show("Please correct the highlighted errors.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
+            InsertCourse(courseName, courseCode, credits, description, departmentID, semesterID);
+        }
+
+        private void InsertCourse(string courseName, string courseCode, int credits, string description, int departmentID, int? semesterID)
+        {
+            string insertCourseQuery = @"
+        INSERT INTO Courses (CourseName, CourseCode, Credits, Description, DepartmentID, SemesterID, Status)
+        VALUES (@CourseName, @CourseCode, @Credits, @Description, @DepartmentID, @SemesterID, 'Active')";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
+                    SqlTransaction transaction = conn.BeginTransaction();
 
-                    if (!ValidateForm(conn))
-                    {
-
-                        return;
-                    }
-
-                    int credits = int.Parse(txtCredits.Text);
-                    int departmentId = (int)cmbDepartment.SelectedValue;
-                    int instructorId = (int)cmbTeacher.SelectedValue;
-                    string courseName = txtCourseName.Text.Trim();
-                    string courseCode = txtCourseCode.Text.Trim();
-                    string courseDescription = txtDescription.Text.Trim();
-
-                    string action = "Add Subject";
-                    string description = "Added a new subject";
-
-                    string departmentName = cmbDepartment.Text;
-                    string teacherName = cmbTeacher.Text;
-                    string status = "Active";
-
-                    string insertQuery = @"
-                        INSERT INTO Courses 
-                            (CourseName, CourseCode, Credits, InstructorID, DepartmentID, Status, Description) 
-                        VALUES 
-                            (@CourseName, @CourseCode, @Credits, @InstructorID, @DepartmentID, 'Active', @Description)";
-
-                    using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
+                    using (SqlCommand cmd = new SqlCommand(insertCourseQuery, conn, transaction))
                     {
                         cmd.Parameters.AddWithValue("@CourseName", courseName);
                         cmd.Parameters.AddWithValue("@CourseCode", courseCode);
                         cmd.Parameters.AddWithValue("@Credits", credits);
-                        cmd.Parameters.AddWithValue("@InstructorID", instructorId);
-                        cmd.Parameters.AddWithValue("@DepartmentID", departmentId);
-                        cmd.Parameters.AddWithValue("@Status", status);
-                        cmd.Parameters.AddWithValue("@Action", action);
-                        cmd.Parameters.AddWithValue("@AddDescription", description);
+                        cmd.Parameters.AddWithValue("@Description", description);
+                        cmd.Parameters.AddWithValue("@DepartmentID", departmentID);
+
+                        if (semesterID.HasValue)
+                            cmd.Parameters.AddWithValue("@SemesterID", semesterID.Value);
+                        else
+                            cmd.Parameters.AddWithValue("@SemesterID", DBNull.Value);
 
                         cmd.ExecuteNonQuery();
-                        MessageBox.Show("Added Subject Successful!" + "\n CourseCode: " + courseCode,
-                                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
-                }
-                catch (SqlException sqlEx)
-                {
-                    MessageBox.Show("Database Error: " + sqlEx.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+               
+                    string action = "Add Subject";
+                    string logDescription = $"Added new subject: {courseName} ({courseCode})";
+                    InsertLog(conn, transaction, action, logDescription);
+
+                    transaction.Commit();
+
+                    MessageBox.Show("New course successfully added and logged!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ClearForm();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An unexpected error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Error inserting course: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        private void ClearFormFields()
+
+
+
+        private void ClearForm()
         {
             txtCourseName.Clear();
             txtCourseCode.Clear();
             txtCredits.Clear();
+            txtDescription.Clear();
             cmbDepartment.SelectedIndex = -1;
-            cmbDepartment.Text = "-- Select Department --";
-            txtDescription.Clear(); 
-            cmbTeacher.DataSource = null;
-            cmbTeacher.Items.Clear();
-            cmbTeacher.Text = "-- Select Teacher --";
+            cmbSemester.SelectedIndex = -1;
         }
 
         private void btnBack_Click(object sender, EventArgs e)

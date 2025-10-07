@@ -24,6 +24,7 @@ namespace KCUnivDB
             LoadTeacherCounts();
             EditTeacherPanel.Hide();
             LoadData();
+            SubjectHandledPanel.Hide();
         }
 
         private string selectedProfileId;
@@ -616,6 +617,16 @@ namespace KCUnivDB
             AdminSubjects sub = new AdminSubjects();
             sub.Show();
             this.Hide();
+        }
+
+        private void label25_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnApplySubject_Click(object sender, EventArgs e)
+        {
+            SubjectHandledPanel.Show();
         }
     }
 }

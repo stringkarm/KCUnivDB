@@ -84,6 +84,19 @@
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
             this.adminRegister1 = new KCUnivDB.AdminRegister();
+            this.EnrollPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.clbSubjects = new System.Windows.Forms.CheckedListBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.guna2ComboBox2 = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.guna2ComboBox1 = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnEnrollStudent = new Guna.UI2.WinForms.Guna2Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.guna2Shapes7 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.btnEnrollPage = new Guna.UI2.WinForms.Guna2Button();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
@@ -94,6 +107,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
+            this.EnrollPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnClose
@@ -372,9 +386,9 @@
             this.btnAddstudent.Image = ((System.Drawing.Image)(resources.GetObject("btnAddstudent.Image")));
             this.btnAddstudent.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnAddstudent.ImageSize = new System.Drawing.Size(30, 30);
-            this.btnAddstudent.Location = new System.Drawing.Point(438, 62);
+            this.btnAddstudent.Location = new System.Drawing.Point(406, 62);
             this.btnAddstudent.Name = "btnAddstudent";
-            this.btnAddstudent.Size = new System.Drawing.Size(162, 47);
+            this.btnAddstudent.Size = new System.Drawing.Size(155, 47);
             this.btnAddstudent.TabIndex = 72;
             this.btnAddstudent.Text = "Add Student";
             this.btnAddstudent.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -394,7 +408,7 @@
             this.btnUpdate.ForeColor = System.Drawing.Color.White;
             this.btnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("btnUpdate.Image")));
             this.btnUpdate.ImageSize = new System.Drawing.Size(30, 30);
-            this.btnUpdate.Location = new System.Drawing.Point(667, 61);
+            this.btnUpdate.Location = new System.Drawing.Point(757, 61);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(55, 47);
             this.btnUpdate.TabIndex = 71;
@@ -414,7 +428,7 @@
             this.btnDelete.ForeColor = System.Drawing.Color.White;
             this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
             this.btnDelete.ImageSize = new System.Drawing.Size(30, 30);
-            this.btnDelete.Location = new System.Drawing.Point(606, 62);
+            this.btnDelete.Location = new System.Drawing.Point(696, 61);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(55, 47);
             this.btnDelete.TabIndex = 70;
@@ -447,13 +461,13 @@
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtSearch.ForeColor = System.Drawing.Color.Black;
             this.txtSearch.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtSearch.Location = new System.Drawing.Point(767, 60);
+            this.txtSearch.Location = new System.Drawing.Point(840, 60);
             this.txtSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.txtSearch.PlaceholderText = "Type to search";
             this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(261, 48);
+            this.txtSearch.Size = new System.Drawing.Size(188, 48);
             this.txtSearch.TabIndex = 74;
             // 
             // dtgStudentsList
@@ -532,7 +546,7 @@
             this.guna2Shapes4.FillColor = System.Drawing.Color.Silver;
             this.guna2Shapes4.LineOrientation = System.Windows.Forms.Orientation.Vertical;
             this.guna2Shapes4.LineThickness = 2;
-            this.guna2Shapes4.Location = new System.Drawing.Point(735, 64);
+            this.guna2Shapes4.Location = new System.Drawing.Point(818, 61);
             this.guna2Shapes4.Name = "guna2Shapes4";
             this.guna2Shapes4.PolygonSkip = 1;
             this.guna2Shapes4.Rotate = 0F;
@@ -550,7 +564,7 @@
             this.guna2Shapes5.FillColor = System.Drawing.Color.Silver;
             this.guna2Shapes5.LineOrientation = System.Windows.Forms.Orientation.Vertical;
             this.guna2Shapes5.LineThickness = 2;
-            this.guna2Shapes5.Location = new System.Drawing.Point(405, 64);
+            this.guna2Shapes5.Location = new System.Drawing.Point(384, 63);
             this.guna2Shapes5.Name = "guna2Shapes5";
             this.guna2Shapes5.PolygonSkip = 1;
             this.guna2Shapes5.Rotate = 0F;
@@ -602,7 +616,7 @@
             this.EditStudentPanel.Controls.Add(this.label21);
             this.EditStudentPanel.Controls.Add(this.label22);
             this.EditStudentPanel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.EditStudentPanel.Location = new System.Drawing.Point(286, 82);
+            this.EditStudentPanel.Location = new System.Drawing.Point(286, 104);
             this.EditStudentPanel.Name = "EditStudentPanel";
             this.EditStudentPanel.Size = new System.Drawing.Size(783, 577);
             this.EditStudentPanel.TabIndex = 145;
@@ -944,16 +958,209 @@
             // 
             // adminRegister1
             // 
-            this.adminRegister1.Location = new System.Drawing.Point(250, 0);
+            this.adminRegister1.Location = new System.Drawing.Point(250, 2);
             this.adminRegister1.Name = "adminRegister1";
             this.adminRegister1.Size = new System.Drawing.Size(853, 728);
             this.adminRegister1.TabIndex = 146;
+            // 
+            // EnrollPanel
+            // 
+            this.EnrollPanel.BackColor = System.Drawing.Color.Brown;
+            this.EnrollPanel.Controls.Add(this.clbSubjects);
+            this.EnrollPanel.Controls.Add(this.label6);
+            this.EnrollPanel.Controls.Add(this.guna2ComboBox2);
+            this.EnrollPanel.Controls.Add(this.label5);
+            this.EnrollPanel.Controls.Add(this.guna2ComboBox1);
+            this.EnrollPanel.Controls.Add(this.label4);
+            this.EnrollPanel.Controls.Add(this.btnEnrollStudent);
+            this.EnrollPanel.Controls.Add(this.label7);
+            this.EnrollPanel.Controls.Add(this.guna2Shapes7);
+            this.EnrollPanel.Controls.Add(this.label10);
+            this.EnrollPanel.Controls.Add(this.label11);
+            this.EnrollPanel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.EnrollPanel.Location = new System.Drawing.Point(282, 97);
+            this.EnrollPanel.Name = "EnrollPanel";
+            this.EnrollPanel.Size = new System.Drawing.Size(783, 577);
+            this.EnrollPanel.TabIndex = 164;
+            // 
+            // clbSubjects
+            // 
+            this.clbSubjects.FormattingEnabled = true;
+            this.clbSubjects.Location = new System.Drawing.Point(71, 211);
+            this.clbSubjects.Name = "clbSubjects";
+            this.clbSubjects.Size = new System.Drawing.Size(659, 208);
+            this.clbSubjects.TabIndex = 137;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
+            this.label6.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(72, 186);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(121, 20);
+            this.label6.TabIndex = 136;
+            this.label6.Text = "Plot a Subject/s";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // guna2ComboBox2
+            // 
+            this.guna2ComboBox2.BackColor = System.Drawing.Color.Transparent;
+            this.guna2ComboBox2.BorderRadius = 10;
+            this.guna2ComboBox2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.guna2ComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.guna2ComboBox2.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.guna2ComboBox2.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.guna2ComboBox2.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.guna2ComboBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
+            this.guna2ComboBox2.ItemHeight = 30;
+            this.guna2ComboBox2.Location = new System.Drawing.Point(435, 122);
+            this.guna2ComboBox2.Name = "guna2ComboBox2";
+            this.guna2ComboBox2.Size = new System.Drawing.Size(295, 36);
+            this.guna2ComboBox2.TabIndex = 135;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(431, 98);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(119, 20);
+            this.label5.TabIndex = 134;
+            this.label5.Text = "Program Name";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // guna2ComboBox1
+            // 
+            this.guna2ComboBox1.BackColor = System.Drawing.Color.Transparent;
+            this.guna2ComboBox1.BorderRadius = 10;
+            this.guna2ComboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.guna2ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.guna2ComboBox1.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.guna2ComboBox1.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.guna2ComboBox1.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.guna2ComboBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
+            this.guna2ComboBox1.ItemHeight = 30;
+            this.guna2ComboBox1.Location = new System.Drawing.Point(71, 123);
+            this.guna2ComboBox1.Name = "guna2ComboBox1";
+            this.guna2ComboBox1.Size = new System.Drawing.Size(286, 36);
+            this.guna2ComboBox1.TabIndex = 133;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(70, 98);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(75, 20);
+            this.label4.TabIndex = 132;
+            this.label4.Text = "Semester";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // btnEnrollStudent
+            // 
+            this.btnEnrollStudent.Animated = true;
+            this.btnEnrollStudent.BorderRadius = 20;
+            this.btnEnrollStudent.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnEnrollStudent.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnEnrollStudent.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnEnrollStudent.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnEnrollStudent.FillColor = System.Drawing.Color.Maroon;
+            this.btnEnrollStudent.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEnrollStudent.ForeColor = System.Drawing.Color.White;
+            this.btnEnrollStudent.Location = new System.Drawing.Point(242, 472);
+            this.btnEnrollStudent.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnEnrollStudent.Name = "btnEnrollStudent";
+            this.btnEnrollStudent.Size = new System.Drawing.Size(300, 46);
+            this.btnEnrollStudent.TabIndex = 131;
+            this.btnEnrollStudent.Text = "Enroll Student";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.Transparent;
+            this.label7.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.White;
+            this.label7.Location = new System.Drawing.Point(24, 47);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(453, 20);
+            this.label7.TabIndex = 129;
+            this.label7.Text = "Adding informations of students regarding to their enrollment.";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // guna2Shapes7
+            // 
+            this.guna2Shapes7.BorderThickness = 1;
+            this.guna2Shapes7.FillColor = System.Drawing.Color.Silver;
+            this.guna2Shapes7.LineThickness = 2;
+            this.guna2Shapes7.Location = new System.Drawing.Point(28, 71);
+            this.guna2Shapes7.Name = "guna2Shapes7";
+            this.guna2Shapes7.PolygonSkip = 1;
+            this.guna2Shapes7.Rotate = 0F;
+            this.guna2Shapes7.RoundedRadius = 10;
+            this.guna2Shapes7.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
+            this.guna2Shapes7.Size = new System.Drawing.Size(738, 17);
+            this.guna2Shapes7.TabIndex = 128;
+            this.guna2Shapes7.Text = "guna2Shapes7";
+            this.guna2Shapes7.Zoom = 100;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Century Gothic", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.ForeColor = System.Drawing.Color.White;
+            this.label10.Location = new System.Drawing.Point(23, 14);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(234, 29);
+            this.label10.TabIndex = 127;
+            this.label10.Text = "Enrolling a student";
+            this.label10.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.White;
+            this.label11.Location = new System.Drawing.Point(748, 6);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(28, 29);
+            this.label11.TabIndex = 126;
+            this.label11.Text = "×";
+            // 
+            // btnEnrollPage
+            // 
+            this.btnEnrollPage.Animated = true;
+            this.btnEnrollPage.BorderRadius = 10;
+            this.btnEnrollPage.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEnrollPage.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnEnrollPage.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnEnrollPage.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnEnrollPage.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnEnrollPage.FillColor = System.Drawing.Color.Maroon;
+            this.btnEnrollPage.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnEnrollPage.ForeColor = System.Drawing.Color.White;
+            this.btnEnrollPage.Image = ((System.Drawing.Image)(resources.GetObject("btnEnrollPage.Image")));
+            this.btnEnrollPage.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnEnrollPage.ImageSize = new System.Drawing.Size(30, 30);
+            this.btnEnrollPage.Location = new System.Drawing.Point(567, 62);
+            this.btnEnrollPage.Name = "btnEnrollPage";
+            this.btnEnrollPage.Size = new System.Drawing.Size(123, 47);
+            this.btnEnrollPage.TabIndex = 165;
+            this.btnEnrollPage.Text = "Enroll";
+            this.btnEnrollPage.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.btnEnrollPage.Click += new System.EventHandler(this.btnEnrollPage_Click);
             // 
             // AdminStudent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
+            this.Controls.Add(this.EnrollPanel);
             this.Controls.Add(this.adminRegister1);
             this.Controls.Add(this.EditStudentPanel);
             this.Controls.Add(this.guna2Shapes6);
@@ -974,6 +1181,7 @@
             this.Controls.Add(this.guna2Shapes1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.guna2Shapes3);
+            this.Controls.Add(this.btnEnrollPage);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AdminStudent";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -990,6 +1198,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).EndInit();
+            this.EnrollPanel.ResumeLayout(false);
+            this.EnrollPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1051,5 +1261,18 @@
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private System.Windows.Forms.ErrorProvider errorProvider3;
         private AdminRegister adminRegister1;
+        private Guna.UI2.WinForms.Guna2Panel EnrollPanel;
+        private System.Windows.Forms.Label label5;
+        private Guna.UI2.WinForms.Guna2ComboBox guna2ComboBox1;
+        private System.Windows.Forms.Label label4;
+        private Guna.UI2.WinForms.Guna2Button btnEnrollStudent;
+        private System.Windows.Forms.Label label7;
+        private Guna.UI2.WinForms.Guna2Shapes guna2Shapes7;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private Guna.UI2.WinForms.Guna2ComboBox guna2ComboBox2;
+        private System.Windows.Forms.CheckedListBox clbSubjects;
+        private System.Windows.Forms.Label label6;
+        private Guna.UI2.WinForms.Guna2Button btnEnrollPage;
     }
 }

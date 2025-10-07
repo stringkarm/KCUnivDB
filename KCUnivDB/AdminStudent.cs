@@ -22,6 +22,8 @@ namespace KCUnivDB
             LoadStudentCounts();
             adminRegister1.Hide();
             EditStudentPanel.Hide();
+
+            EnrollPanel.Hide();
         }
 
         private string selectedProfileId;
@@ -590,7 +592,12 @@ namespace KCUnivDB
                 cmbGender.Text = gender;
             }
         }
+
+        private void btnEnrollPage_Click(object sender, EventArgs e)
+        {
+            EnrollPanel.Show();
+        }
     }
-    }
+}
     
 

@@ -39,8 +39,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.cmbTeacher = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.lblGender = new System.Windows.Forms.Label();
             this.txtDescription = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtCredits = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtCourseCode = new Guna.UI2.WinForms.Guna2TextBox();
@@ -50,6 +48,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.guna2Shapes1 = new Guna.UI2.WinForms.Guna2Shapes();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.cmbSemester = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -65,19 +65,18 @@
             this.cmbDepartment.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbDepartment.ForeColor = System.Drawing.Color.Black;
             this.cmbDepartment.ItemHeight = 30;
-            this.cmbDepartment.Location = new System.Drawing.Point(234, 287);
+            this.cmbDepartment.Location = new System.Drawing.Point(213, 281);
             this.cmbDepartment.Margin = new System.Windows.Forms.Padding(4);
             this.cmbDepartment.Name = "cmbDepartment";
-            this.cmbDepartment.Size = new System.Drawing.Size(254, 36);
+            this.cmbDepartment.Size = new System.Drawing.Size(255, 36);
             this.cmbDepartment.TabIndex = 173;
-            this.cmbDepartment.SelectedIndexChanged += new System.EventHandler(this.cmbDepartment_SelectedIndexChanged);
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.BackColor = System.Drawing.Color.Transparent;
             this.label9.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(231, 259);
+            this.label9.Location = new System.Drawing.Point(211, 254);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(87, 17);
             this.label9.TabIndex = 172;
@@ -145,7 +144,7 @@
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(488, 155);
+            this.label3.Location = new System.Drawing.Point(463, 155);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(94, 17);
             this.label3.TabIndex = 164;
@@ -161,39 +160,6 @@
             this.label8.Size = new System.Drawing.Size(150, 17);
             this.label8.TabIndex = 163;
             this.label8.Text = "Subject/Course Name";
-            // 
-            // cmbTeacher
-            // 
-            this.cmbTeacher.BackColor = System.Drawing.Color.Transparent;
-            this.cmbTeacher.BorderColor = System.Drawing.Color.Gray;
-            this.cmbTeacher.BorderRadius = 10;
-            this.cmbTeacher.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbTeacher.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbTeacher.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.cmbTeacher.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.cmbTeacher.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cmbTeacher.ForeColor = System.Drawing.Color.Black;
-            this.cmbTeacher.ItemHeight = 30;
-            this.cmbTeacher.Items.AddRange(new object[] {
-            "Male",
-            "Female",
-            "Preferred not to say"});
-            this.cmbTeacher.Location = new System.Drawing.Point(533, 287);
-            this.cmbTeacher.Margin = new System.Windows.Forms.Padding(4);
-            this.cmbTeacher.Name = "cmbTeacher";
-            this.cmbTeacher.Size = new System.Drawing.Size(258, 36);
-            this.cmbTeacher.TabIndex = 162;
-            // 
-            // lblGender
-            // 
-            this.lblGender.AutoSize = true;
-            this.lblGender.BackColor = System.Drawing.Color.Transparent;
-            this.lblGender.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGender.Location = new System.Drawing.Point(530, 259);
-            this.lblGender.Name = "lblGender";
-            this.lblGender.Size = new System.Drawing.Size(118, 17);
-            this.lblGender.TabIndex = 161;
-            this.lblGender.Text = "Teacher Assigned";
             // 
             // txtDescription
             // 
@@ -240,7 +206,7 @@
             this.txtCredits.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.txtCredits.PlaceholderText = "";
             this.txtCredits.SelectedText = "";
-            this.txtCredits.Size = new System.Drawing.Size(104, 48);
+            this.txtCredits.Size = new System.Drawing.Size(103, 48);
             this.txtCredits.TabIndex = 157;
             // 
             // txtCourseCode
@@ -257,13 +223,13 @@
             this.txtCourseCode.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtCourseCode.ForeColor = System.Drawing.Color.Black;
             this.txtCourseCode.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtCourseCode.Location = new System.Drawing.Point(491, 178);
+            this.txtCourseCode.Location = new System.Drawing.Point(463, 178);
             this.txtCourseCode.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtCourseCode.Name = "txtCourseCode";
             this.txtCourseCode.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.txtCourseCode.PlaceholderText = "Please enter the course code";
             this.txtCourseCode.SelectedText = "";
-            this.txtCourseCode.Size = new System.Drawing.Size(300, 48);
+            this.txtCourseCode.Size = new System.Drawing.Size(328, 48);
             this.txtCourseCode.TabIndex = 156;
             // 
             // btnSubmit
@@ -305,7 +271,7 @@
             this.txtCourseName.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.txtCourseName.PlaceholderText = "Please enter the subject name";
             this.txtCourseName.SelectedText = "";
-            this.txtCourseName.Size = new System.Drawing.Size(346, 48);
+            this.txtCourseName.Size = new System.Drawing.Size(310, 48);
             this.txtCourseName.TabIndex = 154;
             // 
             // btnBack
@@ -360,10 +326,41 @@
             // 
             this.errorProvider1.ContainerControl = this;
             // 
+            // cmbSemester
+            // 
+            this.cmbSemester.BackColor = System.Drawing.Color.Transparent;
+            this.cmbSemester.BorderColor = System.Drawing.Color.Gray;
+            this.cmbSemester.BorderRadius = 10;
+            this.cmbSemester.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbSemester.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSemester.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cmbSemester.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cmbSemester.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbSemester.ForeColor = System.Drawing.Color.Black;
+            this.cmbSemester.ItemHeight = 30;
+            this.cmbSemester.Location = new System.Drawing.Point(514, 281);
+            this.cmbSemester.Margin = new System.Windows.Forms.Padding(4);
+            this.cmbSemester.Name = "cmbSemester";
+            this.cmbSemester.Size = new System.Drawing.Size(277, 36);
+            this.cmbSemester.TabIndex = 174;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(511, 254);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 17);
+            this.label1.TabIndex = 175;
+            this.label1.Text = "Semester";
+            // 
             // AddSubject
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.cmbSemester);
             this.Controls.Add(this.cmbDepartment);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.btnMinimize);
@@ -373,8 +370,6 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.cmbTeacher);
-            this.Controls.Add(this.lblGender);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.txtCredits);
             this.Controls.Add(this.txtCourseCode);
@@ -401,8 +396,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label8;
-        private Guna.UI2.WinForms.Guna2ComboBox cmbTeacher;
-        private System.Windows.Forms.Label lblGender;
         private Guna.UI2.WinForms.Guna2TextBox txtDescription;
         private Guna.UI2.WinForms.Guna2TextBox txtCredits;
         private Guna.UI2.WinForms.Guna2TextBox txtCourseCode;
@@ -412,5 +405,7 @@
         private System.Windows.Forms.Label label2;
         private Guna.UI2.WinForms.Guna2Shapes guna2Shapes1;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.Label label1;
+        public Guna.UI2.WinForms.Guna2ComboBox cmbSemester;
     }
 }

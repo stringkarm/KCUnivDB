@@ -110,7 +110,7 @@
             this.txtEmail.PlaceholderForeColor = System.Drawing.Color.Gray;
             this.txtEmail.PlaceholderText = "Please input your email (example@gmail.com)";
             this.txtEmail.SelectedText = "";
-            this.txtEmail.Size = new System.Drawing.Size(435, 48);
+            this.txtEmail.Size = new System.Drawing.Size(422, 48);
             this.txtEmail.TabIndex = 36;
             // 
             // label1
