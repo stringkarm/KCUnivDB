@@ -35,6 +35,34 @@ namespace KCUnivDB
 
         string connectionString = @"Data Source = canasa\SQLEXPRESS; Initial catalog = KCUnivDB; Integrated Security = true";
 
+        private void LoadSemesters()
+        {
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string query = "SELECT SemesterID, TermName FROM Semesters ORDER BY SemesterID";
+
+                    SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    cmbSemester.DisplayMember = "TermName";
+                    cmbSemester.ValueMember = "SemesterID";
+                    cmbSemester.DataSource = dt;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error loading semesters:\n" + ex.Message,
+                                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+
         private void LoadDepartmentsToComboBox()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -147,6 +175,7 @@ namespace KCUnivDB
             bool rowSelected = dtgTeacherList.SelectedRows.Count > 0;
             btnDelete.Enabled = rowSelected;
             btnUpdate.Enabled = rowSelected;
+            btnApplySubject.Enabled = rowSelected;
         }
 
         private void btnDashboard_Click(object sender, EventArgs e)
@@ -335,6 +364,9 @@ namespace KCUnivDB
 
                 selectedProfileId = row.Cells["ProfileID"].Value.ToString();
 
+                
+                selectedInstructorId = row.Cells["InstructorID"].Value.ToString();
+
                 string firstName = row.Cells["FirstName"].Value.ToString();
                 string lastName = row.Cells["LastName"].Value.ToString();
                 string age = row.Cells["Age"].Value.ToString();
@@ -346,7 +378,6 @@ namespace KCUnivDB
                 object departmentValue = row.Cells["DepartmentName"].Value;
                 string department = (departmentValue != DBNull.Value && departmentValue != null) ? departmentValue.ToString() : string.Empty;
 
-
                 txtFirstname.Text = firstName;
                 txtLastname.Text = lastName;
                 txtAge.Text = age;
@@ -356,6 +387,7 @@ namespace KCUnivDB
                 cmbGender.Text = gender;
                 cmbDepartment.Text = department;
             }
+
             SetButtonStates();
         }
 
@@ -621,12 +653,203 @@ namespace KCUnivDB
 
         private void label25_Click(object sender, EventArgs e)
         {
-
+            SubjectHandledPanel.Hide();
         }
 
         private void btnApplySubject_Click(object sender, EventArgs e)
         {
-            SubjectHandledPanel.Show();
+            SubjectHandledPanel.Visible = true;
+            LoadSemesters();
+        }
+
+
+        private void LoadAvailableSubjects(int semesterID)
+        {
+           
+                string connectionString = @"Data Source = canasa\SQLEXPRESS;
+                Initial catalog = KCUnivDB; Integrated Security = true";
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    try
+                    {
+                        conn.Open();
+
+                        string query = @"
+                                        SELECT 
+                                            c.CourseID, 
+                                            c.CourseCode, 
+                                            c.CourseName, 
+                                            ISNULL(d.DepartmentName, 'No Department') AS DepartmentName
+                                        FROM Courses c
+                                        LEFT JOIN Departments d ON c.DepartmentID = d.DepartmentID
+                                        WHERE c.SemesterID = @SemesterID AND c.Status = 'Active'
+                                        ORDER BY c.CourseName";
+
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@SemesterID", semesterID);
+
+                            SqlDataAdapter da = new SqlDataAdapter(cmd);
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+
+                          
+                            dtgSubjectAvailable.Columns.Clear();
+                            dtgSubjectAvailable.DataSource = dt;
+
+                         
+                            DataGridViewButtonColumn btnHandle = new DataGridViewButtonColumn();
+                            btnHandle.HeaderText = "Action";
+                            btnHandle.Name = "btnHandle";
+                            btnHandle.Text = "Handle";
+                            btnHandle.UseColumnTextForButtonValue = true;
+                            dtgSubjectAvailable.Columns.Add(btnHandle);
+
+                        
+                            dtgSubjectAvailable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                            dtgSubjectAvailable.AllowUserToAddRows = false;
+                            dtgSubjectAvailable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                            dtgSubjectAvailable.ReadOnly = true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error loading available subjects:\n" + ex.Message,
+                                        "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+        }
+
+
+
+
+        private void cmbSemester_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnApplySub_Click(object sender, EventArgs e)
+        {
+
+            if (cmbSemester.SelectedIndex == -1)
+            {
+                errorProvider1.SetError(cmbSemester, "Please select a semester first.");
+                return;
+            }
+
+          
+            if (string.IsNullOrEmpty(selectedInstructorId))
+            {
+                MessageBox.Show("Please select a teacher first from the list.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (dtgSubjectAvailable.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a subject to assign.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int semesterID = Convert.ToInt32(cmbSemester.SelectedValue);
+            int courseID = Convert.ToInt32(dtgSubjectAvailable.SelectedRows[0].Cells["CourseID"].Value);
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"
+            INSERT INTO InstructorSubjects (InstructorID, CourseID, SemesterID)
+VALUES (@InstructorID, @CourseID, @SemesterID);
+";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@SemesterID", semesterID);
+                cmd.Parameters.AddWithValue("@CourseID", courseID);
+                cmd.Parameters.AddWithValue("@InstructorID", selectedInstructorId);
+
+                cmd.ExecuteNonQuery();
+            }
+
+            MessageBox.Show("Subject successfully applied to the instructor!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            SubjectHandledPanel.Visible = false;
+        }
+
+        private void cmbSemester_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cmbSemester.SelectedValue == null || cmbSemester.SelectedValue is DataRowView)
+                return;
+
+            int semesterID = Convert.ToInt32(cmbSemester.SelectedValue);
+            LoadAvailableSubjects(semesterID);
+        }
+
+        private void dtgSubjectAvailable_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            if (dtgSubjectAvailable.Columns[e.ColumnIndex].Name == "btnHandle")
+            {
+                if (string.IsNullOrEmpty(selectedInstructorId))
+                {
+                    MessageBox.Show("Please select a teacher first from the list.",
+                                    "No Instructor Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (cmbSemester.SelectedValue == null)
+                {
+                    MessageBox.Show("Please select a semester first.",
+                                    "No Semester Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                int semesterID = Convert.ToInt32(cmbSemester.SelectedValue);
+                int courseID = Convert.ToInt32(dtgSubjectAvailable.Rows[e.RowIndex].Cells["CourseID"].Value);
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                 
+                    string checkQuery = @"
+                SELECT COUNT(*) 
+                FROM InstructorSubjects 
+                WHERE InstructorID = @InstructorID AND CourseID = @CourseID AND SemesterID = @SemesterID";
+
+                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
+                    {
+                        checkCmd.Parameters.AddWithValue("@InstructorID", selectedInstructorId);
+                        checkCmd.Parameters.AddWithValue("@CourseID", courseID);
+                        checkCmd.Parameters.AddWithValue("@SemesterID", semesterID);
+
+                        int exists = (int)checkCmd.ExecuteScalar();
+
+                        if (exists > 0)
+                        {
+                            MessageBox.Show("This instructor already handles this subject.",
+                                            "Duplicate Entry", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+
+              
+                    string insertQuery = @"
+                INSERT INTO InstructorSubjects (InstructorID, CourseID, SemesterID)
+                VALUES (@InstructorID, @CourseID, @SemesterID)";
+
+                    using (SqlCommand insertCmd = new SqlCommand(insertQuery, conn))
+                    {
+                        insertCmd.Parameters.AddWithValue("@InstructorID", selectedInstructorId);
+                        insertCmd.Parameters.AddWithValue("@CourseID", courseID);
+                        insertCmd.Parameters.AddWithValue("@SemesterID", semesterID);
+                        insertCmd.ExecuteNonQuery();
+                    }
+
+                    MessageBox.Show("Subject successfully assigned to the instructor!",
+                                    "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
     }
 }

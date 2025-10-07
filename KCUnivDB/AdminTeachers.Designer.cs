@@ -63,7 +63,7 @@
             this.EditTeacherPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.SubjectHandledPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.label6 = new System.Windows.Forms.Label();
-            this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
+            this.btnApplySub = new Guna.UI2.WinForms.Guna2Button();
             this.label23 = new System.Windows.Forms.Label();
             this.guna2Shapes7 = new Guna.UI2.WinForms.Guna2Shapes();
             this.label24 = new System.Windows.Forms.Label();
@@ -634,7 +634,7 @@
             this.SubjectHandledPanel.Controls.Add(this.label4);
             this.SubjectHandledPanel.Controls.Add(this.cmbSemester);
             this.SubjectHandledPanel.Controls.Add(this.label6);
-            this.SubjectHandledPanel.Controls.Add(this.guna2Button1);
+            this.SubjectHandledPanel.Controls.Add(this.btnApplySub);
             this.SubjectHandledPanel.Controls.Add(this.label23);
             this.SubjectHandledPanel.Controls.Add(this.guna2Shapes7);
             this.SubjectHandledPanel.Controls.Add(this.label24);
@@ -658,23 +658,24 @@
             this.label6.Text = "Subject Available";
             this.label6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // guna2Button1
+            // btnApplySub
             // 
-            this.guna2Button1.Animated = true;
-            this.guna2Button1.BorderRadius = 20;
-            this.guna2Button1.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.guna2Button1.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.guna2Button1.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.guna2Button1.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.guna2Button1.FillColor = System.Drawing.Color.Maroon;
-            this.guna2Button1.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2Button1.ForeColor = System.Drawing.Color.White;
-            this.guna2Button1.Location = new System.Drawing.Point(242, 484);
-            this.guna2Button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.guna2Button1.Name = "guna2Button1";
-            this.guna2Button1.Size = new System.Drawing.Size(300, 46);
-            this.guna2Button1.TabIndex = 131;
-            this.guna2Button1.Text = "Save Changes";
+            this.btnApplySub.Animated = true;
+            this.btnApplySub.BorderRadius = 20;
+            this.btnApplySub.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnApplySub.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnApplySub.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnApplySub.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnApplySub.FillColor = System.Drawing.Color.Maroon;
+            this.btnApplySub.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnApplySub.ForeColor = System.Drawing.Color.White;
+            this.btnApplySub.Location = new System.Drawing.Point(242, 484);
+            this.btnApplySub.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnApplySub.Name = "btnApplySub";
+            this.btnApplySub.Size = new System.Drawing.Size(300, 46);
+            this.btnApplySub.TabIndex = 131;
+            this.btnApplySub.Text = "Apply Subject";
+            this.btnApplySub.Click += new System.EventHandler(this.btnApplySub_Click);
             // 
             // label23
             // 
@@ -1124,6 +1125,8 @@
             this.cmbSemester.Name = "cmbSemester";
             this.cmbSemester.Size = new System.Drawing.Size(374, 36);
             this.cmbSemester.TabIndex = 176;
+            this.cmbSemester.SelectedIndexChanged += new System.EventHandler(this.cmbSemester_SelectedIndexChanged);
+            this.cmbSemester.SelectionChangeCommitted += new System.EventHandler(this.cmbSemester_SelectionChangeCommitted);
             // 
             // btnApplySubject
             // 
@@ -1156,6 +1159,7 @@
             this.dtgSubjectAvailable.RowTemplate.Height = 24;
             this.dtgSubjectAvailable.Size = new System.Drawing.Size(649, 230);
             this.dtgSubjectAvailable.TabIndex = 178;
+            this.dtgSubjectAvailable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgSubjectAvailable_CellContentClick);
             // 
             // AdminTeachers
             // 
@@ -1266,7 +1270,7 @@
         private System.Windows.Forms.ErrorProvider errorProvider2;
         private System.Windows.Forms.ErrorProvider errorProvider3;
         private Guna.UI2.WinForms.Guna2Panel SubjectHandledPanel;
-        private Guna.UI2.WinForms.Guna2Button guna2Button1;
+        private Guna.UI2.WinForms.Guna2Button btnApplySub;
         private System.Windows.Forms.Label label23;
         private Guna.UI2.WinForms.Guna2Shapes guna2Shapes7;
         private System.Windows.Forms.Label label24;
