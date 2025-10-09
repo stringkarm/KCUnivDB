@@ -83,13 +83,12 @@
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.adminRegister1 = new KCUnivDB.AdminRegister();
             this.EnrollPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.clbSubjects = new System.Windows.Forms.CheckedListBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.guna2ComboBox2 = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.cmbProgram = new Guna.UI2.WinForms.Guna2ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.guna2ComboBox1 = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.cmbSemester = new Guna.UI2.WinForms.Guna2ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnEnrollStudent = new Guna.UI2.WinForms.Guna2Button();
             this.label7 = new System.Windows.Forms.Label();
@@ -97,6 +96,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.btnEnrollPage = new Guna.UI2.WinForms.Guna2Button();
+            this.adminRegister1 = new KCUnivDB.AdminRegister();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
@@ -956,21 +956,14 @@
             // 
             this.errorProvider3.ContainerControl = this;
             // 
-            // adminRegister1
-            // 
-            this.adminRegister1.Location = new System.Drawing.Point(250, 2);
-            this.adminRegister1.Name = "adminRegister1";
-            this.adminRegister1.Size = new System.Drawing.Size(853, 728);
-            this.adminRegister1.TabIndex = 146;
-            // 
             // EnrollPanel
             // 
             this.EnrollPanel.BackColor = System.Drawing.Color.Brown;
             this.EnrollPanel.Controls.Add(this.clbSubjects);
             this.EnrollPanel.Controls.Add(this.label6);
-            this.EnrollPanel.Controls.Add(this.guna2ComboBox2);
+            this.EnrollPanel.Controls.Add(this.cmbProgram);
             this.EnrollPanel.Controls.Add(this.label5);
-            this.EnrollPanel.Controls.Add(this.guna2ComboBox1);
+            this.EnrollPanel.Controls.Add(this.cmbSemester);
             this.EnrollPanel.Controls.Add(this.label4);
             this.EnrollPanel.Controls.Add(this.btnEnrollStudent);
             this.EnrollPanel.Controls.Add(this.label7);
@@ -1004,21 +997,22 @@
             this.label6.Text = "Plot a Subject/s";
             this.label6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // guna2ComboBox2
+            // cmbProgram
             // 
-            this.guna2ComboBox2.BackColor = System.Drawing.Color.Transparent;
-            this.guna2ComboBox2.BorderRadius = 10;
-            this.guna2ComboBox2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.guna2ComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.guna2ComboBox2.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.guna2ComboBox2.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.guna2ComboBox2.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.guna2ComboBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
-            this.guna2ComboBox2.ItemHeight = 30;
-            this.guna2ComboBox2.Location = new System.Drawing.Point(435, 122);
-            this.guna2ComboBox2.Name = "guna2ComboBox2";
-            this.guna2ComboBox2.Size = new System.Drawing.Size(295, 36);
-            this.guna2ComboBox2.TabIndex = 135;
+            this.cmbProgram.BackColor = System.Drawing.Color.Transparent;
+            this.cmbProgram.BorderRadius = 10;
+            this.cmbProgram.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbProgram.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbProgram.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cmbProgram.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cmbProgram.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbProgram.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
+            this.cmbProgram.ItemHeight = 30;
+            this.cmbProgram.Location = new System.Drawing.Point(435, 122);
+            this.cmbProgram.Name = "cmbProgram";
+            this.cmbProgram.Size = new System.Drawing.Size(295, 36);
+            this.cmbProgram.TabIndex = 135;
+            this.cmbProgram.SelectedIndexChanged += new System.EventHandler(this.cmbProgram_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -1033,21 +1027,22 @@
             this.label5.Text = "Program Name";
             this.label5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // guna2ComboBox1
+            // cmbSemester
             // 
-            this.guna2ComboBox1.BackColor = System.Drawing.Color.Transparent;
-            this.guna2ComboBox1.BorderRadius = 10;
-            this.guna2ComboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.guna2ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.guna2ComboBox1.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.guna2ComboBox1.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.guna2ComboBox1.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.guna2ComboBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
-            this.guna2ComboBox1.ItemHeight = 30;
-            this.guna2ComboBox1.Location = new System.Drawing.Point(71, 123);
-            this.guna2ComboBox1.Name = "guna2ComboBox1";
-            this.guna2ComboBox1.Size = new System.Drawing.Size(286, 36);
-            this.guna2ComboBox1.TabIndex = 133;
+            this.cmbSemester.BackColor = System.Drawing.Color.Transparent;
+            this.cmbSemester.BorderRadius = 10;
+            this.cmbSemester.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbSemester.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSemester.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cmbSemester.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.cmbSemester.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbSemester.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
+            this.cmbSemester.ItemHeight = 30;
+            this.cmbSemester.Location = new System.Drawing.Point(71, 123);
+            this.cmbSemester.Name = "cmbSemester";
+            this.cmbSemester.Size = new System.Drawing.Size(286, 36);
+            this.cmbSemester.TabIndex = 133;
+            this.cmbSemester.SelectedIndexChanged += new System.EventHandler(this.cmbSemester_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -1079,6 +1074,7 @@
             this.btnEnrollStudent.Size = new System.Drawing.Size(300, 46);
             this.btnEnrollStudent.TabIndex = 131;
             this.btnEnrollStudent.Text = "Enroll Student";
+            this.btnEnrollStudent.Click += new System.EventHandler(this.btnEnrollStudent_Click);
             // 
             // label7
             // 
@@ -1131,6 +1127,7 @@
             this.label11.Size = new System.Drawing.Size(28, 29);
             this.label11.TabIndex = 126;
             this.label11.Text = "×";
+            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // btnEnrollPage
             // 
@@ -1154,6 +1151,13 @@
             this.btnEnrollPage.Text = "Enroll";
             this.btnEnrollPage.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.btnEnrollPage.Click += new System.EventHandler(this.btnEnrollPage_Click);
+            // 
+            // adminRegister1
+            // 
+            this.adminRegister1.Location = new System.Drawing.Point(250, 2);
+            this.adminRegister1.Name = "adminRegister1";
+            this.adminRegister1.Size = new System.Drawing.Size(853, 728);
+            this.adminRegister1.TabIndex = 146;
             // 
             // AdminStudent
             // 
@@ -1263,14 +1267,14 @@
         private AdminRegister adminRegister1;
         private Guna.UI2.WinForms.Guna2Panel EnrollPanel;
         private System.Windows.Forms.Label label5;
-        private Guna.UI2.WinForms.Guna2ComboBox guna2ComboBox1;
+        private Guna.UI2.WinForms.Guna2ComboBox cmbSemester;
         private System.Windows.Forms.Label label4;
         private Guna.UI2.WinForms.Guna2Button btnEnrollStudent;
         private System.Windows.Forms.Label label7;
         private Guna.UI2.WinForms.Guna2Shapes guna2Shapes7;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
-        private Guna.UI2.WinForms.Guna2ComboBox guna2ComboBox2;
+        private Guna.UI2.WinForms.Guna2ComboBox cmbProgram;
         private System.Windows.Forms.CheckedListBox clbSubjects;
         private System.Windows.Forms.Label label6;
         private Guna.UI2.WinForms.Guna2Button btnEnrollPage;

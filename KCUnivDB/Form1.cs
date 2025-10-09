@@ -121,7 +121,7 @@ namespace KCUnivDB
 
                            string status = reader["Status"].ToString();
 
-                            if (status != "Active")
+                            if (status == "Pending")
                             {
                                 MessageBox.Show("Your account is pending approval. Please wait for the admin to approve your account.");
                                 this.Show();

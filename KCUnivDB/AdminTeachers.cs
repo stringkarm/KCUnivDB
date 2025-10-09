@@ -134,7 +134,7 @@ namespace KCUnivDB
 
                     if (dtgTeacherList.Columns.Contains("InstructorID"))
                     {
-                        dtgTeacherList.Columns["InstructorID"].Visible = false;
+                        dtgTeacherList.Columns["InstructorID"].Visible = true;
                     }
                     if (dtgTeacherList.Columns.Contains("ProfileID"))
                     {
@@ -356,6 +356,61 @@ namespace KCUnivDB
             }
         }
 
+        private void ShowSubjectsHandled(int instructorId)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+
+                string query = @"
+            SELECT 
+                c.CourseName,
+                s.TermName,
+                p.FirstName + ' ' + p.LastName AS InstructorName
+            FROM InstructorSubjects isb
+            INNER JOIN Courses c ON isb.CourseID = c.CourseID
+            INNER JOIN Semesters s ON isb.SemesterID = s.SemesterID
+            INNER JOIN Instructors i ON isb.InstructorID = i.InstructorID
+            INNER JOIN Profiles p ON i.ProfileID = p.ProfileID
+            WHERE isb.InstructorID = @InstructorID";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@InstructorID", instructorId);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                StringBuilder message = new StringBuilder();
+                string instructorName = "";
+                int count = 0;
+
+                while (reader.Read())
+                {
+                    if (string.IsNullOrEmpty(instructorName))
+                        instructorName = reader["InstructorName"].ToString();
+
+                    count++;
+                    message.AppendLine($"{count}. {reader["CourseName"]} – {reader["TermName"]}");
+                }
+
+                reader.Close();
+
+                if (count == 0)
+                {
+                    MessageBox.Show("This instructor has no subjects assigned yet.", "Subjects Handled");
+                }
+                else
+                {
+                    MessageBox.Show(
+                        $"Subjects handled by: {instructorName}\n\n{message.ToString()}",
+                        "Subjects Handled",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                }
+            }
+        }
+
+
         private void dtgTeacherList_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -377,6 +432,8 @@ namespace KCUnivDB
 
                 object departmentValue = row.Cells["DepartmentName"].Value;
                 string department = (departmentValue != DBNull.Value && departmentValue != null) ? departmentValue.ToString() : string.Empty;
+
+                
 
                 txtFirstname.Text = firstName;
                 txtLastname.Text = lastName;
@@ -811,7 +868,6 @@ VALUES (@InstructorID, @CourseID, @SemesterID);
                 {
                     conn.Open();
 
-                 
                     string checkQuery = @"
                 SELECT COUNT(*) 
                 FROM InstructorSubjects 
@@ -833,11 +889,9 @@ VALUES (@InstructorID, @CourseID, @SemesterID);
                         }
                     }
 
-              
                     string insertQuery = @"
                 INSERT INTO InstructorSubjects (InstructorID, CourseID, SemesterID)
                 VALUES (@InstructorID, @CourseID, @SemesterID)";
-
                     using (SqlCommand insertCmd = new SqlCommand(insertQuery, conn))
                     {
                         insertCmd.Parameters.AddWithValue("@InstructorID", selectedInstructorId);
@@ -846,11 +900,166 @@ VALUES (@InstructorID, @CourseID, @SemesterID);
                         insertCmd.ExecuteNonQuery();
                     }
 
-                    MessageBox.Show("Subject successfully assigned to the instructor!",
+                    string teacherName = "";
+                    string subjectName = "";
+
+                    string fetchQuery = @"
+                SELECT p.FirstName + ' ' + p.LastName AS TeacherName, c.CourseName
+                FROM Instructors i
+                INNER JOIN Profiles p ON i.ProfileID = p.ProfileID
+                INNER JOIN Courses c ON c.CourseID = @CourseID
+                WHERE i.InstructorID = @InstructorID";
+                    using (SqlCommand cmdFetch = new SqlCommand(fetchQuery, conn))
+                    {
+                        cmdFetch.Parameters.AddWithValue("@InstructorID", selectedInstructorId);
+                        cmdFetch.Parameters.AddWithValue("@CourseID", courseID);
+
+                        using (SqlDataReader reader = cmdFetch.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                teacherName = reader["TeacherName"].ToString();
+                                subjectName = reader["CourseName"].ToString();
+                            }
+                        }
+                    }
+
+                    try
+                    {
+                  
+                        int adminProfileId = 1;
+                        string logAction = "Assign Subject";
+                        string logDescription = $"Assigned teacher {teacherName} to handle {subjectName}.";
+
+                        string logQuery = @"
+                    INSERT INTO Logs (ProfileID, Action, Description)
+                    VALUES (@ProfileID, @Action, @Description)";
+                        using (SqlCommand logCmd = new SqlCommand(logQuery, conn))
+                        {
+                            logCmd.Parameters.AddWithValue("@ProfileID", adminProfileId);
+                            logCmd.Parameters.AddWithValue("@Action", logAction);
+                            logCmd.Parameters.AddWithValue("@Description", logDescription);
+                            logCmd.ExecuteNonQuery();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error inserting log: " + ex.Message);
+                    }
+
+                    MessageBox.Show("Subject successfully assigned and logged!",
                                     "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
+
+        private void AdminTeachers_Load(object sender, EventArgs e)
+        {
+            LoadTeachersData();
+
+            
+            if (!dtgTeacherList.Columns.Contains("Details"))
+            {
+                DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
+                btn.HeaderText = "Details";
+                btn.Text = "View";
+                btn.Name = "Details";
+                btn.UseColumnTextForButtonValue = true;
+                dtgTeacherList.Columns.Add(btn);
+            }
+
+
+        }
+
+        private void dtgTeacherList_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dtgTeacherList.Columns[e.ColumnIndex].Name == "Details" && e.RowIndex >= 0)
+            {
+                int instructorId = Convert.ToInt32(dtgTeacherList.Rows[e.RowIndex].Cells["InstructorID"].Value);
+                ShowSubjectsHandled(instructorId);
+            }
+        }
+
+        private void AssignSubjectToTeacher(int instructorId, int courseId, int semesterId, int adminProfileId)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+
+                SqlTransaction transaction = con.BeginTransaction();
+
+                try
+                {
+                    string insertQuery = @"
+                INSERT INTO InstructorSubjects (InstructorID, CourseID, SemesterID, DateAssigned)
+                VALUES (@InstructorID, @CourseID, @SemesterID, GETDATE());
+            ";
+
+                    using (SqlCommand cmd = new SqlCommand(insertQuery, con, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@InstructorID", instructorId);
+                        cmd.Parameters.AddWithValue("@CourseID", courseId);
+                        cmd.Parameters.AddWithValue("@SemesterID", semesterId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+ 
+                    string teacherName = "";
+                    string subjectName = "";
+
+                    string fetchQuery = @"
+                SELECT p.FirstName + ' ' + p.LastName AS TeacherName, c.CourseName
+                FROM Instructors i
+                INNER JOIN Profiles p ON i.ProfileID = p.ProfileID
+                INNER JOIN Courses c ON c.CourseID = @CourseID
+                WHERE i.InstructorID = @InstructorID;
+            ";
+
+                    using (SqlCommand cmdFetch = new SqlCommand(fetchQuery, con, transaction))
+                    {
+                        cmdFetch.Parameters.AddWithValue("@InstructorID", instructorId);
+                        cmdFetch.Parameters.AddWithValue("@CourseID", courseId);
+
+                        using (SqlDataReader reader = cmdFetch.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                teacherName = reader["TeacherName"].ToString();
+                                subjectName = reader["CourseName"].ToString();
+                            }
+                        }
+                    }
+
+                   
+                    string logAction = "Assign Subject";
+                    string logDescription = $"Assigned teacher {teacherName} to handle {subjectName}.";
+
+                    string logQuery = @"
+                INSERT INTO Logs (ProfileID, Action, Description)
+                VALUES (@ProfileID, @Action, @Description);
+            ";
+
+                    using (SqlCommand cmdLog = new SqlCommand(logQuery, con, transaction))
+                    {
+                        cmdLog.Parameters.AddWithValue("@ProfileID", adminProfileId); 
+                        cmdLog.Parameters.AddWithValue("@Action", logAction);
+                        cmdLog.Parameters.AddWithValue("@Description", logDescription);
+                        cmdLog.ExecuteNonQuery();
+                    }
+
+                 
+                    transaction.Commit();
+
+                    MessageBox.Show("Teacher successfully assigned and log recorded.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    MessageBox.Show("Error assigning teacher: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
     }
 }
 

@@ -61,13 +61,6 @@
             this.dtgTeacherList = new System.Windows.Forms.DataGridView();
             this.guna2Shapes3 = new Guna.UI2.WinForms.Guna2Shapes();
             this.EditTeacherPanel = new Guna.UI2.WinForms.Guna2Panel();
-            this.SubjectHandledPanel = new Guna.UI2.WinForms.Guna2Panel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.btnApplySub = new Guna.UI2.WinForms.Guna2Button();
-            this.label23 = new System.Windows.Forms.Label();
-            this.guna2Shapes7 = new Guna.UI2.WinForms.Guna2Shapes();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
             this.cmbDepartment = new Guna.UI2.WinForms.Guna2ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -89,14 +82,21 @@
             this.guna2Shapes8 = new Guna.UI2.WinForms.Guna2Shapes();
             this.label21 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
+            this.SubjectHandledPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.dtgSubjectAvailable = new System.Windows.Forms.DataGridView();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cmbSemester = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnApplySub = new Guna.UI2.WinForms.Guna2Button();
+            this.label23 = new System.Windows.Forms.Label();
+            this.guna2Shapes7 = new Guna.UI2.WinForms.Guna2Shapes();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.addTeacher1 = new KCUnivDB.AddTeacher();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cmbSemester = new Guna.UI2.WinForms.Guna2ComboBox();
             this.btnApplySubject = new Guna.UI2.WinForms.Guna2Button();
-            this.dtgSubjectAvailable = new System.Windows.Forms.DataGridView();
+            this.addTeacher1 = new KCUnivDB.AddTeacher();
             this.sidebar.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.menubutton)).BeginInit();
@@ -105,10 +105,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtgTeacherList)).BeginInit();
             this.EditTeacherPanel.SuspendLayout();
             this.SubjectHandledPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgSubjectAvailable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgSubjectAvailable)).BeginInit();
             this.SuspendLayout();
             // 
             // btnClose
@@ -580,6 +580,7 @@
             this.dtgTeacherList.Size = new System.Drawing.Size(783, 436);
             this.dtgTeacherList.TabIndex = 99;
             this.dtgTeacherList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgTeacherList_CellClick);
+            this.dtgTeacherList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgTeacherList_CellContentClick);
             // 
             // guna2Shapes3
             // 
@@ -622,113 +623,10 @@
             this.EditTeacherPanel.Controls.Add(this.label21);
             this.EditTeacherPanel.Controls.Add(this.label22);
             this.EditTeacherPanel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.EditTeacherPanel.Location = new System.Drawing.Point(288, 102);
+            this.EditTeacherPanel.Location = new System.Drawing.Point(283, 102);
             this.EditTeacherPanel.Name = "EditTeacherPanel";
             this.EditTeacherPanel.Size = new System.Drawing.Size(783, 577);
             this.EditTeacherPanel.TabIndex = 146;
-            // 
-            // SubjectHandledPanel
-            // 
-            this.SubjectHandledPanel.BackColor = System.Drawing.Color.Brown;
-            this.SubjectHandledPanel.Controls.Add(this.dtgSubjectAvailable);
-            this.SubjectHandledPanel.Controls.Add(this.label4);
-            this.SubjectHandledPanel.Controls.Add(this.cmbSemester);
-            this.SubjectHandledPanel.Controls.Add(this.label6);
-            this.SubjectHandledPanel.Controls.Add(this.btnApplySub);
-            this.SubjectHandledPanel.Controls.Add(this.label23);
-            this.SubjectHandledPanel.Controls.Add(this.guna2Shapes7);
-            this.SubjectHandledPanel.Controls.Add(this.label24);
-            this.SubjectHandledPanel.Controls.Add(this.label25);
-            this.SubjectHandledPanel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.SubjectHandledPanel.Location = new System.Drawing.Point(288, 103);
-            this.SubjectHandledPanel.Name = "SubjectHandledPanel";
-            this.SubjectHandledPanel.Size = new System.Drawing.Size(783, 577);
-            this.SubjectHandledPanel.TabIndex = 147;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.Transparent;
-            this.label6.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(63, 185);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(137, 20);
-            this.label6.TabIndex = 138;
-            this.label6.Text = "Subject Available";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // btnApplySub
-            // 
-            this.btnApplySub.Animated = true;
-            this.btnApplySub.BorderRadius = 20;
-            this.btnApplySub.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnApplySub.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnApplySub.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnApplySub.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnApplySub.FillColor = System.Drawing.Color.Maroon;
-            this.btnApplySub.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnApplySub.ForeColor = System.Drawing.Color.White;
-            this.btnApplySub.Location = new System.Drawing.Point(242, 484);
-            this.btnApplySub.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnApplySub.Name = "btnApplySub";
-            this.btnApplySub.Size = new System.Drawing.Size(300, 46);
-            this.btnApplySub.TabIndex = 131;
-            this.btnApplySub.Text = "Apply Subject";
-            this.btnApplySub.Click += new System.EventHandler(this.btnApplySub_Click);
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.BackColor = System.Drawing.Color.Transparent;
-            this.label23.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.ForeColor = System.Drawing.Color.White;
-            this.label23.Location = new System.Drawing.Point(24, 47);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(305, 20);
-            this.label23.TabIndex = 129;
-            this.label23.Text = "Applying a subject to handle in the class.";
-            this.label23.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // guna2Shapes7
-            // 
-            this.guna2Shapes7.BorderThickness = 1;
-            this.guna2Shapes7.FillColor = System.Drawing.Color.Silver;
-            this.guna2Shapes7.LineThickness = 2;
-            this.guna2Shapes7.Location = new System.Drawing.Point(28, 71);
-            this.guna2Shapes7.Name = "guna2Shapes7";
-            this.guna2Shapes7.PolygonSkip = 1;
-            this.guna2Shapes7.Rotate = 0F;
-            this.guna2Shapes7.RoundedRadius = 10;
-            this.guna2Shapes7.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
-            this.guna2Shapes7.Size = new System.Drawing.Size(738, 17);
-            this.guna2Shapes7.TabIndex = 128;
-            this.guna2Shapes7.Text = "guna2Shapes7";
-            this.guna2Shapes7.Zoom = 100;
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Century Gothic", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.ForeColor = System.Drawing.Color.White;
-            this.label24.Location = new System.Drawing.Point(23, 14);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(315, 29);
-            this.label24.TabIndex = 127;
-            this.label24.Text = "Apply a subject handled";
-            this.label24.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.ForeColor = System.Drawing.Color.White;
-            this.label25.Location = new System.Drawing.Point(748, 6);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(28, 29);
-            this.label25.TabIndex = 126;
-            this.label25.Text = "×";
-            this.label25.Click += new System.EventHandler(this.label25_Click);
             // 
             // cmbDepartment
             // 
@@ -1078,24 +976,35 @@
             this.label22.Text = "×";
             this.label22.Click += new System.EventHandler(this.label22_Click);
             // 
-            // errorProvider1
+            // SubjectHandledPanel
             // 
-            this.errorProvider1.ContainerControl = this;
+            this.SubjectHandledPanel.BackColor = System.Drawing.Color.Brown;
+            this.SubjectHandledPanel.Controls.Add(this.dtgSubjectAvailable);
+            this.SubjectHandledPanel.Controls.Add(this.label4);
+            this.SubjectHandledPanel.Controls.Add(this.cmbSemester);
+            this.SubjectHandledPanel.Controls.Add(this.label6);
+            this.SubjectHandledPanel.Controls.Add(this.btnApplySub);
+            this.SubjectHandledPanel.Controls.Add(this.label23);
+            this.SubjectHandledPanel.Controls.Add(this.guna2Shapes7);
+            this.SubjectHandledPanel.Controls.Add(this.label24);
+            this.SubjectHandledPanel.Controls.Add(this.label25);
+            this.SubjectHandledPanel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.SubjectHandledPanel.Location = new System.Drawing.Point(285, 103);
+            this.SubjectHandledPanel.Name = "SubjectHandledPanel";
+            this.SubjectHandledPanel.Size = new System.Drawing.Size(783, 577);
+            this.SubjectHandledPanel.TabIndex = 147;
             // 
-            // errorProvider2
+            // dtgSubjectAvailable
             // 
-            this.errorProvider2.ContainerControl = this;
-            // 
-            // errorProvider3
-            // 
-            this.errorProvider3.ContainerControl = this;
-            // 
-            // addTeacher1
-            // 
-            this.addTeacher1.Location = new System.Drawing.Point(249, 3);
-            this.addTeacher1.Name = "addTeacher1";
-            this.addTeacher1.Size = new System.Drawing.Size(852, 726);
-            this.addTeacher1.TabIndex = 147;
+            this.dtgSubjectAvailable.BackgroundColor = System.Drawing.Color.IndianRed;
+            this.dtgSubjectAvailable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgSubjectAvailable.Location = new System.Drawing.Point(67, 209);
+            this.dtgSubjectAvailable.Name = "dtgSubjectAvailable";
+            this.dtgSubjectAvailable.RowHeadersWidth = 51;
+            this.dtgSubjectAvailable.RowTemplate.Height = 24;
+            this.dtgSubjectAvailable.Size = new System.Drawing.Size(649, 230);
+            this.dtgSubjectAvailable.TabIndex = 178;
+            this.dtgSubjectAvailable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgSubjectAvailable_CellContentClick);
             // 
             // label4
             // 
@@ -1128,6 +1037,103 @@
             this.cmbSemester.SelectedIndexChanged += new System.EventHandler(this.cmbSemester_SelectedIndexChanged);
             this.cmbSemester.SelectionChangeCommitted += new System.EventHandler(this.cmbSemester_SelectionChangeCommitted);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
+            this.label6.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(63, 185);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(137, 20);
+            this.label6.TabIndex = 138;
+            this.label6.Text = "Subject Available";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // btnApplySub
+            // 
+            this.btnApplySub.Animated = true;
+            this.btnApplySub.BorderRadius = 20;
+            this.btnApplySub.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnApplySub.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnApplySub.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnApplySub.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnApplySub.FillColor = System.Drawing.Color.Maroon;
+            this.btnApplySub.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnApplySub.ForeColor = System.Drawing.Color.White;
+            this.btnApplySub.Location = new System.Drawing.Point(242, 484);
+            this.btnApplySub.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnApplySub.Name = "btnApplySub";
+            this.btnApplySub.Size = new System.Drawing.Size(300, 46);
+            this.btnApplySub.TabIndex = 131;
+            this.btnApplySub.Text = "Apply Subject";
+            this.btnApplySub.Click += new System.EventHandler(this.btnApplySub_Click);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.BackColor = System.Drawing.Color.Transparent;
+            this.label23.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.ForeColor = System.Drawing.Color.White;
+            this.label23.Location = new System.Drawing.Point(24, 47);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(305, 20);
+            this.label23.TabIndex = 129;
+            this.label23.Text = "Applying a subject to handle in the class.";
+            this.label23.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // guna2Shapes7
+            // 
+            this.guna2Shapes7.BorderThickness = 1;
+            this.guna2Shapes7.FillColor = System.Drawing.Color.Silver;
+            this.guna2Shapes7.LineThickness = 2;
+            this.guna2Shapes7.Location = new System.Drawing.Point(28, 71);
+            this.guna2Shapes7.Name = "guna2Shapes7";
+            this.guna2Shapes7.PolygonSkip = 1;
+            this.guna2Shapes7.Rotate = 0F;
+            this.guna2Shapes7.RoundedRadius = 10;
+            this.guna2Shapes7.Shape = Guna.UI2.WinForms.Enums.ShapeType.Line;
+            this.guna2Shapes7.Size = new System.Drawing.Size(738, 17);
+            this.guna2Shapes7.TabIndex = 128;
+            this.guna2Shapes7.Text = "guna2Shapes7";
+            this.guna2Shapes7.Zoom = 100;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Century Gothic", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.ForeColor = System.Drawing.Color.White;
+            this.label24.Location = new System.Drawing.Point(23, 14);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(315, 29);
+            this.label24.TabIndex = 127;
+            this.label24.Text = "Apply a subject handled";
+            this.label24.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Arial Rounded MT Bold", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.ForeColor = System.Drawing.Color.White;
+            this.label25.Location = new System.Drawing.Point(748, 6);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(28, 29);
+            this.label25.TabIndex = 126;
+            this.label25.Text = "×";
+            this.label25.Click += new System.EventHandler(this.label25_Click);
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
+            // errorProvider2
+            // 
+            this.errorProvider2.ContainerControl = this;
+            // 
+            // errorProvider3
+            // 
+            this.errorProvider3.ContainerControl = this;
+            // 
             // btnApplySubject
             // 
             this.btnApplySubject.Animated = true;
@@ -1149,17 +1155,12 @@
             this.btnApplySubject.Text = "Apply Subject";
             this.btnApplySubject.Click += new System.EventHandler(this.btnApplySubject_Click);
             // 
-            // dtgSubjectAvailable
+            // addTeacher1
             // 
-            this.dtgSubjectAvailable.BackgroundColor = System.Drawing.Color.IndianRed;
-            this.dtgSubjectAvailable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgSubjectAvailable.Location = new System.Drawing.Point(67, 209);
-            this.dtgSubjectAvailable.Name = "dtgSubjectAvailable";
-            this.dtgSubjectAvailable.RowHeadersWidth = 51;
-            this.dtgSubjectAvailable.RowTemplate.Height = 24;
-            this.dtgSubjectAvailable.Size = new System.Drawing.Size(649, 230);
-            this.dtgSubjectAvailable.TabIndex = 178;
-            this.dtgSubjectAvailable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dtgSubjectAvailable_CellContentClick);
+            this.addTeacher1.Location = new System.Drawing.Point(250, 3);
+            this.addTeacher1.Name = "addTeacher1";
+            this.addTeacher1.Size = new System.Drawing.Size(852, 726);
+            this.addTeacher1.TabIndex = 147;
             // 
             // AdminTeachers
             // 
@@ -1192,6 +1193,7 @@
             this.Name = "AdminTeachers";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AdminTeachers";
+            this.Load += new System.EventHandler(this.AdminTeachers_Load);
             this.sidebar.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -1203,10 +1205,10 @@
             this.EditTeacherPanel.PerformLayout();
             this.SubjectHandledPanel.ResumeLayout(false);
             this.SubjectHandledPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgSubjectAvailable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dtgSubjectAvailable)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

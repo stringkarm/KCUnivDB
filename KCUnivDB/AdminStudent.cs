@@ -27,6 +27,7 @@ namespace KCUnivDB
         }
 
         private string selectedProfileId;
+        private string selectedStudentId = "";
         string mailPattern = @"^[\w\.-]+@gmail\.com$";
         string agePattern = @"^(1[0-9]{2}|[1-9]?[0-9])$";
 
@@ -102,6 +103,16 @@ namespace KCUnivDB
                         dtgStudentsList.Columns["StudentID"].DisplayIndex = 0;
                     }
 
+                    DataGridViewButtonColumn detailsButton = new DataGridViewButtonColumn();
+                    detailsButton.HeaderText = "Details";
+                    detailsButton.Name = "Details";
+                    detailsButton.Text = "View";
+                    detailsButton.UseColumnTextForButtonValue = true;
+                    dtgStudentsList.Columns.Add(detailsButton);
+
+
+                    detailsButton.DisplayIndex = dtgStudentsList.Columns.Count - 1;
+
                 }
                 catch (SqlException ex)
                 {
@@ -137,6 +148,7 @@ namespace KCUnivDB
             bool rowSelected = dtgStudentsList.SelectedRows.Count > 0;
             btnDelete.Enabled = rowSelected;
             btnUpdate.Enabled = rowSelected;
+            btnEnrollPage.Enabled = rowSelected;
         }
 
 
@@ -566,8 +578,17 @@ namespace KCUnivDB
             }
         }
 
+    
         private void dtgStudentsList_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+           
+
+            if (e.RowIndex >= 0)
+            {
+                selectedStudentId = dtgStudentsList.Rows[e.RowIndex].Cells["StudentID"].Value.ToString();
+                errorProvider1.SetError(dtgStudentsList, "");
+            }
+
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dtgStudentsList.Rows[e.RowIndex];
@@ -588,16 +609,351 @@ namespace KCUnivDB
                 txtPhone.Text = phone;
                 txtAddress.Text = address;
                 txtEmail.Text = email;
-
                 cmbGender.Text = gender;
+            }
+
+            if (e.RowIndex >= 0)
+            {
+                
+                selectedStudentId = dtgStudentsList.Rows[e.RowIndex].Cells["StudentID"].Value.ToString();
+              
+            }
+
+            if (dtgStudentsList.Columns[e.ColumnIndex].Name == "Details" && e.RowIndex >= 0)
+            {
+
+                string studentId = dtgStudentsList.Rows[e.RowIndex].Cells["StudentID"].Value.ToString();
+                ShowStudentEnrollmentDetails(studentId);
+            }
+
+        }
+
+       
+
+
+        private void LoadSemesters()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT SemesterID, TermName FROM Semesters";
+                SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                cmbSemester.DataSource = dt;
+                cmbSemester.DisplayMember = "TermName";
+                cmbSemester.ValueMember = "SemesterID";
+                cmbSemester.SelectedIndex = -1;
+            }
+        }
+
+        private void LoadPrograms()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT ProgramID, ProgramName FROM Programs";
+                SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                cmbProgram.DataSource = dt;
+                cmbProgram.DisplayMember = "ProgramName";
+                cmbProgram.ValueMember = "ProgramID";
+                cmbProgram.SelectedIndex = -1;
+            }
+        }
+
+        private void EnrollStudentInCourse(string studentId, int courseId, int semesterId)
+        {
+            string query = @"
+        INSERT INTO StudentEnrollments (StudentID, CourseID, SemesterID)
+        VALUES (@StudentID, @CourseID, @SemesterID)";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@StudentID", studentId);
+                    cmd.Parameters.AddWithValue("@CourseID", courseId);
+                    cmd.Parameters.AddWithValue("@SemesterID", semesterId);
+
+                    try
+                    {
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                       
+                        throw new Exception($"Failed to enroll student {studentId} in Course ID {courseId}: {ex.Message}");
+                    }
+                }
+            }
+        }
+
+        private void LoadSubjectsForProgram(int programId, int semesterId)
+        {
+            clbSubjects.Items.Clear();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+
+                string query = @"
+            SELECT 
+                c.CourseID, 
+                c.CourseName, 
+                c.CourseCode, 
+                c.Credits
+            FROM Courses c
+            INNER JOIN Programs p ON c.DepartmentID = p.DepartmentID
+            WHERE p.ProgramID = @ProgramID 
+              AND c.SemesterID = @SemesterID
+              AND c.Status = 'Active';";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@ProgramID", programId);
+                    cmd.Parameters.AddWithValue("@SemesterID", semesterId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int courseId = Convert.ToInt32(reader["CourseID"]);
+                            string courseName = reader["CourseName"].ToString();
+                            string courseCode = reader["CourseCode"].ToString();
+                            decimal credits = reader["Credits"] != DBNull.Value
+                                ? Convert.ToDecimal(reader["Credits"])
+                                : 0;
+
+                 
+                            string itemText = $"{courseCode} - {courseName} ({credits:F1})";
+
+                            clbSubjects.Items.Add(new KeyValuePair<int, string>(courseId, itemText), false);
+                        }
+                    }
+                }
+            }
+
+            clbSubjects.DisplayMember = "Value";
+
+            if (clbSubjects.Items.Count == 0)
+            {
+                errorProvider1.SetError(clbSubjects, "No active subjects found for this program and semester.");
+            }
+            else
+            {
+                errorProvider1.SetError(clbSubjects, "");
+            }
+        }
+
+        private bool IsStudentAlreadyEnrolled(string studentId, int courseId, int semesterId)
+        {
+           
+            string query = @"
+        SELECT COUNT(*) 
+        FROM Enrollment 
+        WHERE StudentID = @StudentID 
+        AND CourseID = @CourseID 
+        AND SemesterID = @SemesterID";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@StudentID", studentId);
+                    cmd.Parameters.AddWithValue("@CourseID", courseId);
+                    cmd.Parameters.AddWithValue("@SemesterID", semesterId);
+
+                    try
+                    {
+                        conn.Open();
+                        int count = (int)cmd.ExecuteScalar();
+                        return count > 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error checking enrollment status: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return true;
+                    }
+                }
             }
         }
 
         private void btnEnrollPage_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(selectedStudentId))
+            {
+                MessageBox.Show("Please select a student first.", "No Student Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             EnrollPanel.Show();
+            LoadSemesters();
+            LoadPrograms();
+            clbSubjects.Items.Clear();
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+            EnrollPanel.Hide();
+        }
+
+        private void btnEnrollStudent_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(selectedStudentId) || cmbSemester.SelectedValue == null)
+            {
+                MessageBox.Show("Please ensure a student and a semester are selected.", "Missing Data", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int semesterId = Convert.ToInt32(cmbSemester.SelectedValue);
+            int enrolledCount = 0;
+            int duplicateCount = 0;
+            string duplicateCourses = "";
+
+           
+            foreach (var item in clbSubjects.CheckedItems)
+            {
+                
+                if (item is KeyValuePair<int, string> coursePair)
+                {
+                    int courseId = coursePair.Key;
+                    string courseName = coursePair.Value; 
+
+                   
+                    if (IsStudentAlreadyEnrolled(selectedStudentId, courseId, semesterId))
+                    {
+                        duplicateCount++;
+                        duplicateCourses += $"\n- {courseName}";
+                        continue; 
+                    }
+
+                    try
+                    {
+                        EnrollStudentInCourse(selectedStudentId, courseId, semesterId);
+                        enrolledCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Enrollment failed for {courseName}: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                      
+                    }
+                }
+            }
+
+            string message = $"Enrollment process complete. {enrolledCount} new course(s) successfully added.";
+            if (duplicateCount > 0)
+            {
+                message += $"\n\n🚨 Warning: {duplicateCount} course(s) were skipped because the student is already enrolled in them this semester:{duplicateCourses}";
+            }
+
+            MessageBox.Show(message, "Enrollment Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            RefreshStudentData();
+            EnrollPanel.Hide();
+        }
+
+     
+
+        private void cmbProgram_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbProgram.SelectedValue != null && cmbSemester.SelectedValue != null)
+            {
+                if (int.TryParse(cmbProgram.SelectedValue.ToString(), out int programId) &&
+                    int.TryParse(cmbSemester.SelectedValue.ToString(), out int semesterId))
+                {
+                    LoadSubjectsForProgram(programId, semesterId);
+                }
+            }
+            else
+            {
+                clbSubjects.Items.Clear();
+                errorProvider1.SetError(clbSubjects, "");
+            }
+        }
+
+        private void cmbSemester_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbProgram.SelectedValue != null && cmbSemester.SelectedValue != null)
+            {
+                int programId = Convert.ToInt32(cmbProgram.SelectedValue);
+                int semesterId = Convert.ToInt32(cmbSemester.SelectedValue);
+                LoadSubjectsForProgram(programId, semesterId);
+            }
+            else
+            {
+                clbSubjects.Items.Clear();
+                errorProvider1.SetError(clbSubjects, "");
+            }
+        }
+
+        private void ShowStudentEnrollmentDetails(string studentId)
+        {
+       
+            string query = @"
+        SELECT 
+            se.StudentID,
+            c.CourseName,
+            c.CourseCode,
+            sem.TermName + ' ' + sem.AcademicYear AS SemesterTerm,
+            d.DepartmentName,
+            ISNULL(pr.FirstName + ' ' + pr.LastName, 'Not Assigned') AS InstructorName
+        FROM StudentEnrollments se
+        -- FROM Enrollment se  <-- Use this line if you fully switched your enrollment logic
+        INNER JOIN Courses c ON se.CourseID = c.CourseID
+        INNER JOIN Semesters sem ON se.SemesterID = sem.SemesterID
+        INNER JOIN Departments d ON c.DepartmentID = d.DepartmentID
+        LEFT JOIN InstructorSubjects ins ON ins.CourseID = c.CourseID AND ins.SemesterID = se.SemesterID
+        LEFT JOIN Instructors i ON ins.InstructorID = i.InstructorID
+        LEFT JOIN Profiles pr ON i.ProfileID = pr.ProfileID
+        WHERE se.StudentID = @StudentID
+        ORDER BY sem.TermName, c.CourseCode;
+    ";
+
+        
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@StudentID", studentId);
+
+                try
+                {
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        sb.AppendLine($"📘 Enrollment Details for Student ID: {studentId}\n");
+
+                        while (reader.Read())
+                        {
+                            sb.AppendLine($"Course: {reader["CourseCode"]} - {reader["CourseName"]}");
+                            sb.AppendLine($"Term: {reader["SemesterTerm"]}");
+                          
+                            sb.AppendLine($"Department: {reader["DepartmentName"]}");
+                            sb.AppendLine($"Instructor: {reader["InstructorName"]}");
+                            sb.AppendLine(new string('-', 50));
+                        }
+
+                        reader.Close();
+
+                        MessageBox.Show(sb.ToString(),
+                                        $"Subjects Enrolled by Student {studentId}",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Information);
+                    }
+                  
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }
-    
+
 
