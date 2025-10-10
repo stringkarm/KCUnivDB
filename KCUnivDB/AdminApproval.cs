@@ -185,14 +185,14 @@ namespace KCUnivDB
         private void dtgApproval_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
 
-
             if (e.ColumnIndex == dtgApproval.Columns["Status_Dropdown"].Index && e.RowIndex >= 0)
             {
+                
                 string newStatus = dtgApproval.Rows[e.RowIndex].Cells["Status_Dropdown"].Value.ToString();
                 int profileId = Convert.ToInt32(dtgApproval.Rows[e.RowIndex].Cells["ProfileID"].Value);
 
                 DialogResult dialogResult = MessageBox.Show($"Are you sure you want to change the status to '{newStatus}' for this student?",
-                                                            "Confirm Status Change", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                                             "Confirm Status Change", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (dialogResult == DialogResult.Yes)
                 {
@@ -209,6 +209,11 @@ namespace KCUnivDB
                             cmd.ExecuteNonQuery();
                             MessageBox.Show("Student status updated successfully.");
                             AddLogEntry(profileId, "Updated Status", $"Changed student status to {newStatus}");
+
+                            
+                            LoadApprovalData();
+
+
                             LoadStudentCounts();
                         }
                         catch (SqlException ex)
@@ -219,10 +224,13 @@ namespace KCUnivDB
                 }
                 else
                 {
+                    // ⭐ CRITICAL CHANGE 2: Reload the data if the user cancels,
+                    // to revert the DataGridView cell to its original value.
                     LoadApprovalData();
                 }
             }
         }
+        
 
      
         private void SetButtonStates()

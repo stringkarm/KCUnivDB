@@ -34,22 +34,23 @@
             this.btnClose = new System.Windows.Forms.Label();
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.guna2GradientPanel1 = new Guna.UI2.WinForms.Guna2GradientPanel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.guna2Elipse2 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.guna2GradientPanel2 = new Guna.UI2.WinForms.Guna2GradientPanel();
-            this.guna2Elipse3 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.lblTime = new System.Windows.Forms.Label();
-            this.btnHome = new Guna.UI2.WinForms.Guna2Button();
-            this.lblWelcome = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.lblWelcome = new System.Windows.Forms.Label();
+            this.lblDateDisplay = new System.Windows.Forms.Label();
+            this.guna2Elipse3 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.lblStudentName = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.btnHome = new Guna.UI2.WinForms.Guna2Button();
+            this.lblLogout = new System.Windows.Forms.Label();
             this.guna2GradientPanel1.SuspendLayout();
-            this.guna2GradientPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.guna2GradientPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // btnMinimize
@@ -89,28 +90,6 @@
             this.guna2GradientPanel1.Size = new System.Drawing.Size(232, 705);
             this.guna2GradientPanel1.TabIndex = 45;
             // 
-            // guna2Elipse2
-            // 
-            this.guna2Elipse2.BorderRadius = 10;
-            this.guna2Elipse2.TargetControl = this.guna2GradientPanel1;
-            // 
-            // guna2GradientPanel2
-            // 
-            this.guna2GradientPanel2.BackColor = System.Drawing.Color.Firebrick;
-            this.guna2GradientPanel2.Controls.Add(this.label2);
-            this.guna2GradientPanel2.Controls.Add(this.lblWelcome);
-            this.guna2GradientPanel2.Controls.Add(this.lblTime);
-            this.guna2GradientPanel2.Controls.Add(this.pictureBox2);
-            this.guna2GradientPanel2.Location = new System.Drawing.Point(284, 92);
-            this.guna2GradientPanel2.Name = "guna2GradientPanel2";
-            this.guna2GradientPanel2.Size = new System.Drawing.Size(806, 229);
-            this.guna2GradientPanel2.TabIndex = 46;
-            // 
-            // guna2Elipse3
-            // 
-            this.guna2Elipse3.BorderRadius = 10;
-            this.guna2Elipse3.TargetControl = this.guna2GradientPanel2;
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
@@ -121,61 +100,22 @@
             this.pictureBox1.TabIndex = 47;
             this.pictureBox1.TabStop = false;
             // 
-            // pictureBox2
+            // guna2Elipse2
             // 
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(433, 0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(316, 293);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 48;
-            this.pictureBox2.TabStop = false;
+            this.guna2Elipse2.BorderRadius = 10;
+            this.guna2Elipse2.TargetControl = this.guna2GradientPanel1;
             // 
-            // lblTime
+            // guna2GradientPanel2
             // 
-            this.lblTime.AutoSize = true;
-            this.lblTime.BackColor = System.Drawing.Color.Transparent;
-            this.lblTime.Font = new System.Drawing.Font("Century Gothic", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTime.ForeColor = System.Drawing.Color.White;
-            this.lblTime.Location = new System.Drawing.Point(42, 50);
-            this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(90, 17);
-            this.lblTime.TabIndex = 67;
-            this.lblTime.Text = "mm//dd//yyyy";
-            // 
-            // btnHome
-            // 
-            this.btnHome.Animated = true;
-            this.btnHome.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnHome.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnHome.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnHome.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnHome.FillColor = System.Drawing.Color.Firebrick;
-            this.btnHome.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHome.ForeColor = System.Drawing.Color.White;
-            this.btnHome.Image = ((System.Drawing.Image)(resources.GetObject("btnHome.Image")));
-            this.btnHome.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnHome.ImageOffset = new System.Drawing.Point(30, 0);
-            this.btnHome.ImageSize = new System.Drawing.Size(30, 30);
-            this.btnHome.Location = new System.Drawing.Point(0, 204);
-            this.btnHome.Name = "btnHome";
-            this.btnHome.Size = new System.Drawing.Size(232, 58);
-            this.btnHome.TabIndex = 47;
-            this.btnHome.Text = "Home";
-            this.btnHome.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.btnHome.TextOffset = new System.Drawing.Point(-30, 0);
-            // 
-            // lblWelcome
-            // 
-            this.lblWelcome.AutoSize = true;
-            this.lblWelcome.BackColor = System.Drawing.Color.Transparent;
-            this.lblWelcome.Font = new System.Drawing.Font("Century Gothic", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblWelcome.ForeColor = System.Drawing.Color.White;
-            this.lblWelcome.Location = new System.Drawing.Point(39, 124);
-            this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(270, 27);
-            this.lblWelcome.TabIndex = 68;
-            this.lblWelcome.Text = "Welcome Back, Name!";
+            this.guna2GradientPanel2.BackColor = System.Drawing.Color.Firebrick;
+            this.guna2GradientPanel2.Controls.Add(this.pictureBox2);
+            this.guna2GradientPanel2.Controls.Add(this.label2);
+            this.guna2GradientPanel2.Controls.Add(this.lblWelcome);
+            this.guna2GradientPanel2.Controls.Add(this.lblDateDisplay);
+            this.guna2GradientPanel2.Location = new System.Drawing.Point(284, 92);
+            this.guna2GradientPanel2.Name = "guna2GradientPanel2";
+            this.guna2GradientPanel2.Size = new System.Drawing.Size(806, 229);
+            this.guna2GradientPanel2.TabIndex = 46;
             // 
             // label2
             // 
@@ -189,10 +129,39 @@
             this.label2.TabIndex = 69;
             this.label2.Text = "Always stay updated in your student portal";
             // 
+            // lblWelcome
+            // 
+            this.lblWelcome.AutoSize = true;
+            this.lblWelcome.BackColor = System.Drawing.Color.Transparent;
+            this.lblWelcome.Font = new System.Drawing.Font("Century Gothic", 13.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWelcome.ForeColor = System.Drawing.Color.White;
+            this.lblWelcome.Location = new System.Drawing.Point(39, 124);
+            this.lblWelcome.Name = "lblWelcome";
+            this.lblWelcome.Size = new System.Drawing.Size(259, 26);
+            this.lblWelcome.TabIndex = 68;
+            this.lblWelcome.Text = "Welcome Back, Name!";
+            // 
+            // lblDateDisplay
+            // 
+            this.lblDateDisplay.AutoSize = true;
+            this.lblDateDisplay.BackColor = System.Drawing.Color.Transparent;
+            this.lblDateDisplay.Font = new System.Drawing.Font("Century Gothic", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateDisplay.ForeColor = System.Drawing.Color.White;
+            this.lblDateDisplay.Location = new System.Drawing.Point(42, 50);
+            this.lblDateDisplay.Name = "lblDateDisplay";
+            this.lblDateDisplay.Size = new System.Drawing.Size(90, 17);
+            this.lblDateDisplay.TabIndex = 67;
+            this.lblDateDisplay.Text = "mm//dd//yyyy";
+            // 
+            // guna2Elipse3
+            // 
+            this.guna2Elipse3.BorderRadius = 10;
+            this.guna2Elipse3.TargetControl = this.guna2GradientPanel2;
+            // 
             // pictureBox3
             // 
             this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
-            this.pictureBox3.Location = new System.Drawing.Point(284, 31);
+            this.pictureBox3.Location = new System.Drawing.Point(284, 38);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(40, 38);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -205,17 +174,63 @@
             this.lblStudentName.BackColor = System.Drawing.Color.Transparent;
             this.lblStudentName.Font = new System.Drawing.Font("Century Gothic", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStudentName.ForeColor = System.Drawing.Color.Firebrick;
-            this.lblStudentName.Location = new System.Drawing.Point(326, 41);
+            this.lblStudentName.Location = new System.Drawing.Point(326, 48);
             this.lblStudentName.Name = "lblStudentName";
             this.lblStudentName.Size = new System.Drawing.Size(126, 17);
             this.lblStudentName.TabIndex = 70;
             this.lblStudentName.Text = "[Student Full Name]";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(432, -23);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(316, 293);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 70;
+            this.pictureBox2.TabStop = false;
+            // 
+            // btnHome
+            // 
+            this.btnHome.Animated = true;
+            this.btnHome.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnHome.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnHome.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnHome.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnHome.FillColor = System.Drawing.Color.Firebrick;
+            this.btnHome.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnHome.ForeColor = System.Drawing.Color.White;
+            this.btnHome.Image = ((System.Drawing.Image)(resources.GetObject("btnHome.Image")));
+            this.btnHome.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnHome.ImageOffset = new System.Drawing.Point(10, 0);
+            this.btnHome.Location = new System.Drawing.Point(0, 204);
+            this.btnHome.Name = "btnHome";
+            this.btnHome.Size = new System.Drawing.Size(232, 58);
+            this.btnHome.TabIndex = 48;
+            this.btnHome.Text = "Home";
+            this.btnHome.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.btnHome.TextOffset = new System.Drawing.Point(-20, 0);
+            this.btnHome.Click += new System.EventHandler(this.btnHome_Click);
+            // 
+            // lblLogout
+            // 
+            this.lblLogout.AutoSize = true;
+            this.lblLogout.BackColor = System.Drawing.Color.Transparent;
+            this.lblLogout.Font = new System.Drawing.Font("Century Gothic", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLogout.ForeColor = System.Drawing.Color.Firebrick;
+            this.lblLogout.Location = new System.Drawing.Point(1029, 49);
+            this.lblLogout.Name = "lblLogout";
+            this.lblLogout.Size = new System.Drawing.Size(58, 16);
+            this.lblLogout.TabIndex = 71;
+            this.lblLogout.Text = "Log out ";
+            this.lblLogout.Click += new System.EventHandler(this.lblLogout_Click);
             // 
             // StudentDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 729);
+            this.Controls.Add(this.lblLogout);
             this.Controls.Add(this.lblStudentName);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.guna2GradientPanel2);
@@ -227,11 +242,11 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "StudentDashboard";
             this.guna2GradientPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.guna2GradientPanel2.ResumeLayout(false);
             this.guna2GradientPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -246,12 +261,13 @@
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse2;
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse3;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Label lblTime;
-        private Guna.UI2.WinForms.Guna2Button btnHome;
+        private System.Windows.Forms.Label lblDateDisplay;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblWelcome;
         private System.Windows.Forms.Label lblStudentName;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private Guna.UI2.WinForms.Guna2Button btnHome;
+        private System.Windows.Forms.Label lblLogout;
     }
 }

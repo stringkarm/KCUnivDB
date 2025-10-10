@@ -621,9 +621,8 @@ namespace KCUnivDB
 
             if (dtgStudentsList.Columns[e.ColumnIndex].Name == "Details" && e.RowIndex >= 0)
             {
-
                 string studentId = dtgStudentsList.Rows[e.RowIndex].Cells["StudentID"].Value.ToString();
-                ShowStudentEnrollmentDetails(studentId);
+                ShowStudentEnrollmentDetails(studentId); 
             }
 
         }
@@ -891,17 +890,17 @@ namespace KCUnivDB
 
         private void ShowStudentEnrollmentDetails(string studentId)
         {
-       
+           
             string query = @"
         SELECT 
-            se.StudentID,
             c.CourseName,
             c.CourseCode,
-            sem.TermName + ' ' + sem.AcademicYear AS SemesterTerm,
+            sem.TermName + ' A.Y. ' + sem.AcademicYear AS SemesterTerm,
             d.DepartmentName,
-            ISNULL(pr.FirstName + ' ' + pr.LastName, 'Not Assigned') AS InstructorName
-        FROM StudentEnrollments se
-        -- FROM Enrollment se  <-- Use this line if you fully switched your enrollment logic
+            ISNULL(pr.FirstName + ' ' + pr.LastName, 'Not Assigned') AS InstructorName,
+            se.Grade -- ⭐ Included the Grade column ⭐
+        FROM StudentEnrollments se -- Assuming you are now using the StudentEnrollments table with Grade
+        -- If you switched to the Enrollment table, use: FROM Enrollment se
         INNER JOIN Courses c ON se.CourseID = c.CourseID
         INNER JOIN Semesters sem ON se.SemesterID = sem.SemesterID
         INNER JOIN Departments d ON c.DepartmentID = d.DepartmentID
@@ -912,7 +911,6 @@ namespace KCUnivDB
         ORDER BY sem.TermName, c.CourseCode;
     ";
 
-        
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand(query, conn);
@@ -930,11 +928,17 @@ namespace KCUnivDB
 
                         while (reader.Read())
                         {
+                          
+                            object gradeValue = reader["Grade"];
+                            string gradeDisplay = (gradeValue == DBNull.Value || gradeValue == null)
+                                                  ? "Not Available"
+                                                  : gradeValue.ToString();
+
                             sb.AppendLine($"Course: {reader["CourseCode"]} - {reader["CourseName"]}");
                             sb.AppendLine($"Term: {reader["SemesterTerm"]}");
-                          
                             sb.AppendLine($"Department: {reader["DepartmentName"]}");
                             sb.AppendLine($"Instructor: {reader["InstructorName"]}");
+                            sb.AppendLine($"Grade: {gradeDisplay}");
                             sb.AppendLine(new string('-', 50));
                         }
 
@@ -945,7 +949,16 @@ namespace KCUnivDB
                                         MessageBoxButtons.OK,
                                         MessageBoxIcon.Information);
                     }
-                  
+                 
+                    else
+                    {
+                        reader.Close();
+                        MessageBox.Show($"Student ID {studentId} is not currently enrolled in any subjects.",
+                                        "No Enrollment Found",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Information);
+                    }
+
                 }
                 catch (Exception ex)
                 {

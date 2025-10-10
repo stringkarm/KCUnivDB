@@ -116,7 +116,14 @@ namespace KCUnivDB
 
                         if (reader.Read())
                         {
-                            loginAttempts = 0;
+                        int profileId = -1; 
+                        if (reader["ProfileID"] != DBNull.Value)
+                        {
+                            profileId = Convert.ToInt32(reader["ProfileID"]);
+                        }
+
+
+                        loginAttempts = 0;
                             lockoutTime = DateTime.Now;
 
                            string status = reader["Status"].ToString();
@@ -142,16 +149,16 @@ namespace KCUnivDB
                             else if (roleId == 2) 
                             {
                                 MessageBox.Show("Login Successful! Welcome, Instructor.", "KCUnivDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                this.Hide();
-                                InstructorDashboard teacherDash = new InstructorDashboard();
+                                InstructorDashboard teacherDash = new InstructorDashboard(profileId);
                                 teacherDash.Show();
-                            }
+                                this.Hide();
+                        }
                         // Student
                             else if (roleId == 3)
                             {
                                 MessageBox.Show("Login Successful!", "KCUnivDB", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 this.Hide();
-                                StudentDashboard studentDash = new StudentDashboard();
+                                StudentDashboard studentDash = new StudentDashboard(profileId);
                                 studentDash.Show();
                             }
 

@@ -97,7 +97,6 @@ namespace KCUnivDB
                 isValid = false;
             }
 
-            // If any validation fails, stop here
             if (!isValid)
             {
                 return;

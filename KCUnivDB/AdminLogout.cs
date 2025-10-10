@@ -23,6 +23,16 @@ namespace KCUnivDB
             {
                 Form1 form1 = new Form1();
                 form1.Show();
+
+               
+                Form parentDashboard = this.ParentForm;
+
+                if (parentDashboard != null)
+                {
+                    parentDashboard.Hide();
+                }
+
+           
                 this.Hide();
             }
         }

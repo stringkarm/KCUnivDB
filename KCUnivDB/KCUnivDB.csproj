@@ -127,12 +127,6 @@
     <Compile Include="ForgotEmail.Designer.cs">
       <DependentUpon>ForgotEmail.cs</DependentUpon>
     </Compile>
-    <Compile Include="ForgotPassword.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ForgotPassword.Designer.cs">
-      <DependentUpon>ForgotPassword.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -201,9 +195,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ForgotEmail.resx">
       <DependentUpon>ForgotEmail.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ForgotPassword.resx">
-      <DependentUpon>ForgotPassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

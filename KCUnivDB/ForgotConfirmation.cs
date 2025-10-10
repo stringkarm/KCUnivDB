@@ -40,13 +40,12 @@ namespace KCUnivDB
 
         private void btnConfirm_Click(object sender, EventArgs e)
         {
-            string oldPassword = txtOldPassword.Text.Trim();
             string newPassword = txtNewPassword.Text.Trim();
             string confirmPassword = txtConfirmPassword.Text.Trim();
 
-            if (string.IsNullOrEmpty(oldPassword) || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmPassword))
+            if (string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmPassword))
             {
-                MessageBox.Show("All fields are required.", "Validation Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter and confirm your new password.", "Validation Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -56,7 +55,7 @@ namespace KCUnivDB
                 return;
             }
 
-            string hashedOldPassword = HashPassword(oldPassword);
+
             string hashedNewPassword = HashPassword(newPassword);
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -65,6 +64,7 @@ namespace KCUnivDB
                 {
                     connection.Open();
 
+                    
                     string getProfileIdQuery = "SELECT ProfileID FROM Profiles WHERE Email = @Email";
                     SqlCommand getProfileIdCmd = new SqlCommand(getProfileIdQuery, connection);
                     getProfileIdCmd.Parameters.AddWithValue("@Email", email);
@@ -72,23 +72,12 @@ namespace KCUnivDB
 
                     if (profileIdObj == null)
                     {
-                        MessageBox.Show("User not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("User not found or email mismatch.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                     int profileId = (int)profileIdObj;
 
-                    string checkQuery = "SELECT COUNT(*) FROM Users WHERE Password = @OldPassword AND ProfileID = @ProfileID";
-                    SqlCommand checkCmd = new SqlCommand(checkQuery, connection);
-                    checkCmd.Parameters.AddWithValue("@OldPassword", hashedOldPassword);
-                    checkCmd.Parameters.AddWithValue("@ProfileID", profileId);
-
-                    int exists = (int)checkCmd.ExecuteScalar();
-                    if (exists == 0)
-                    {
-                        MessageBox.Show("Old password is incorrect.", "Validation Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
+                    
                     string updateQuery = "UPDATE Users SET Password = @NewPassword WHERE ProfileID = @ProfileID";
                     SqlCommand updateCmd = new SqlCommand(updateQuery, connection);
                     updateCmd.Parameters.AddWithValue("@NewPassword", hashedNewPassword);
@@ -97,7 +86,9 @@ namespace KCUnivDB
                     int rows = updateCmd.ExecuteNonQuery();
                     if (rows > 0)
                     {
-                        MessageBox.Show("Password changed successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Password changed successfully. You can now log in with your new password.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                 
                         Form1 form = new Form1();
                         form.Show();
                         this.Hide();
@@ -116,6 +107,7 @@ namespace KCUnivDB
                     MessageBox.Show("An unexpected error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+
 
         }
 
