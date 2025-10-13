@@ -582,52 +582,59 @@ namespace KCUnivDB
         private void dtgStudentsList_CellClick(object sender, DataGridViewCellEventArgs e)
         {
            
-
-            if (e.RowIndex >= 0)
-            {
-                selectedStudentId = dtgStudentsList.Rows[e.RowIndex].Cells["StudentID"].Value.ToString();
-                errorProvider1.SetError(dtgStudentsList, "");
-            }
-
-            if (e.RowIndex >= 0)
-            {
-                DataGridViewRow row = dtgStudentsList.Rows[e.RowIndex];
-
-                selectedProfileId = row.Cells["ProfileID"].Value.ToString();
-
-                string firstName = row.Cells["FirstName"].Value.ToString();
-                string lastName = row.Cells["LastName"].Value.ToString();
-                string age = row.Cells["Age"].Value.ToString();
-                string gender = row.Cells["Gender"].Value.ToString();
-                string phone = row.Cells["Phone"].Value.ToString();
-                string address = row.Cells["Address"].Value.ToString();
-                string email = row.Cells["Email"].Value.ToString();
-
-                txtFirstname.Text = firstName;
-                txtLastname.Text = lastName;
-                txtAge.Text = age;
-                txtPhone.Text = phone;
-                txtAddress.Text = address;
-                txtEmail.Text = email;
-                cmbGender.Text = gender;
-            }
-
-            if (e.RowIndex >= 0)
-            {
-                
-                selectedStudentId = dtgStudentsList.Rows[e.RowIndex].Cells["StudentID"].Value.ToString();
               
-            }
+                if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                    return;
 
-            if (dtgStudentsList.Columns[e.ColumnIndex].Name == "Details" && e.RowIndex >= 0)
-            {
-                string studentId = dtgStudentsList.Rows[e.RowIndex].Cells["StudentID"].Value.ToString();
-                ShowStudentEnrollmentDetails(studentId); 
-            }
+           
+                if (e.RowIndex >= 0 && e.RowIndex < dtgStudentsList.Rows.Count)
+                {
+                    DataGridViewRow row = dtgStudentsList.Rows[e.RowIndex];
+
+                   
+                    if (row.Cells["StudentID"].Value != null)
+                        selectedStudentId = row.Cells["StudentID"].Value.ToString();
+
+                    if (row.Cells["ProfileID"].Value != null)
+                        selectedProfileId = row.Cells["ProfileID"].Value.ToString();
+
+                    txtFirstname.Text = row.Cells["FirstName"].Value?.ToString() ?? "";
+                    txtLastname.Text = row.Cells["LastName"].Value?.ToString() ?? "";
+                    txtAge.Text = row.Cells["Age"].Value?.ToString() ?? "";
+                    txtPhone.Text = row.Cells["Phone"].Value?.ToString() ?? "";
+                    txtAddress.Text = row.Cells["Address"].Value?.ToString() ?? "";
+                    txtEmail.Text = row.Cells["Email"].Value?.ToString() ?? "";
+                    cmbGender.Text = row.Cells["Gender"].Value?.ToString() ?? "";
+
+                  
+                    errorProvider1.SetError(dtgStudentsList, "");
+                }
+
+               
+                if (e.ColumnIndex >= 0 && e.RowIndex >= 0)
+                {
+                    var clickedColumn = dtgStudentsList.Columns[e.ColumnIndex];
+
+                    if (clickedColumn != null && clickedColumn.Name == "Details")
+                    {
+                      
+                        string studentId = dtgStudentsList.Rows[e.RowIndex].Cells["StudentID"].Value?.ToString() ?? "";
+
+                        if (!string.IsNullOrEmpty(studentId))
+                        {
+                            ShowStudentEnrollmentDetails(studentId);
+                        }
+                        else
+                        {
+                            errorProvider1.SetError(dtgStudentsList, "Unable to load details: Student ID is missing.");
+                        }
+                    }
+                }
+            
 
         }
 
-       
+
 
 
         private void LoadSemesters()
@@ -964,6 +971,21 @@ namespace KCUnivDB
                 {
                     MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private void AdminStudent_Load(object sender, EventArgs e)
+        {
+            LoadStudentsData();
+            
+            if (!dtgStudentsList.Columns.Contains("Details"))
+            {
+                DataGridViewButtonColumn btn = new DataGridViewButtonColumn();
+                btn.HeaderText = "Details";
+                btn.Text = "View";
+                btn.Name = "Details";
+                btn.UseColumnTextForButtonValue = true;
+                dtgStudentsList.Columns.Add(btn);
             }
         }
     }

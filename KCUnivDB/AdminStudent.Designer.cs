@@ -1154,7 +1154,7 @@
             // 
             // adminRegister1
             // 
-            this.adminRegister1.Location = new System.Drawing.Point(250, 2);
+            this.adminRegister1.Location = new System.Drawing.Point(250, 3);
             this.adminRegister1.Name = "adminRegister1";
             this.adminRegister1.Size = new System.Drawing.Size(853, 728);
             this.adminRegister1.TabIndex = 146;
@@ -1190,6 +1190,7 @@
             this.Name = "AdminStudent";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AdminStudent";
+            this.Load += new System.EventHandler(this.AdminStudent_Load);
             this.sidebar.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
