@@ -37,15 +37,12 @@ namespace KCUnivDB
 
         private void LoadSemesters()
         {
-
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
-
                     string query = "SELECT SemesterID, TermName FROM Semesters ORDER BY SemesterID";
-
                     SqlDataAdapter da = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -53,6 +50,17 @@ namespace KCUnivDB
                     cmbSemester.DisplayMember = "TermName";
                     cmbSemester.ValueMember = "SemesterID";
                     cmbSemester.DataSource = dt;
+
+                    
+                    cmbSemester.SelectionChangeCommitted -= cmbSemester_SelectionChangeCommitted;
+                    cmbSemester.SelectionChangeCommitted += cmbSemester_SelectionChangeCommitted;
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        cmbSemester.SelectedIndex = 0; 
+                        int semesterID = Convert.ToInt32(dt.Rows[0]["SemesterID"]);
+                        LoadAvailableSubjects(semesterID);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -61,6 +69,7 @@ namespace KCUnivDB
                 }
             }
         }
+
 
 
         private void LoadDepartmentsToComboBox()
@@ -788,6 +797,7 @@ namespace KCUnivDB
 
         private void btnApplySub_Click(object sender, EventArgs e)
         {
+
 
             if (cmbSemester.SelectedIndex == -1)
             {

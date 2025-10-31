@@ -545,5 +545,12 @@ namespace KCUnivDB
             teacher.Show();
             this.Hide();
         }
+
+        private void btnReports_Click(object sender, EventArgs e)
+        {
+            AdminReports teacher= new AdminReports();   
+            teacher.Show();
+            this.Hide();
+        }
     }
 }

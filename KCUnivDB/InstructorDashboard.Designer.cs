@@ -46,6 +46,7 @@
             this.guna2Elipse2 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.guna2Elipse3 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.lblLogout = new System.Windows.Forms.Label();
+            this.btnSubjectHandled = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.guna2GradientPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
@@ -136,6 +137,7 @@
             // guna2GradientPanel1
             // 
             this.guna2GradientPanel1.BackColor = System.Drawing.Color.Firebrick;
+            this.guna2GradientPanel1.Controls.Add(this.btnSubjectHandled);
             this.guna2GradientPanel1.Controls.Add(this.btnHome);
             this.guna2GradientPanel1.Controls.Add(this.pictureBox1);
             this.guna2GradientPanel1.Location = new System.Drawing.Point(12, 17);
@@ -216,10 +218,31 @@
             this.lblLogout.ForeColor = System.Drawing.Color.Firebrick;
             this.lblLogout.Location = new System.Drawing.Point(1032, 58);
             this.lblLogout.Name = "lblLogout";
-            this.lblLogout.Size = new System.Drawing.Size(58, 16);
+            this.lblLogout.Size = new System.Drawing.Size(52, 16);
             this.lblLogout.TabIndex = 77;
             this.lblLogout.Text = "Log out ";
             this.lblLogout.Click += new System.EventHandler(this.lblLogout_Click);
+            // 
+            // btnSubjectHandled
+            // 
+            this.btnSubjectHandled.Animated = true;
+            this.btnSubjectHandled.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSubjectHandled.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnSubjectHandled.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnSubjectHandled.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSubjectHandled.FillColor = System.Drawing.Color.Firebrick;
+            this.btnSubjectHandled.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSubjectHandled.ForeColor = System.Drawing.Color.White;
+            this.btnSubjectHandled.Image = ((System.Drawing.Image)(resources.GetObject("btnSubjectHandled.Image")));
+            this.btnSubjectHandled.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnSubjectHandled.ImageOffset = new System.Drawing.Point(10, 0);
+            this.btnSubjectHandled.Location = new System.Drawing.Point(0, 268);
+            this.btnSubjectHandled.Name = "btnSubjectHandled";
+            this.btnSubjectHandled.Size = new System.Drawing.Size(232, 58);
+            this.btnSubjectHandled.TabIndex = 48;
+            this.btnSubjectHandled.Text = "Subject Handled";
+            this.btnSubjectHandled.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.btnSubjectHandled.TextOffset = new System.Drawing.Point(-20, 0);
             // 
             // InstructorDashboard
             // 
@@ -266,5 +289,6 @@
         private Guna.UI2.WinForms.Guna2Elipse guna2Elipse3;
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.Label lblLogout;
+        private Guna.UI2.WinForms.Guna2Button btnSubjectHandled;
     }
 }

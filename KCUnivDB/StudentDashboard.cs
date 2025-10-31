@@ -13,7 +13,8 @@ namespace KCUnivDB
 {
     public partial class StudentDashboard : Form
     {
-        private string connectionString = @"Data Source=canasa\SQLEXPRESS;Initial catalog=KCUnivDB;Integrated Security=true"; 
+        private string connectionString = @"Data Source=canasa\SQLEXPRESS;Initial catalog=KCUnivDB;Integrated Security=true";
+
         private int loggedInProfileId;
 
         public StudentDashboard(int profileId)
@@ -23,9 +24,10 @@ namespace KCUnivDB
             LoadStudentName();
         }
 
+
         private void LoadStudentName()
         {
-         
+           
             string query = @"
         SELECT 
             FirstName, 
@@ -33,10 +35,13 @@ namespace KCUnivDB
         FROM Profiles 
         WHERE ProfileID = @ProfileID";
 
+          
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
+               
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
+                  
                     cmd.Parameters.AddWithValue("@ProfileID", loggedInProfileId);
 
                     try
@@ -50,9 +55,9 @@ namespace KCUnivDB
                             string lastName = reader["LastName"].ToString();
                             string fullName = $"{firstName} {lastName}";
 
-                          
-                            lblStudentName.Text = $"{fullName}"; 
-                            lblWelcome.Text = $"Welcome Back, {firstName}!"; 
+                            
+                            lblStudentName.Text = $"{fullName}";
+                            lblWelcome.Text = $"Welcome Back, {firstName}!";
 
                             lblDateDisplay.Text = DateTime.Now.ToString("MM/dd/yyyy");
                         }
@@ -61,14 +66,15 @@ namespace KCUnivDB
                             lblStudentName.Text = "Profile Not Found";
                             lblWelcome.Text = "Welcome Back, User!";
                         }
+                        reader.Close(); 
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show("Error loading student profile: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         lblStudentName.Text = "[Database Error]";
                     }
-                }
-            }
+                } 
+            } 
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -89,6 +95,14 @@ namespace KCUnivDB
                 form1.Show();
                 this.Hide();
             }
+        }
+
+        private void btnPersonalInformation_Click(object sender, EventArgs e)
+        {
+            StudentPersonalInfo studentPersonalInfoForm = new StudentPersonalInfo(this.loggedInProfileId);
+
+            studentPersonalInfoForm.Show();
+            this.Hide();
         }
     }
 }

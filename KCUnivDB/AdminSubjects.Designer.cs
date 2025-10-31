@@ -300,6 +300,7 @@
             this.btnReports.TabIndex = 6;
             this.btnReports.Text = "       Reports";
             this.btnReports.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnReports.Click += new System.EventHandler(this.btnReports_Click);
             // 
             // btnLogs
             // 
