@@ -104,5 +104,13 @@ namespace KCUnivDB
             studentPersonalInfoForm.Show();
             this.Hide();
         }
+
+        private void btnEnrollment_Click(object sender, EventArgs e)
+        {
+            StudentEnrollment enrol = new StudentEnrollment(this.loggedInProfileId);
+
+            enrol.Show();
+            this.Hide();
+        }
     }
 }

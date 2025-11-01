@@ -582,55 +582,46 @@ namespace KCUnivDB
         private void dtgStudentsList_CellClick(object sender, DataGridViewCellEventArgs e)
         {
            
-              
-                if (e.RowIndex < 0 || e.ColumnIndex < 0)
-                    return;
+            if (e.RowIndex < 0) return;
 
-           
-                if (e.RowIndex >= 0 && e.RowIndex < dtgStudentsList.Rows.Count)
+            DataGridViewRow row = dtgStudentsList.Rows[e.RowIndex];
+
+            if (row.Cells["StudentID"] != null && row.Cells["StudentID"].Value != null)
+            {
+                selectedStudentId = row.Cells["StudentID"].Value.ToString();
+                Console.WriteLine($"[DEBUG] Selected Student ID: {selectedStudentId}");
+            }
+            else
+            {
+                selectedStudentId = null;
+                Console.WriteLine("[DEBUG] StudentID cell is null.");
+            }
+
+            txtFirstname.Text = row.Cells["FirstName"].Value?.ToString() ?? "";
+            txtLastname.Text = row.Cells["LastName"].Value?.ToString() ?? "";
+            txtAge.Text = row.Cells["Age"].Value?.ToString() ?? "";
+            txtPhone.Text = row.Cells["Phone"].Value?.ToString() ?? "";
+            txtAddress.Text = row.Cells["Address"].Value?.ToString() ?? "";
+            txtEmail.Text = row.Cells["Email"].Value?.ToString() ?? "";
+            cmbGender.Text = row.Cells["Gender"].Value?.ToString() ?? "";
+
+            errorProvider1.SetError(dtgStudentsList, "");
+
+            if (e.ColumnIndex >= 0)
+            {
+                var clickedColumn = dtgStudentsList.Columns[e.ColumnIndex];
+                if (clickedColumn != null && clickedColumn.Name == "Details")
                 {
-                    DataGridViewRow row = dtgStudentsList.Rows[e.RowIndex];
-
-                   
-                    if (row.Cells["StudentID"].Value != null)
-                        selectedStudentId = row.Cells["StudentID"].Value.ToString();
-
-                    if (row.Cells["ProfileID"].Value != null)
-                        selectedProfileId = row.Cells["ProfileID"].Value.ToString();
-
-                    txtFirstname.Text = row.Cells["FirstName"].Value?.ToString() ?? "";
-                    txtLastname.Text = row.Cells["LastName"].Value?.ToString() ?? "";
-                    txtAge.Text = row.Cells["Age"].Value?.ToString() ?? "";
-                    txtPhone.Text = row.Cells["Phone"].Value?.ToString() ?? "";
-                    txtAddress.Text = row.Cells["Address"].Value?.ToString() ?? "";
-                    txtEmail.Text = row.Cells["Email"].Value?.ToString() ?? "";
-                    cmbGender.Text = row.Cells["Gender"].Value?.ToString() ?? "";
-
-                  
-                    errorProvider1.SetError(dtgStudentsList, "");
-                }
-
-               
-                if (e.ColumnIndex >= 0 && e.RowIndex >= 0)
-                {
-                    var clickedColumn = dtgStudentsList.Columns[e.ColumnIndex];
-
-                    if (clickedColumn != null && clickedColumn.Name == "Details")
+                    if (!string.IsNullOrEmpty(selectedStudentId))
                     {
-                      
-                        string studentId = dtgStudentsList.Rows[e.RowIndex].Cells["StudentID"].Value?.ToString() ?? "";
-
-                        if (!string.IsNullOrEmpty(studentId))
-                        {
-                            ShowStudentEnrollmentDetails(studentId);
-                        }
-                        else
-                        {
-                            errorProvider1.SetError(dtgStudentsList, "Unable to load details: Student ID is missing.");
-                        }
+                        ShowStudentEnrollmentDetails(selectedStudentId);
+                    }
+                    else
+                    {
+                        errorProvider1.SetError(dtgStudentsList, "Unable to load details: Student ID is missing.");
                     }
                 }
-            
+            }
 
         }
 
@@ -669,33 +660,36 @@ namespace KCUnivDB
             }
         }
 
-        private void EnrollStudentInCourse(string studentId, int courseId, int semesterId)
+        private void EnrollStudentInCourse(int studentId, int courseId, int semesterId, int programId)
         {
             string query = @"
-        INSERT INTO StudentEnrollments (StudentID, CourseID, SemesterID)
-        VALUES (@StudentID, @CourseID, @SemesterID)";
+        INSERT INTO StudentEnrollments
+        (StudentID, CourseID, SemesterID, ProgramID, EnrollDate)
+        VALUES
+        (@StudentID, @CourseID, @SemesterID, @ProgramID, GETDATE());
+    ";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
             {
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@StudentID", studentId);
-                    cmd.Parameters.AddWithValue("@CourseID", courseId);
-                    cmd.Parameters.AddWithValue("@SemesterID", semesterId);
+                cmd.Parameters.AddWithValue("@StudentID", studentId);
+                cmd.Parameters.AddWithValue("@CourseID", courseId);
+                cmd.Parameters.AddWithValue("@SemesterID", semesterId);
+                cmd.Parameters.AddWithValue("@ProgramID", programId);
 
-                    try
-                    {
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                    }
-                    catch (Exception ex)
-                    {
-                       
-                        throw new Exception($"Failed to enroll student {studentId} in Course ID {courseId}: {ex.Message}");
-                    }
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Failed to enroll student {studentId} in Course ID {courseId}: {ex.Message}");
                 }
             }
         }
+
+
 
         private void LoadSubjectsForProgram(int programId, int semesterId)
         {
@@ -754,38 +748,36 @@ namespace KCUnivDB
             }
         }
 
-        private bool IsStudentAlreadyEnrolled(string studentId, int courseId, int semesterId)
+        private bool IsStudentAlreadyEnrolled(int studentId, int courseId, int semesterId)
         {
-           
             string query = @"
-        SELECT COUNT(*) 
-        FROM Enrollment 
-        WHERE StudentID = @StudentID 
-        AND CourseID = @CourseID 
-        AND SemesterID = @SemesterID";
+                SELECT COUNT(*) 
+                FROM StudentEnrollments
+                WHERE StudentID = @StudentID 
+                  AND CourseID = @CourseID 
+                  AND SemesterID = @SemesterID";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
             {
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@StudentID", studentId);
-                    cmd.Parameters.AddWithValue("@CourseID", courseId);
-                    cmd.Parameters.AddWithValue("@SemesterID", semesterId);
+                cmd.Parameters.AddWithValue("@StudentID", studentId);
+                cmd.Parameters.AddWithValue("@CourseID", courseId);
+                cmd.Parameters.AddWithValue("@SemesterID", semesterId);
 
-                    try
-                    {
-                        conn.Open();
-                        int count = (int)cmd.ExecuteScalar();
-                        return count > 0;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error checking enrollment status: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return true;
-                    }
+                try
+                {
+                    conn.Open();
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error checking enrollment status: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return true;
                 }
             }
         }
+
 
         private void btnEnrollPage_Click(object sender, EventArgs e)
         {
@@ -810,7 +802,16 @@ namespace KCUnivDB
         {
             if (string.IsNullOrEmpty(selectedStudentId) || cmbSemester.SelectedValue == null)
             {
-                MessageBox.Show("Please ensure a student and a semester are selected.", "Missing Data", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please ensure a student and a semester are selected.",
+                                "Missing Data",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!int.TryParse(selectedStudentId, out int stuId))
+            {
+                MessageBox.Show("Selected Student ID is invalid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -819,43 +820,44 @@ namespace KCUnivDB
             int duplicateCount = 0;
             string duplicateCourses = "";
 
-           
+            if (cmbProgram.SelectedValue == null)
+            {
+                MessageBox.Show("Please select a program.", "Missing Data", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            int programId = Convert.ToInt32(cmbProgram.SelectedValue);
+
             foreach (var item in clbSubjects.CheckedItems)
             {
-                
                 if (item is KeyValuePair<int, string> coursePair)
                 {
                     int courseId = coursePair.Key;
-                    string courseName = coursePair.Value; 
+                    string courseName = coursePair.Value;
 
-                   
-                    if (IsStudentAlreadyEnrolled(selectedStudentId, courseId, semesterId))
+                    if (IsStudentAlreadyEnrolled(stuId, courseId, semesterId))
                     {
                         duplicateCount++;
                         duplicateCourses += $"\n- {courseName}";
-                        continue; 
+                        continue;
                     }
 
                     try
                     {
-                        EnrollStudentInCourse(selectedStudentId, courseId, semesterId);
+                        EnrollStudentInCourse(stuId, courseId, semesterId, programId);
                         enrolledCount++;
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show($"Enrollment failed for {courseName}: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                      
                     }
                 }
             }
 
-            string message = $"Enrollment process complete. {enrolledCount} new course(s) successfully added.";
-            if (duplicateCount > 0)
-            {
-                message += $"\n\n🚨 Warning: {duplicateCount} course(s) were skipped because the student is already enrolled in them this semester:{duplicateCourses}";
-            }
-
-            MessageBox.Show(message, "Enrollment Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show($"{enrolledCount} subject(s) successfully enrolled." +
+                            (duplicateCount > 0 ? $"\n\nDuplicate subjects skipped: {duplicateCourses}" : ""),
+                            "Enrollment Complete",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
 
             RefreshStudentData();
             EnrollPanel.Hide();
@@ -897,25 +899,21 @@ namespace KCUnivDB
 
         private void ShowStudentEnrollmentDetails(string studentId)
         {
-           
             string query = @"
-        SELECT 
-            c.CourseName,
-            c.CourseCode,
-            sem.TermName + ' A.Y. ' + sem.AcademicYear AS SemesterTerm,
-            d.DepartmentName,
-            ISNULL(pr.FirstName + ' ' + pr.LastName, 'Not Assigned') AS InstructorName,
-            se.Grade -- ⭐ Included the Grade column ⭐
-        FROM StudentEnrollments se -- Assuming you are now using the StudentEnrollments table with Grade
-        -- If you switched to the Enrollment table, use: FROM Enrollment se
-        INNER JOIN Courses c ON se.CourseID = c.CourseID
-        INNER JOIN Semesters sem ON se.SemesterID = sem.SemesterID
-        INNER JOIN Departments d ON c.DepartmentID = d.DepartmentID
-        LEFT JOIN InstructorSubjects ins ON ins.CourseID = c.CourseID AND ins.SemesterID = se.SemesterID
-        LEFT JOIN Instructors i ON ins.InstructorID = i.InstructorID
-        LEFT JOIN Profiles pr ON i.ProfileID = pr.ProfileID
-        WHERE se.StudentID = @StudentID
-        ORDER BY sem.TermName, c.CourseCode;
+    SELECT 
+        c.CourseName,
+        c.CourseCode,
+        sem.TermName + ' A.Y. ' + CAST(sem.AcademicYear AS VARCHAR(4)) AS SemesterTerm,
+        ISNULL(p_inst.FirstName + ' ' + p_inst.LastName, 'Not Assigned') AS InstructorName,
+        se.Grade 
+    FROM StudentEnrollments se 
+    INNER JOIN Courses c ON se.CourseID = c.CourseID
+    INNER JOIN Semesters sem ON se.SemesterID = sem.SemesterID
+    LEFT JOIN InstructorSubjects ins ON ins.CourseID = c.CourseID AND ins.SemesterID = se.SemesterID
+    LEFT JOIN Instructors i ON ins.InstructorID = i.InstructorID
+    LEFT JOIN Profiles p_inst ON i.ProfileID = p_inst.ProfileID
+    WHERE se.StudentID = @StudentID
+    ORDER BY sem.AcademicYear DESC, sem.TermName, c.CourseCode;
     ";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -927,26 +925,24 @@ namespace KCUnivDB
                 {
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
+                    StringBuilder sb = new StringBuilder();
 
                     if (reader.HasRows)
                     {
-                        StringBuilder sb = new StringBuilder();
-                        sb.AppendLine($"📘 Enrollment Details for Student ID: {studentId}\n");
+                        sb.AppendLine($"📘 **Enrollment Details for Student ID: {studentId}**\n");
 
                         while (reader.Read())
                         {
-                          
                             object gradeValue = reader["Grade"];
                             string gradeDisplay = (gradeValue == DBNull.Value || gradeValue == null)
-                                                  ? "Not Available"
-                                                  : gradeValue.ToString();
+                                                    ? "Pending"
+                                                    : Convert.ToDecimal(gradeValue).ToString("F2");
 
-                            sb.AppendLine($"Course: {reader["CourseCode"]} - {reader["CourseName"]}");
-                            sb.AppendLine($"Term: {reader["SemesterTerm"]}");
-                            sb.AppendLine($"Department: {reader["DepartmentName"]}");
-                            sb.AppendLine($"Instructor: {reader["InstructorName"]}");
-                            sb.AppendLine($"Grade: {gradeDisplay}");
-                            sb.AppendLine(new string('-', 50));
+                            sb.AppendLine($"**Course:** {reader["CourseCode"]} - {reader["CourseName"]}");
+                            sb.AppendLine($"**Term:** {reader["SemesterTerm"]}");
+                            sb.AppendLine($"**Instructor:** {reader["InstructorName"]}");
+                            sb.AppendLine($"**Grade:** {gradeDisplay}");
+                            sb.AppendLine(new string('-', 35));
                         }
 
                         reader.Close();
@@ -956,23 +952,25 @@ namespace KCUnivDB
                                         MessageBoxButtons.OK,
                                         MessageBoxIcon.Information);
                     }
-                 
                     else
                     {
                         reader.Close();
-                        MessageBox.Show($"Student ID {studentId} is not currently enrolled in any subjects.",
+                        MessageBox.Show($"Student ID **{studentId}** is not currently enrolled in any subjects.",
                                         "No Enrollment Found",
                                         MessageBoxButtons.OK,
                                         MessageBoxIcon.Information);
                     }
-
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An error occurred: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("An error occurred while fetching enrollment details: " + ex.Message,
+                                    "Database Error",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
                 }
             }
         }
+
 
         private void AdminStudent_Load(object sender, EventArgs e)
         {
@@ -987,6 +985,20 @@ namespace KCUnivDB
                 btn.UseColumnTextForButtonValue = true;
                 dtgStudentsList.Columns.Add(btn);
             }
+        }
+
+        private void btnSubjects_Click(object sender, EventArgs e)
+        {
+            AdminStudent stu = new AdminStudent();
+            stu.Show();
+            this.Hide();
+        }
+
+        private void btnReports_Click(object sender, EventArgs e)
+        {
+            AdminReports rep = new AdminReports();
+            rep.Show();
+            this.Hide();
         }
     }
 }

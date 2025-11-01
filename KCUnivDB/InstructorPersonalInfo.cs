@@ -11,35 +11,48 @@ using System.Windows.Forms;
 
 namespace KCUnivDB
 {
-    public partial class StudentPersonalInfo : Form
+    public partial class InstructorPersonalInfo : Form
     {
-        private const string connectionString = @"Data Source=canasa\SQLEXPRESS; Initial catalog=KCUnivDB; Integrated Security=true";
+        private const string connectionString = @"Data Source = canasa\SQLEXPRESS; Initial catalog = KCUnivDB; Integrated Security = true";
         private int loggedInProfileId;
 
-        public StudentPersonalInfo(int profileId)
+
+        public InstructorPersonalInfo(int profileId)
         {
             InitializeComponent();
             this.loggedInProfileId = profileId;
 
-            this.Load += StudentPersonalInfo_Load;
+            txtAge.ReadOnly = true;
+            txtGender.ReadOnly = true;
+            txtAddress.ReadOnly = true;
+            txtEmail.ReadOnly = true;
+            txtPhoneNumber.ReadOnly = true; 
+
+            this.Load += InstructorPersonalInfo_Load;
         }
 
-        private void StudentPersonalInfo_Load(object sender, EventArgs e)
+        private void InstructorPersonalInfo_Load(object sender, EventArgs e)
         {
-            LoadStudentData(loggedInProfileId);
+            LoadInstructorPersonalInfo(loggedInProfileId);
         }
 
-        private void LoadStudentData(int profileId)
+        private void LoadInstructorPersonalInfo(int profileId)
         {
-            string sqlQuery = @"
+            string query = @"
                 SELECT 
-                    P.FirstName, P.LastName, P.Age, P.Gender, P.Address, P.Email, P.Phone 
-                FROM Profiles P
-                WHERE P.ProfileID = @ProfileID;";
+                    FirstName, 
+                    LastName, 
+                    Age, 
+                    Gender, 
+                    Phone, 
+                    Email, 
+                    Address
+                FROM Profiles
+                WHERE ProfileID = @ProfileID";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@ProfileID", profileId);
 
@@ -52,8 +65,10 @@ namespace KCUnivDB
                         {
                             string firstName = reader["FirstName"].ToString();
                             string lastName = reader["LastName"].ToString();
+
                             lblFullname.Text = $"{firstName} {lastName}";
 
+                        
                             txtAge.Text = reader["Age"].ToString();
                             txtGender.Text = reader["Gender"].ToString();
                             txtAddress.Text = reader["Address"].ToString();
@@ -63,30 +78,30 @@ namespace KCUnivDB
                         }
                         else
                         {
-                            MessageBox.Show("Student profile data not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("Instructor profile data not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                         reader.Close();
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Database error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Database error loading instructor info: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
         }
 
-        private void btnEnrollment_Click(object sender, EventArgs e)
-        {
-            StudentEnrollment en = new StudentEnrollment(this.loggedInProfileId);
-
-            en.Show();
-            this.Hide();
-        }
 
         private void btnHome_Click(object sender, EventArgs e)
         {
-            StudentDashboard dashboard = new StudentDashboard(this.loggedInProfileId);
+            InstructorDashboard dashboard = new InstructorDashboard(this.loggedInProfileId);
             dashboard.Show();
+            this.Hide();
+        }
+
+        private void btnSubjectHandled_Click(object sender, EventArgs e)
+        {
+            InstructorSubjectHandled sf = new InstructorSubjectHandled(this.loggedInProfileId);
+            sf.Show();
             this.Hide();
         }
     }

@@ -145,6 +145,18 @@
     <Compile Include="InstructorDashboard.Designer.cs">
       <DependentUpon>InstructorDashboard.cs</DependentUpon>
     </Compile>
+    <Compile Include="InstructorPersonalInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstructorPersonalInfo.Designer.cs">
+      <DependentUpon>InstructorPersonalInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InstructorSubjectHandled.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstructorSubjectHandled.Designer.cs">
+      <DependentUpon>InstructorSubjectHandled.cs</DependentUpon>
+    </Compile>
     <Compile Include="Logs.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -219,6 +231,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InstructorDashboard.resx">
       <DependentUpon>InstructorDashboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstructorPersonalInfo.resx">
+      <DependentUpon>InstructorPersonalInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstructorSubjectHandled.resx">
+      <DependentUpon>InstructorSubjectHandled.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Logs.resx">
       <DependentUpon>Logs.cs</DependentUpon>

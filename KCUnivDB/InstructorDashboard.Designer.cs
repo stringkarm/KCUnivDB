@@ -47,6 +47,7 @@
             this.guna2Elipse3 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.lblLogout = new System.Windows.Forms.Label();
             this.btnSubjectHandled = new Guna.UI2.WinForms.Guna2Button();
+            this.btnPersonalInformation = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.guna2GradientPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
@@ -137,6 +138,7 @@
             // guna2GradientPanel1
             // 
             this.guna2GradientPanel1.BackColor = System.Drawing.Color.Firebrick;
+            this.guna2GradientPanel1.Controls.Add(this.btnPersonalInformation);
             this.guna2GradientPanel1.Controls.Add(this.btnSubjectHandled);
             this.guna2GradientPanel1.Controls.Add(this.btnHome);
             this.guna2GradientPanel1.Controls.Add(this.pictureBox1);
@@ -162,8 +164,8 @@
             this.btnHome.Name = "btnHome";
             this.btnHome.Size = new System.Drawing.Size(232, 58);
             this.btnHome.TabIndex = 47;
-            this.btnHome.Text = "Home";
-            this.btnHome.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.btnHome.Text = "         Home";
+            this.btnHome.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnHome.TextOffset = new System.Drawing.Point(-20, 0);
             // 
             // pictureBox1
@@ -236,13 +238,36 @@
             this.btnSubjectHandled.Image = ((System.Drawing.Image)(resources.GetObject("btnSubjectHandled.Image")));
             this.btnSubjectHandled.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnSubjectHandled.ImageOffset = new System.Drawing.Point(10, 0);
-            this.btnSubjectHandled.Location = new System.Drawing.Point(0, 268);
+            this.btnSubjectHandled.Location = new System.Drawing.Point(0, 332);
             this.btnSubjectHandled.Name = "btnSubjectHandled";
             this.btnSubjectHandled.Size = new System.Drawing.Size(232, 58);
             this.btnSubjectHandled.TabIndex = 48;
-            this.btnSubjectHandled.Text = "Subject Handled";
-            this.btnSubjectHandled.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.btnSubjectHandled.Text = "        Subject Handled";
+            this.btnSubjectHandled.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnSubjectHandled.TextOffset = new System.Drawing.Point(-20, 0);
+            this.btnSubjectHandled.Click += new System.EventHandler(this.btnSubjectHandled_Click);
+            // 
+            // btnPersonalInformation
+            // 
+            this.btnPersonalInformation.Animated = true;
+            this.btnPersonalInformation.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnPersonalInformation.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnPersonalInformation.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnPersonalInformation.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnPersonalInformation.FillColor = System.Drawing.Color.Firebrick;
+            this.btnPersonalInformation.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPersonalInformation.ForeColor = System.Drawing.Color.White;
+            this.btnPersonalInformation.Image = ((System.Drawing.Image)(resources.GetObject("btnPersonalInformation.Image")));
+            this.btnPersonalInformation.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnPersonalInformation.ImageOffset = new System.Drawing.Point(10, 0);
+            this.btnPersonalInformation.Location = new System.Drawing.Point(0, 268);
+            this.btnPersonalInformation.Name = "btnPersonalInformation";
+            this.btnPersonalInformation.Size = new System.Drawing.Size(232, 58);
+            this.btnPersonalInformation.TabIndex = 50;
+            this.btnPersonalInformation.Text = "        Account";
+            this.btnPersonalInformation.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnPersonalInformation.TextOffset = new System.Drawing.Point(-20, 0);
+            this.btnPersonalInformation.Click += new System.EventHandler(this.btnPersonalInformation_Click);
             // 
             // InstructorDashboard
             // 
@@ -290,5 +315,6 @@
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.Label lblLogout;
         private Guna.UI2.WinForms.Guna2Button btnSubjectHandled;
+        private Guna.UI2.WinForms.Guna2Button btnPersonalInformation;
     }
 }

@@ -327,6 +327,7 @@
             this.btnSubjects.TabIndex = 5;
             this.btnSubjects.Text = "       Subjects";
             this.btnSubjects.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnSubjects.Click += new System.EventHandler(this.btnSubjects_Click);
             // 
             // btnReports
             // 
@@ -348,6 +349,7 @@
             this.btnReports.TabIndex = 6;
             this.btnReports.Text = "       Reports";
             this.btnReports.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnReports.Click += new System.EventHandler(this.btnReports_Click);
             // 
             // btnLogs
             // 

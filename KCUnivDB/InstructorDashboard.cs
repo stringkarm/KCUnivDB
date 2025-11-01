@@ -86,5 +86,19 @@ namespace KCUnivDB
                 this.Hide();
             }
     }
-}
+
+        private void btnSubjectHandled_Click(object sender, EventArgs e)
+        {
+            InstructorSubjectHandled sp = new InstructorSubjectHandled(this.loggedInProfileId);
+            sp.Show();
+            this.Hide();
+        }
+
+        private void btnPersonalInformation_Click(object sender, EventArgs e)
+        {
+            InstructorPersonalInfo pi= new InstructorPersonalInfo(this.loggedInProfileId);
+            pi.Show();  
+            this.Hide();
+        }
+    }
 }
