@@ -47,6 +47,7 @@
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.guna2GradientPanel1 = new Guna.UI2.WinForms.Guna2GradientPanel();
+            this.btnSubjectHandled = new Guna.UI2.WinForms.Guna2Button();
             this.btnPersonalInformation = new Guna.UI2.WinForms.Guna2Button();
             this.btnHome = new Guna.UI2.WinForms.Guna2Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -57,7 +58,6 @@
             this.guna2CirclePictureBox1 = new Guna.UI2.WinForms.Guna2CirclePictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.guna2Elipse1 = new Guna.UI2.WinForms.Guna2Elipse(this.components);
-            this.btnSubjectHandled = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Panel5.SuspendLayout();
             this.guna2Panel4.SuspendLayout();
             this.guna2Panel3.SuspendLayout();
@@ -307,6 +307,28 @@
             this.guna2GradientPanel1.Size = new System.Drawing.Size(232, 705);
             this.guna2GradientPanel1.TabIndex = 84;
             // 
+            // btnSubjectHandled
+            // 
+            this.btnSubjectHandled.Animated = true;
+            this.btnSubjectHandled.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSubjectHandled.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnSubjectHandled.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnSubjectHandled.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSubjectHandled.FillColor = System.Drawing.Color.Firebrick;
+            this.btnSubjectHandled.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSubjectHandled.ForeColor = System.Drawing.Color.White;
+            this.btnSubjectHandled.Image = ((System.Drawing.Image)(resources.GetObject("btnSubjectHandled.Image")));
+            this.btnSubjectHandled.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnSubjectHandled.ImageOffset = new System.Drawing.Point(10, 0);
+            this.btnSubjectHandled.Location = new System.Drawing.Point(0, 332);
+            this.btnSubjectHandled.Name = "btnSubjectHandled";
+            this.btnSubjectHandled.Size = new System.Drawing.Size(232, 58);
+            this.btnSubjectHandled.TabIndex = 50;
+            this.btnSubjectHandled.Text = "        Subject Handled";
+            this.btnSubjectHandled.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.btnSubjectHandled.TextOffset = new System.Drawing.Point(-20, 0);
+            this.btnSubjectHandled.Click += new System.EventHandler(this.btnSubjectHandled_Click);
+            // 
             // btnPersonalInformation
             // 
             this.btnPersonalInformation.Animated = true;
@@ -421,7 +443,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox2.Location = new System.Drawing.Point(-5, 3);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(798, 191);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -432,28 +454,6 @@
             // 
             this.guna2Elipse1.BorderRadius = 10;
             this.guna2Elipse1.TargetControl = this;
-            // 
-            // btnSubjectHandled
-            // 
-            this.btnSubjectHandled.Animated = true;
-            this.btnSubjectHandled.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnSubjectHandled.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnSubjectHandled.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnSubjectHandled.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnSubjectHandled.FillColor = System.Drawing.Color.Firebrick;
-            this.btnSubjectHandled.Font = new System.Drawing.Font("Century Gothic", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSubjectHandled.ForeColor = System.Drawing.Color.White;
-            this.btnSubjectHandled.Image = ((System.Drawing.Image)(resources.GetObject("btnSubjectHandled.Image")));
-            this.btnSubjectHandled.ImageAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnSubjectHandled.ImageOffset = new System.Drawing.Point(10, 0);
-            this.btnSubjectHandled.Location = new System.Drawing.Point(0, 332);
-            this.btnSubjectHandled.Name = "btnSubjectHandled";
-            this.btnSubjectHandled.Size = new System.Drawing.Size(232, 58);
-            this.btnSubjectHandled.TabIndex = 50;
-            this.btnSubjectHandled.Text = "        Subject Handled";
-            this.btnSubjectHandled.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.btnSubjectHandled.TextOffset = new System.Drawing.Point(-20, 0);
-            this.btnSubjectHandled.Click += new System.EventHandler(this.btnSubjectHandled_Click);
             // 
             // InstructorPersonalInfo
             // 

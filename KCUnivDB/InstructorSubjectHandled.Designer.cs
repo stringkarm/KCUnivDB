@@ -113,7 +113,7 @@
             this.btnSubjectHandled.Name = "btnSubjectHandled";
             this.btnSubjectHandled.Size = new System.Drawing.Size(232, 58);
             this.btnSubjectHandled.TabIndex = 48;
-            this.btnSubjectHandled.Text = "         Subject Handled";
+            this.btnSubjectHandled.Text = "       Subject Handled";
             this.btnSubjectHandled.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.btnSubjectHandled.TextOffset = new System.Drawing.Point(-20, 0);
             this.btnSubjectHandled.Click += new System.EventHandler(this.btnSubjectHandled_Click);
