@@ -78,7 +78,7 @@
             this.guna2Panel5.Controls.Add(this.label1);
             this.guna2Panel5.Location = new System.Drawing.Point(683, 459);
             this.guna2Panel5.Name = "guna2Panel5";
-            this.guna2Panel5.Size = new System.Drawing.Size(389, 258);
+            this.guna2Panel5.Size = new System.Drawing.Size(389, 247);
             this.guna2Panel5.TabIndex = 89;
             // 
             // txtPhoneNumber
@@ -176,7 +176,7 @@
             this.guna2Panel3.Controls.Add(this.label2);
             this.guna2Panel3.Location = new System.Drawing.Point(276, 459);
             this.guna2Panel3.Name = "guna2Panel3";
-            this.guna2Panel3.Size = new System.Drawing.Size(384, 258);
+            this.guna2Panel3.Size = new System.Drawing.Size(384, 247);
             this.guna2Panel3.TabIndex = 88;
             // 
             // txtAddress
@@ -304,7 +304,7 @@
             this.guna2GradientPanel1.Controls.Add(this.pictureBox1);
             this.guna2GradientPanel1.Location = new System.Drawing.Point(12, 17);
             this.guna2GradientPanel1.Name = "guna2GradientPanel1";
-            this.guna2GradientPanel1.Size = new System.Drawing.Size(232, 705);
+            this.guna2GradientPanel1.Size = new System.Drawing.Size(232, 689);
             this.guna2GradientPanel1.TabIndex = 84;
             // 
             // btnSubjectHandled

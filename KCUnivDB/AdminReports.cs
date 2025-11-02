@@ -28,43 +28,31 @@ namespace KCUnivDB
             btnExportPdf.Click += btnExportPdf_Click;
         }
 
-        private const string connectionString = @"Data Source=canasa\SQLEXPRESS; Initial catalog=KCUnivDB; Integrated Security=true";
-
+        private const string connectionString = @"Data Source=canasa\SQLEXPRESS; Initial Catalog=KCUnivDB; Integrated Security=true";
         private DataTable parameterData = new DataTable();
 
-        private void ExecuteReportQuery(string sqlQuery)
-        {
-            ExecuteReportQuery(sqlQuery, null);
-        }
-
-
-        private void ExecuteReportQuery(string sqlQuery, SqlParameter[] parameters)
+        private void ExecuteReportQuery(string sqlQuery, SqlParameter[] parameters = null)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(sqlQuery, connection))
             {
-                using (SqlCommand command = new SqlCommand(sqlQuery, connection))
+                if (parameters != null)
+                    command.Parameters.AddRange(parameters);
+
+                try
                 {
-                    if (parameters != null)
-                    {
-                        command.Parameters.AddRange(parameters);
-                    }
+                    connection.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(command);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
 
-                    try
-                    {
-                        connection.Open();
-                        SqlDataAdapter da = new SqlDataAdapter(command);
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-
-                        dtgReportOutput.DataSource = null;
-
-                        dtgReportOutput.DataSource = dt;
-                        dtgReportOutput.AutoResizeColumns();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error generating report: " + ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    dtgReportOutput.DataSource = dt;
+                    dtgReportOutput.AutoResizeColumns();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error generating report: " + ex.Message, "Database Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -131,7 +119,8 @@ namespace KCUnivDB
         {
             if (cmbReportType.SelectedIndex == -1)
             {
-                MessageBox.Show("Please select a report type first.", "Selection Missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please select a report type first.", "Selection Missing",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -139,197 +128,201 @@ namespace KCUnivDB
             string sqlQuery = "";
             SqlParameter[] parameters = null;
 
-            // --- Report 1: Active Students ---
+            // ✅ Report 1: All Active Students (no enrollment date, no duplicates)
             if (selectedReport.StartsWith("1."))
             {
-                sqlQuery = "SELECT P.FirstName, P.LastName, P.Gender, P.Email, S.EnrollmentDate FROM Profiles P INNER JOIN Students S ON P.ProfileID = S.ProfileID WHERE P.Status = 'Active' ORDER BY P.LastName, P.FirstName;";
+                sqlQuery = @"
+                    SELECT DISTINCT 
+                        P.LastName AS [Last Name],
+                        P.FirstName AS [First Name],
+                        P.Gender,
+                        PR.ProgramName AS [Program],
+                        D.DepartmentName AS [Department]
+                    FROM Students S
+                    INNER JOIN Profiles P ON S.ProfileID = P.ProfileID
+                    INNER JOIN StudentEnrollments SE ON S.StudentID = SE.StudentID
+                    INNER JOIN Programs PR ON SE.ProgramID = PR.ProgramID
+                    INNER JOIN Departments D ON PR.DepartmentID = D.DepartmentID
+                    WHERE P.Status = 'Active'
+                    ORDER BY P.LastName, P.FirstName;";
             }
 
-            // --- Report 2: Active Teachers ---
+            // ✅ Report 2: All Active Teachers
             else if (selectedReport.StartsWith("2."))
             {
-                sqlQuery = "SELECT P.FirstName, P.LastName, P.Email, P.Phone, D.DepartmentName, I.HireDate FROM Profiles P INNER JOIN Instructors I ON P.ProfileID = I.ProfileID INNER JOIN Departments D ON I.DepartmentID = D.DepartmentID WHERE P.Status = 'Active' ORDER BY P.LastName, P.FirstName;";
+                sqlQuery = @"
+                    SELECT 
+                        P.LastName AS [Last Name], 
+                        P.FirstName AS [First Name], 
+                        P.Gender, 
+                        D.DepartmentName AS [Department]
+                    FROM Profiles P
+                    INNER JOIN Instructors I ON P.ProfileID = I.ProfileID
+                    LEFT JOIN Departments D ON I.DepartmentID = D.DepartmentID
+                    WHERE P.Status = 'Active'
+                    ORDER BY P.LastName, P.FirstName;";
             }
 
-            // **MODIFIED** Report 3: Subjects per Student (Requires Student Parameter)
+            // ✅ Report 3: Active Students per Subject
             else if (selectedReport.StartsWith("3."))
             {
                 if (cmbParameter.SelectedValue == null)
                 {
-                    MessageBox.Show("Please select a Student.", "Parameter Missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please select a Subject.", "Parameter Missing",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                // NOTE: The cmbParameter ValueMember is 'StudentID' from LoadStudentsIntoComboBox
-                int studentId = Convert.ToInt32(cmbParameter.SelectedValue);
+
+                if (!int.TryParse(cmbParameter.SelectedValue.ToString(), out int courseId))
+                {
+                    MessageBox.Show("Invalid Subject selection.", "Parameter Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 sqlQuery = @"
-                    SELECT P.FirstName, P.LastName, C.CourseCode, C.CourseName, SE.EnrollDate, SE.Grade 
+                    SELECT DISTINCT
+                        P.LastName AS [Last Name],
+                        P.FirstName AS [First Name],
+                        P.Gender,
+                        PR.ProgramName AS [Program],
+                        D.DepartmentName AS [Department]
                     FROM StudentEnrollments SE
                     INNER JOIN Students S ON SE.StudentID = S.StudentID
                     INNER JOIN Profiles P ON S.ProfileID = P.ProfileID
-                    INNER JOIN Courses C ON SE.CourseID = C.CourseID
-                    WHERE S.StudentID = @StudentID AND C.Status = 'Active' 
-                    ORDER BY C.CourseName;";
-
-                parameters = new SqlParameter[] { new SqlParameter("@StudentID", studentId) };
+                    INNER JOIN Programs PR ON SE.ProgramID = PR.ProgramID
+                    INNER JOIN Departments D ON PR.DepartmentID = D.DepartmentID
+                    WHERE SE.CourseID = @CourseID AND P.Status = 'Active'
+                    ORDER BY P.LastName, P.FirstName;";
+                parameters = new SqlParameter[] { new SqlParameter("@CourseID", courseId) };
             }
 
-            // --- Report 4: Students Per Teacher (Requires Teacher Parameter) ---
+            // ✅ Report 4: Students per Teacher
             else if (selectedReport.StartsWith("4."))
             {
                 if (cmbParameter.SelectedValue == null)
                 {
-                    MessageBox.Show("Please select a Teacher/Instructor.", "Parameter Missing", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please select a Teacher/Instructor.", "Parameter Missing",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                int instructorId = Convert.ToInt32(cmbParameter.SelectedValue);
+
+                if (!int.TryParse(cmbParameter.SelectedValue.ToString(), out int instructorId))
+                {
+                    MessageBox.Show("Invalid Teacher selection.", "Parameter Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 sqlQuery = @"
-                            SELECT T_P.FirstName AS TeacherFirstName, T_P.LastName AS TeacherLastName, 
-                                   C.CourseName, S_P.FirstName AS StudentFirstName, S_P.LastName AS StudentLastName, SE.Grade
-                            FROM InstructorSubjects ISUB
-                            INNER JOIN Instructors I ON ISUB.InstructorID = I.InstructorID
-                            INNER JOIN Profiles T_P ON I.ProfileID = T_P.ProfileID
-                            INNER JOIN Courses C ON ISUB.CourseID = C.CourseID
-                            INNER JOIN StudentEnrollments SE ON C.CourseID = SE.CourseID AND ISUB.SemesterID = SE.SemesterID
-                            INNER JOIN Students S ON SE.StudentID = S.StudentID
-                            INNER JOIN Profiles S_P ON S.ProfileID = S_P.ProfileID
-                            WHERE ISUB.InstructorID = @InstructorID AND T_P.Status = 'Active' AND S_P.Status = 'Active' 
-                            ORDER BY S_P.LastName, C.CourseName;";
-
+                    SELECT DISTINCT
+                        P.LastName AS [Last Name], 
+                        P.FirstName AS [First Name], 
+                        P.Gender, 
+                        PR.ProgramName AS [Program],
+                        D.DepartmentName AS [Department]
+                    FROM InstructorSubjects ISUB
+                    INNER JOIN Courses C ON ISUB.CourseID = C.CourseID
+                    INNER JOIN StudentEnrollments SE ON SE.CourseID = C.CourseID AND SE.SemesterID = ISUB.SemesterID
+                    INNER JOIN Students S ON SE.StudentID = S.StudentID
+                    INNER JOIN Profiles P ON S.ProfileID = P.ProfileID
+                    INNER JOIN Programs PR ON SE.ProgramID = PR.ProgramID
+                    INNER JOIN Departments D ON PR.DepartmentID = D.DepartmentID
+                    WHERE ISUB.InstructorID = @InstructorID AND P.Status = 'Active'
+                    ORDER BY P.LastName, P.FirstName;";
                 parameters = new SqlParameter[] { new SqlParameter("@InstructorID", instructorId) };
             }
 
-            // --- Report 5: All Subjects ---
+            // ✅ Report 5: All Active Subjects
             else if (selectedReport.StartsWith("5."))
             {
-                sqlQuery = "SELECT C.CourseCode, C.CourseName, C.Credits, D.DepartmentName, S.TermName AS Semester, C.Status FROM Courses C LEFT JOIN Departments D ON C.DepartmentID = D.DepartmentID LEFT JOIN Semesters S ON C.SemesterID = S.SemesterID ORDER BY S.TermName, C.CourseName;";
+                sqlQuery = @"
+                    SELECT 
+                        C.CourseCode AS [Course Code], 
+                        C.CourseName AS [Course Name], 
+                        C.Credits AS [Units], 
+                        S.TermName AS [Semester],
+                        D.DepartmentName AS [Department]
+                    FROM Courses C
+                    LEFT JOIN Semesters S ON C.SemesterID = S.SemesterID
+                    LEFT JOIN Departments D ON C.DepartmentID = D.DepartmentID
+                    WHERE C.Status = 'Active'
+                    ORDER BY D.DepartmentName, C.CourseName;";
             }
 
             if (!string.IsNullOrEmpty(sqlQuery))
-            {
                 ExecuteReportQuery(sqlQuery, parameters);
-            }
         }
 
         private void AdminReports_Load(object sender, EventArgs e)
         {
             cmbReportType.Items.Clear();
+            cmbReportType.Items.Add("1. Print active students");
+            cmbReportType.Items.Add("2. Print active teachers");
+            cmbReportType.Items.Add("3. Print subjects per student");
+            cmbReportType.Items.Add("4. Print students per teacher");
+            cmbReportType.Items.Add("5. Print subjects");
 
-            cmbReportType.Items.Add("1. Print all active students");
-            cmbReportType.Items.Add("2. Print all active teachers");
-         
-            cmbReportType.Items.Add("3. Print all subjects per student");
-            cmbReportType.Items.Add("4. Print all students per teacher");
-            cmbReportType.Items.Add("5. Print all subjects");
-    
             cmbParameter.Visible = false;
             lblParameter.Visible = false;
 
             if (cmbReportType.Items.Count > 0)
-            {
                 cmbReportType.SelectedIndex = 0;
-            }
         }
 
-        public void LoadStudentsIntoComboBox(ComboBox cmb)
-        {
-            string query = @"
-                            SELECT S.StudentID, P.FirstName + ' ' + P.LastName AS FullName 
-                            FROM Students S
-                            INNER JOIN Profiles P ON S.ProfileID = P.ProfileID
-                            WHERE P.Status = 'Active'
-                            ORDER BY P.LastName";
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    try
-                    {
-                        connection.Open();
-                        SqlDataAdapter da = new SqlDataAdapter(command);
-
-                        parameterData.Clear();
-                        da.Fill(parameterData);
-
-                        cmb.DataSource = parameterData;
-                        cmb.DisplayMember = "FullName";
-                        cmb.ValueMember = "StudentID";
-
-                        if (cmb.Items.Count > 0) cmb.SelectedIndex = 0;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error loading active students: " + ex.Message);
-                    }
-                }
-            }
-        }
-
-     
         public void LoadCoursesIntoComboBox(ComboBox cmb)
         {
-            string query = "SELECT CourseID, CourseName FROM Courses C WHERE C.Status = 'Active' ORDER BY CourseName";
+            string query = "SELECT CourseID, CourseName FROM Courses WHERE Status = 'Active' ORDER BY CourseName";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
-                using (SqlCommand command = new SqlCommand(query, connection))
+                try
                 {
-                    try
-                    {
-                        connection.Open();
-                        SqlDataAdapter da = new SqlDataAdapter(command);
+                    connection.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(command);
+                    parameterData.Clear();
+                    da.Fill(parameterData);
 
-                        parameterData.Clear();
-                        da.Fill(parameterData);
-
-                        cmb.DataSource = parameterData;
-                        cmb.DisplayMember = "CourseName";
-                        cmb.ValueMember = "CourseID";
-
-                        if (cmb.Items.Count > 0) cmb.SelectedIndex = 0;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error loading active courses: " + ex.Message);
-                    }
+                    cmb.DataSource = parameterData;
+                    cmb.DisplayMember = "CourseName";
+                    cmb.ValueMember = "CourseID";
+                    if (cmb.Items.Count > 0) cmb.SelectedIndex = 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error loading courses: " + ex.Message);
                 }
             }
         }
 
         public void LoadTeachersIntoComboBox(ComboBox cmb)
         {
-
             string query = @"
-                            SELECT I.InstructorID, P.FirstName + ' ' + P.LastName AS FullName 
-                            FROM Instructors I
-                            JOIN Profiles P ON I.ProfileID = P.ProfileID
-                            WHERE P.Status = 'Active' 
-                            ORDER BY P.LastName";
+                SELECT I.InstructorID, P.FirstName + ' ' + P.LastName AS FullName 
+                FROM Instructors I
+                JOIN Profiles P ON I.ProfileID = P.ProfileID
+                WHERE P.Status = 'Active'
+                ORDER BY P.LastName";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
-                using (SqlCommand command = new SqlCommand(query, connection))
+                try
                 {
-                    try
-                    {
-                        connection.Open();
-                        SqlDataAdapter da = new SqlDataAdapter(command);
+                    connection.Open();
+                    SqlDataAdapter da = new SqlDataAdapter(command);
+                    parameterData.Clear();
+                    da.Fill(parameterData);
 
-                        parameterData.Clear();
-                        da.Fill(parameterData);
-
-                        cmb.DataSource = parameterData;
-                        cmb.DisplayMember = "FullName";
-                        cmb.ValueMember = "InstructorID";
-
-                        if (cmb.Items.Count > 0) cmb.SelectedIndex = 0;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error loading teachers: " + ex.Message);
-                    }
+                    cmb.DataSource = parameterData;
+                    cmb.DisplayMember = "FullName";
+                    cmb.ValueMember = "InstructorID";
+                    if (cmb.Items.Count > 0) cmb.SelectedIndex = 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error loading teachers: " + ex.Message);
                 }
             }
         }
@@ -337,24 +330,21 @@ namespace KCUnivDB
         private void cmbReportType_SelectedIndexChanged(object sender, EventArgs e)
         {
             string selectedReport = cmbReportType.SelectedItem.ToString();
-
             cmbParameter.DataSource = null;
-
             dtgReportOutput.DataSource = null;
             cmbParameter.Visible = false;
             lblParameter.Visible = false;
 
-
             if (selectedReport.StartsWith("3."))
             {
-                lblParameter.Text = "Select Student:";
+                lblParameter.Text = "Select a Subject";
                 lblParameter.Visible = true;
                 cmbParameter.Visible = true;
-                LoadStudentsIntoComboBox(cmbParameter); 
+                LoadCoursesIntoComboBox(cmbParameter);
             }
             else if (selectedReport.StartsWith("4."))
             {
-                lblParameter.Text = "Select Teacher/Instructor:";
+                lblParameter.Text = "Select a Teacher";
                 lblParameter.Visible = true;
                 cmbParameter.Visible = true;
                 LoadTeachersIntoComboBox(cmbParameter);
@@ -365,13 +355,16 @@ namespace KCUnivDB
         {
             if (dtgReportOutput.Rows.Count == 0 || dtgReportOutput.DataSource == null)
             {
-                MessageBox.Show("Please generate a report first before exporting.", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please generate a report first before exporting.", "Export Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "PDF files (*.pdf)|*.pdf";
-            sfd.FileName = $"{cmbReportType.Text.Replace(" ", "_")}_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.pdf";
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "PDF files (*.pdf)|*.pdf",
+                FileName = $"{cmbReportType.Text.Replace(" ", "_")}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf"
+            };
 
             if (sfd.ShowDialog() == DialogResult.OK)
             {
@@ -382,61 +375,58 @@ namespace KCUnivDB
                     pdfDoc.Open();
 
                     string reportTitle = cmbReportType.Text +
-                                         (cmbParameter.Visible ? " (" + cmbParameter.Text + ")" : "");
+                        (cmbParameter.Visible ? " (" + cmbParameter.Text + ")" : "");
 
-                    Paragraph title = new Paragraph(reportTitle, FontFactory.GetFont("Arial", 16, iTextSharp.text.Font.BOLD));
-                    title.Alignment = Element.ALIGN_CENTER;
+                    Paragraph title = new Paragraph(reportTitle, FontFactory.GetFont("Arial", 16, iTextSharp.text.Font.BOLD))
+                    {
+                        Alignment = Element.ALIGN_CENTER
+                    };
                     pdfDoc.Add(title);
                     pdfDoc.Add(new Paragraph("Generated on: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")));
                     pdfDoc.Add(Chunk.NEWLINE);
 
-                    // --- Create PDF Table ---
-                    int visibleColumnCount = 0;
-                    foreach (DataGridViewColumn col in dtgReportOutput.Columns)
+                    int visibleColumnCount = dtgReportOutput.Columns.Cast<DataGridViewColumn>()
+                        .Count(col => col.Visible);
+                    PdfPTable pdfTable = new PdfPTable(visibleColumnCount)
                     {
-                        if (col.Visible) visibleColumnCount++;
-                    }
-
-                    PdfPTable pdfTable = new PdfPTable(visibleColumnCount);
+                        WidthPercentage = 100,
+                        HorizontalAlignment = Element.ALIGN_LEFT
+                    };
                     pdfTable.DefaultCell.Padding = 3;
-                    pdfTable.WidthPercentage = 100;
-                    pdfTable.HorizontalAlignment = Element.ALIGN_LEFT;
 
-                    // --- Add Headers ---
                     foreach (DataGridViewColumn column in dtgReportOutput.Columns)
                     {
                         if (column.Visible)
                         {
-                            PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText, FontFactory.GetFont("Arial", 10, iTextSharp.text.Font.BOLD)));
-                            cell.BackgroundColor = new BaseColor(System.Drawing.Color.LightGray);
+                            PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText,
+                                FontFactory.GetFont("Arial", 10, iTextSharp.text.Font.BOLD)))
+                            {
+                                BackgroundColor = new BaseColor(System.Drawing.Color.LightGray)
+                            };
                             pdfTable.AddCell(cell);
                         }
                     }
 
-                    // --- Add Data Rows ---
                     foreach (DataGridViewRow row in dtgReportOutput.Rows)
                     {
                         if (row.IsNewRow) continue;
-
                         foreach (DataGridViewCell cell in row.Cells)
                         {
                             if (dtgReportOutput.Columns[cell.ColumnIndex].Visible)
-                            {
-                                string cellValue = cell.Value?.ToString() ?? "";
-                                pdfTable.AddCell(new Phrase(cellValue, FontFactory.GetFont("Arial", 9)));
-                            }
+                                pdfTable.AddCell(new Phrase(cell.Value?.ToString() ?? "",
+                                    FontFactory.GetFont("Arial", 9)));
                         }
                     }
 
-                    // --- Finalize Document ---
                     pdfDoc.Add(pdfTable);
                     pdfDoc.Close();
-
-                    MessageBox.Show("Report exported successfully to PDF!", "Export Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Report exported successfully to PDF!", "Export Success",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("An error occurred during PDF export:\n" + ex.Message, "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("An error occurred during PDF export:\n" + ex.Message, "Export Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
